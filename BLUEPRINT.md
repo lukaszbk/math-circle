@@ -15,14 +15,15 @@ The system is intentionally split into three decoupled components so the classro
 
 - **[`webapp/`](webapp/BLUEPRINT.md) — Static Tablet Web App:** A zero-build-dependency static ES Module JavaScript + Vanilla CSS single-page app hosted on static hosting (e.g., GitHub Pages, Firebase Hosting, or Cloudflare Pages) and runnable locally via any static file server (`python3 -m http.server`). Ships with the weekly Question Pack assets (cropped problem diagrams, answer keys, and AI teaching guides) and communicates with the Google Sheet backend over HTTPS (with automatic local demo/offline fallback when not yet connected to a live webhook URL).
 - **[`sheet-backend/`](sheet-backend/BLUEPRINT.md) — Google Sheet & Apps Script Bridge:** Bound to the *Math Circle 2026/2027* Google Sheet (`1uWyyPhBvUgaU1odlJQ20d9X6Io5icrF4EQMkDwDC-kE`), holding student profiles synced from `Participants`, 4-digit PINs, and historical weekly submissions, paired with a bound Google Apps Script Web App (`Code.gs`) that acts as a serverless JSON API without requiring students to sign into Google accounts or exposing API keys in the browser.
-- **[`pack-compiler/`](pack-compiler/BLUEPRINT.md) — Weekly PDF Ingestion CLI:** A Python 3 + Poppler/ImageMagick build tool (`python3 pack-compiler/compile_pack.py`) that takes a Math Kangaroo PDF (and target half: Part 1 or Part 2), renders high-DPI page images, crops each visual problem card with ink-aware bounds, pairs AI/verified metadata, solutions, and 3rd-grade whiteboard teaching guides into `webapp/packs/`, and generates an HTML verification sheet.
+- **[`pack-compiler/`](pack-compiler/BLUEPRINT.md) & [`.agents/skills/compile-weekly-pack/`](pack-compiler/BLUEPRINT.md) — Agent-Driven Weekly PDF Ingestion:** Pairs a Jetski workspace skill (`/compile-weekly-pack`) with a flexible Python + Poppler/ImageMagick cropping and packaging helper (`pack-compiler/compile_pack.py`). Because competition PDFs vary across years and editions, the agent visually audits every draft crop (adjusting bounding boxes or masks when layouts differ), solves all 12 problems from first principles *before* cross-checking against published competition results, authors 3rd-grade whiteboard guides, and compiles `webapp/packs/<week-id>/` plus `preview.html`.
 
 ## Repository Layout
 
 - `BLUEPRINT.md` — System architecture, cross-cutting contracts, and review gates (this file).
+- `.agents/skills/compile-weekly-pack/` — Workspace skill (`SKILL.md`) guiding the agent through adaptive cropping, solve-first verification, cross-checking, and pack compilation.
 - `webapp/` — Tablet student UI, Teacher Zone UI, scoring & triage logic, and bundled weekly Question Packs.
 - `sheet-backend/` — Google Sheet tab specifications and bound Apps Script Web App source (`Code.gs`).
-- `pack-compiler/` — Weekly PDF-to-Question-Pack ingestion pipeline and human preview generator.
+- `pack-compiler/` — PDF page rendering, draft/override cropping helper (`compile_pack.py`), weekly metadata specs, and human preview generator.
 
 ## End-to-End Data Contracts
 

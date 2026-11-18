@@ -13,7 +13,7 @@ Uses a pre-defined Google Sheet as a transparent, human-editable database for st
 
 Target Spreadsheet: **Math Circle 2026/2027** (`1uWyyPhBvUgaU1odlJQ20d9X6Io5icrF4EQMkDwDC-kE`).
 
-The existing **`Participants`** tab (listing student full names in column A) is preserved intact. Whenever the script runs, any newly added name in `Participants` not yet present in `Students` is automatically appended to `Students` with a generated 4-digit PIN and `active = TRUE`.
+The existing **`Participants`** tab (listing student full names in column A) is preserved intact. Whenever a name is added in `Participants` (via an `onEdit` sheet trigger, the custom `Math Circle` sheet menu from `onOpen`, or on any web app API call), any name not yet present in `Students` is automatically appended to `Students` with a generated 4-digit PIN and `active = TRUE` (note: once `Code.gs` is pasted into the sheet's Apps Script editor).
 
 The script also auto-initializes missing tabs and headers on first run:
 
