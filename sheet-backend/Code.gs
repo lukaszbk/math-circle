@@ -99,9 +99,25 @@ function isPinMatch_(enteredPin, storedPin) {
 
 /**
  * Generates a unique lowercase slug student_id from a student name.
+ * Transliterates Polish/Latin characters (e.g. "Łukasz BK" -> "lukasz-bk").
  */
 function slugifyName_(name, usedIds) {
-  var base = String(name || '')
+  var text = String(name || '')
+    .replace(/ł/g, 'l')
+    .replace(/Ł/g, 'L')
+    .replace(/ß/g, 'ss')
+    .replace(/æ/g, 'ae')
+    .replace(/Æ/g, 'AE')
+    .replace(/ø/g, 'o')
+    .replace(/Ø/g, 'O')
+    .replace(/đ/g, 'd')
+    .replace(/Đ/g, 'D')
+    .replace(/œ/g, 'oe')
+    .replace(/Œ/g, 'OE');
+  if (text.normalize) {
+    text = text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+  var base = text
     .toLowerCase()
     .trim()
     .replace(/[^a-z0-9]+/g, '-')
@@ -117,6 +133,42 @@ function slugifyName_(name, usedIds) {
   }
   usedIds[candidate] = true;
   return candidate;
+}
+
+/**
+ * Simple trigger: adds a Math Circle menu when the spreadsheet opens.
+ */
+function onOpen() {
+  SpreadsheetApp.getUi()
+    .createMenu('🦘 Math Circle')
+    .addItem('Sync Participants to Students', 'syncParticipantsMenuAction')
+    .addToUi();
+}
+
+/**
+ * Menu action to sync Participants!A1:A into Students immediately.
+ */
+function syncParticipantsMenuAction() {
+  var ss = getSpreadsheet_();
+  ensureSchemaAndSync_(ss);
+  ss.toast('Synced Participants to Students tab.', 'Math Circle');
+}
+
+/**
+ * Simple trigger: auto-syncs newly typed Participants names into Students.
+ */
+function onEdit(e) {
+  try {
+    if (!e || !e.range) {
+      return;
+    }
+    var sheet = e.range.getSheet();
+    if (sheet && sheet.getName() === TAB_PARTICIPANTS) {
+      ensureSchemaAndSync_(e.source || getSpreadsheet_());
+    }
+  } catch (err) {
+    // Simple triggers should fail silently rather than interrupting sheet edits.
+  }
 }
 
 /**

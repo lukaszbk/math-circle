@@ -19,6 +19,8 @@ export const APP_CONFIG = {
     { studentId: 'elliot-huang', name: 'Elliot Huang', avatar: '🐬' },
     { studentId: 'hanna-bieniasz-krzywiec', name: 'Hanna Bieniasz-Krzywiec', avatar: '🐼' },
     { studentId: 'keshav-junnarkar', name: 'Keshav Junnarkar', avatar: '🐢' },
-    { studentId: 'ting-zhao', name: 'Ting Zhao', avatar: '🦁' }
+    { studentId: 'ting-zhao', name: 'Ting Zhao', avatar: '🦁' },
+    { studentId: 'lukasz-bk', name: 'Łukasz BK', avatar: '🐧' },
+    { studentId: 'maria-bk', name: 'Maria BK', avatar: '🦄' }
   ]
 };

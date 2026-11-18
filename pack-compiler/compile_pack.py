@@ -2,9 +2,12 @@
 """Compile a Math Kangaroo competition PDF into a Question Pack for the webapp.
 
 Uses pdftoppm (Poppler) and convert/identify (ImageMagick) with Python 3 stdlib
-only. Detects horizontal divider rules across the question column, crops each
-selected problem card (applying optional per-question diagram padding or banner
-masking), writes pack.json, updates packs/index.json, and generates preview.html.
+only. Supports two workflows:
+  1. Draft mode (--crop-only): renders 300-DPI pages, coordinate-ruled reference
+     pages (100 px grid), best-effort draft crops, and draft_manifest.json.
+  2. Final mode: crops selected questions (using automatic divider bands or
+     per-question customBox + cropAdjust/maskRects overrides), writes pack.json,
+     updates packs/index.json, and generates preview.html.
 """
 
 from __future__ import annotations
@@ -29,7 +32,8 @@ CROP_X = 120
 CROP_WIDTH = 2310
 DEFAULT_SPLIT_X = 1500
 VERTICAL_MARGIN = 6
-RULE_PROBE_CROP = "1385x3300+165+0"
+RULE_PROBE_X = 165
+RULE_PROBE_WIDTH = 1385
 RULE_DARK_THRESHOLD = 45
 RULE_GAP_MERGE_PX = 20
 RULE_MAX_THICKNESS_PX = 10
@@ -43,7 +47,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     )
     parser.add_argument("--pdf", required=True, help="Path to source PDF file.")
     parser.add_argument(
-        "--metadata", required=True, help="Path to question metadata JSON."
+        "--metadata",
+        default=None,
+        help="Path to question metadata JSON (required unless --crop-only is set).",
     )
     parser.add_argument(
         "--part",
@@ -60,12 +66,22 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--week-id",
         default=None,
-        help="Override weekId from metadata JSON.",
+        help="Override weekId from metadata JSON (or name draft folder).",
     )
     parser.add_argument(
         "--out-dir",
         default=None,
         help="Output pack directory (defaults to webapp/packs/<weekId>).",
+    )
+    parser.add_argument(
+        "--crop-only",
+        action="store_true",
+        help="Render pages, ruled grid sheets, best-effort draft crops, and draft_manifest.json.",
+    )
+    parser.add_argument(
+        "--draft-dir",
+        default=None,
+        help="Staging directory for --crop-only (defaults to <out-dir>/draft or /tmp/mk_draft_<weekId>).",
     )
     parser.add_argument(
         "--index-file",
@@ -87,11 +103,14 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         default=None,
         help="Optional JSON file mapping question numbers to official letters for cross-check.",
     )
-    return parser.parse_args(argv)
+    args = parser.parse_args(argv)
+    if not args.crop_only and not args.metadata:
+        parser.error("--metadata is required unless --crop-only is set.")
+    return args
 
 
 def resolve_question_numbers(
-    args: argparse.Namespace, metadata: dict
+    args: argparse.Namespace, metadata: dict | None
 ) -> list[int]:
     """Determine ordered question numbers from --questions, --part, or metadata."""
     if args.questions:
@@ -104,11 +123,12 @@ def resolve_question_numbers(
             raise ValueError("--questions must contain at least one question number.")
         return numbers
 
-    part = args.part if args.part is not None else metadata.get("part")
+    meta = metadata or {}
+    part = args.part if args.part is not None else meta.get("part")
     if part in PART_QUESTIONS:
         return list(PART_QUESTIONS[part])
 
-    meta_numbers = [int(q["number"]) for q in metadata.get("questions", [])]
+    meta_numbers = [int(q["number"]) for q in meta.get("questions", [])]
     if meta_numbers:
         return meta_numbers
     raise ValueError("Specify --part (1 or 2), --questions, or questions in metadata.")
@@ -123,6 +143,9 @@ def render_pdf_pages(pdf_path: Path, work_dir: Path) -> list[Path]:
     """Render all PDF pages at 300 DPI PNG via pdftoppm."""
     if not pdf_path.is_file():
         raise FileNotFoundError(f"PDF file not found: {pdf_path}")
+    work_dir.mkdir(parents=True, exist_ok=True)
+    for stale in work_dir.glob("page-*.png"):
+        stale.unlink()
     prefix = work_dir / "page"
     subprocess.run(
         ["pdftoppm", "-png", "-r", "300", str(pdf_path), str(prefix)],
@@ -146,29 +169,75 @@ def get_image_dimensions(image_path: Path) -> tuple[int, int]:
     return int(width_str), int(height_str)
 
 
+def render_ruled_page(page_png: Path, dest_png: Path) -> Path:
+    """Render a coordinate-ruled reference PNG with 100 px grid lines and labels."""
+    width, height = get_image_dimensions(page_png)
+    cmds: list[str] = []
+
+    for x in range(100, width, 100):
+        is_major = x % 500 == 0
+        color = "rgba(217,93,57,0.58)" if is_major else "rgba(31,111,97,0.28)"
+        stroke_w = 2 if is_major else 1
+        cmds.append(f"stroke {color} stroke-width {stroke_w} line {x},0 {x},{height}")
+
+    for y in range(100, height, 100):
+        is_major = y % 500 == 0
+        color = "rgba(217,93,57,0.58)" if is_major else "rgba(31,111,97,0.28)"
+        stroke_w = 2 if is_major else 1
+        cmds.append(f"stroke {color} stroke-width {stroke_w} line 0,{y} {width},{y}")
+
+    cmds.append("stroke none fill rgba(180,35,20,0.95) font-size 22")
+    for x in range(100, width, 100):
+        cmds.append(f"text {x + 4},26 '{x}'")
+    for y in range(100, height, 100):
+        cmds.append(f"text 6,{y - 6} '{y}'")
+
+    dest_png.parent.mkdir(parents=True, exist_ok=True)
+    subprocess.run(
+        ["convert", str(page_png), "-draw", " ".join(cmds), "-strip", str(dest_png)],
+        check=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    return dest_png
+
+
 def _parse_pgm_p5(raw: bytes) -> list[int]:
-    """Parse a binary P5 PGM byte stream and return pixel intensities."""
+    """Parse a binary P5 PGM byte stream and return pixel intensities (0..255)."""
     lines = raw.split(b"\n", 3)
     if len(lines) < 4 or not lines[0].startswith(b"P5"):
         raise ValueError("Expected binary P5 PGM output from ImageMagick convert.")
-    return list(lines[3])
+    maxval = int(lines[2].strip())
+    data = lines[3]
+    if maxval == 255:
+        return list(data)
+    if maxval <= 0:
+        return list(data)
+    return [round(b * 255 / maxval) for b in data]
 
 
 def detect_page_dividers(page_png: Path) -> list[int]:
     """Detect y-coordinates of horizontal question divider rules on a page."""
+    width, height = get_image_dimensions(page_png)
+    probe_x = RULE_PROBE_X if width > RULE_PROBE_X else 0
+    probe_w = min(RULE_PROBE_WIDTH, max(1, width - probe_x))
+    probe_crop = f"{probe_w}x{height}+{probe_x}+0"
+
     raw = subprocess.check_output(
         [
             "convert",
             str(page_png),
             "-crop",
-            RULE_PROBE_CROP,
+            probe_crop,
             "+repage",
             "-colorspace",
             "Gray",
             "-threshold",
             "60%",
             "-scale",
-            "1x3300!",
+            f"1x{height}!",
+            "-depth",
+            "8",
             "pgm:-",
         ]
     )
@@ -189,23 +258,116 @@ def detect_page_dividers(page_png: Path) -> list[int]:
     ]
 
 
-def detect_all_bands(
-    page_pngs: list[Path],
-) -> list[tuple[int, Path, int, int]]:
-    """Return ordered list of (question_number, page_png, y0, y1) bands."""
+def detect_all_bands_with_diagnostics(
+    page_pngs: list[Path], strict: bool = False
+) -> tuple[list[tuple[int, Path, int, int]], list[dict], list[str]]:
+    """Detect question bands and collect per-page diagnostics and layout warnings."""
     bands: list[tuple[int, Path, int, int]] = []
+    page_diagnostics: list[dict] = []
+    warnings: list[str] = []
     q_num = 1
+
     for page_idx, page_png in enumerate(page_pngs):
+        width, height = get_image_dimensions(page_png)
         divs = detect_page_dividers(page_png)
         start_idx = 1 if page_idx == 0 else 0
-        if len(divs) - start_idx < 2:
-            raise RuntimeError(
-                f"Too few divider rules ({divs}) detected on page {page_idx + 1}: {page_png}"
+        usable = len(divs) - start_idx
+        page_band_count = max(0, usable - 1)
+
+        if usable < 2:
+            msg = (
+                f"Page {page_idx + 1}: detected {len(divs)} horizontal divider rule(s) "
+                f"({divs}); expected at least {start_idx + 2} to form bands."
             )
-        for idx in range(start_idx, len(divs) - 1):
-            bands.append((q_num, page_png, divs[idx], divs[idx + 1]))
-            q_num += 1
+            if strict:
+                raise RuntimeError(f"{msg} ({page_png})")
+            warnings.append(msg)
+        else:
+            for idx in range(start_idx, len(divs) - 1):
+                bands.append((q_num, page_png, divs[idx], divs[idx + 1]))
+                q_num += 1
+
+        page_diagnostics.append(
+            {
+                "page": page_idx + 1,
+                "width": width,
+                "height": height,
+                "dividers": divs,
+                "bandCount": page_band_count,
+            }
+        )
+
+    return bands, page_diagnostics, warnings
+
+
+def detect_all_bands(
+    page_pngs: list[Path], strict: bool = True
+) -> list[tuple[int, Path, int, int]]:
+    """Return ordered list of (question_number, page_png, y0, y1) bands."""
+    bands, _diag, _warnings = detect_all_bands_with_diagnostics(page_pngs, strict=strict)
     return bands
+
+
+def _build_mask_draw_ops(
+    crop_adjust: dict | None,
+    pad_top: int = 0,
+    pad_bottom: int = 0,
+    crop_height: int = 0,
+    split_x: int = DEFAULT_SPLIT_X,
+    crop_x: int = CROP_X,
+) -> list[str]:
+    """Build ImageMagick whiteout rectangle operations in cropped-image coordinates."""
+    adjust = crop_adjust or {}
+    draw_ops: list[str] = []
+    split_rel_x = max(0, split_x - crop_x)
+
+    if pad_top > 0 and split_rel_x > 0:
+        draw_ops.append(f"rectangle 0,0 {split_rel_x},{pad_top}")
+    if pad_bottom > 0 and split_rel_x > 0:
+        mask_y0 = max(0, crop_height - pad_bottom)
+        draw_ops.append(f"rectangle 0,{mask_y0} {split_rel_x},{crop_height}")
+    if adjust.get("trimSectionBanner"):
+        bx0, by0, bx1, by1 = BANNER_MASK_RECT
+        draw_ops.append(f"rectangle {bx0},{by0} {bx1},{by1}")
+
+    for rect in adjust.get("maskRects") or []:
+        if not isinstance(rect, (list, tuple)) or len(rect) != 4:
+            raise ValueError(f"Each maskRect must be [x0, y0, x1, y1]; got {rect!r}")
+        rx0, ry0, rx1, ry1 = (int(v) for v in rect)
+        draw_ops.append(f"rectangle {rx0},{ry0} {rx1},{ry1}")
+
+    return draw_ops
+
+
+def _run_crop_convert(
+    page_png: Path,
+    crop_x: int,
+    crop_y: int,
+    crop_width: int,
+    crop_height: int,
+    draw_ops: list[str],
+    dest_png: Path,
+) -> tuple[int, int]:
+    """Execute ImageMagick crop + optional whiteout masks and return (w, h)."""
+    if crop_width <= 0 or crop_height <= 0:
+        raise ValueError(
+            f"Invalid crop dimensions {crop_width}x{crop_height}+{crop_x}+{crop_y}."
+        )
+    dest_png.parent.mkdir(parents=True, exist_ok=True)
+    cmd = [
+        "convert",
+        str(page_png),
+        "-crop",
+        f"{crop_width}x{crop_height}+{crop_x}+{crop_y}",
+        "+repage",
+    ]
+    if draw_ops:
+        cmd.extend(["-fill", "white"])
+        for rect in draw_ops:
+            cmd.extend(["-draw", rect])
+    cmd.extend(["-strip", str(dest_png)])
+    subprocess.run(cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    return get_image_dimensions(dest_png)
 
 
 def crop_question_image(
@@ -221,7 +383,6 @@ def crop_question_image(
     pad_top = int(adjust.get("diagramPadTop", 0))
     pad_bottom = int(adjust.get("diagramPadBottom", 0))
     split_x = int(adjust.get("diagramSplitX", DEFAULT_SPLIT_X))
-    trim_banner = bool(adjust.get("trimSectionBanner", False))
 
     base_top = y0 + VERTICAL_MARGIN
     base_bot = y1 - VERTICAL_MARGIN
@@ -233,33 +394,50 @@ def crop_question_image(
             f"Invalid crop height ({crop_height}) for y0={y0}, y1={y1}."
         )
 
-    split_rel_x = max(0, split_x - CROP_X)
-    draw_ops: list[str] = []
-    if pad_top > 0 and split_rel_x > 0:
-        draw_ops.append(f"rectangle 0,0 {split_rel_x},{pad_top}")
-    if pad_bottom > 0 and split_rel_x > 0:
-        mask_y0 = max(0, crop_height - pad_bottom)
-        draw_ops.append(f"rectangle 0,{mask_y0} {split_rel_x},{crop_height}")
-    if trim_banner:
-        bx0, by0, bx1, by1 = BANNER_MASK_RECT
-        draw_ops.append(f"rectangle {bx0},{by0} {bx1},{by1}")
+    draw_ops = _build_mask_draw_ops(
+        crop_adjust=adjust,
+        pad_top=pad_top,
+        pad_bottom=pad_bottom,
+        crop_height=crop_height,
+        split_x=split_x,
+        crop_x=CROP_X,
+    )
+    return _run_crop_convert(
+        page_png=page_png,
+        crop_x=CROP_X,
+        crop_y=crop_top,
+        crop_width=CROP_WIDTH,
+        crop_height=crop_height,
+        draw_ops=draw_ops,
+        dest_png=dest_png,
+    )
 
-    dest_png.parent.mkdir(parents=True, exist_ok=True)
-    cmd = [
-        "convert",
-        str(page_png),
-        "-crop",
-        f"{CROP_WIDTH}x{crop_height}+{CROP_X}+{crop_top}",
-        "+repage",
-    ]
-    if draw_ops:
-        cmd.extend(["-fill", "white"])
-        for rect in draw_ops:
-            cmd.extend(["-draw", rect])
-    cmd.extend(["-strip", str(dest_png)])
 
-    subprocess.run(cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    return get_image_dimensions(dest_png)
+def crop_custom_box(
+    page_png: Path,
+    custom_box: dict,
+    crop_adjust: dict | None,
+    dest_png: Path,
+) -> tuple[int, int]:
+    """Crop an explicit customBox {page, x, y, width, height} plus optional masks."""
+    x = int(custom_box["x"])
+    y = int(custom_box["y"])
+    width = int(custom_box["width"])
+    height = int(custom_box["height"])
+    draw_ops = _build_mask_draw_ops(
+        crop_adjust=crop_adjust,
+        crop_height=height,
+        crop_x=x,
+    )
+    return _run_crop_convert(
+        page_png=page_png,
+        crop_x=x,
+        crop_y=y,
+        crop_width=width,
+        crop_height=height,
+        draw_ops=draw_ops,
+        dest_png=dest_png,
+    )
 
 
 def validate_answer_key(
@@ -440,6 +618,150 @@ def build_preview_html(pack_data: dict) -> str:
 """
 
 
+def _crop_single_question(
+    q_num: int,
+    q_meta: dict,
+    page_pngs: list[Path],
+    page_heights: dict[Path, int],
+    bands_by_num: dict[int, tuple[Path, int, int]],
+    dest_png: Path,
+) -> tuple[int, int]:
+    """Crop one question via customBox if specified, else via detected divider band."""
+    custom_box = q_meta.get("customBox")
+    if custom_box:
+        page_num = int(custom_box["page"])
+        if page_num < 1 or page_num > len(page_pngs):
+            raise IndexError(
+                f"Question #{q_num} customBox page={page_num} out of range (1..{len(page_pngs)})."
+            )
+        return crop_custom_box(
+            page_png=page_pngs[page_num - 1],
+            custom_box=custom_box,
+            crop_adjust=q_meta.get("cropAdjust"),
+            dest_png=dest_png,
+        )
+
+    if q_num not in bands_by_num:
+        raise IndexError(
+            f"Question #{q_num} not found in detected bands (detected: {sorted(bands_by_num.keys())}) "
+            "and no customBox override was provided."
+        )
+    page_png, y0, y1 = bands_by_num[q_num]
+    return crop_question_image(
+        page_png=page_png,
+        y0=y0,
+        y1=y1,
+        crop_adjust=q_meta.get("cropAdjust"),
+        dest_png=dest_png,
+        page_height=page_heights[page_png],
+    )
+
+
+def run_crop_only(
+    pdf_path: Path,
+    draft_dir: Path,
+    part: int | None = None,
+    questions_override: list[int] | None = None,
+    metadata_path: Path | None = None,
+    week_id: str | None = None,
+) -> dict:
+    """Render 300-DPI pages, ruled sheets, best-effort draft crops, and draft_manifest.json."""
+    metadata = (
+        json.loads(metadata_path.read_text(encoding="utf-8"))
+        if metadata_path is not None
+        else {}
+    )
+    meta_by_num = {int(q["number"]): q for q in metadata.get("questions", [])}
+
+    pages_dir = draft_dir / "pages"
+    crops_dir = draft_dir / "crops"
+    pages_dir.mkdir(parents=True, exist_ok=True)
+    crops_dir.mkdir(parents=True, exist_ok=True)
+
+    page_pngs = render_pdf_pages(pdf_path, pages_dir)
+    page_heights = {p: get_image_dimensions(p)[1] for p in page_pngs}
+
+    ruled_paths: list[Path] = []
+    for page_png in page_pngs:
+        ruled_png = pages_dir / f"{page_png.stem}-ruled.png"
+        render_ruled_page(page_png, ruled_png)
+        ruled_paths.append(ruled_png)
+
+    bands, page_diagnostics, warnings = detect_all_bands_with_diagnostics(
+        page_pngs, strict=False
+    )
+    bands_by_num = {num: (page_png, y0, y1) for num, page_png, y0, y1 in bands}
+
+    if len(bands) != 24:
+        warnings.append(
+            f"Detected {len(bands)} total question band(s) across {len(page_pngs)} page(s); "
+            "standard full paper has 24. Inspect ruled pages and add customBox where needed."
+        )
+
+    if questions_override is not None:
+        target_numbers = questions_override
+    elif part in PART_QUESTIONS:
+        target_numbers = list(PART_QUESTIONS[part])
+    elif metadata.get("questions"):
+        target_numbers = [int(q["number"]) for q in metadata["questions"]]
+    else:
+        target_numbers = [b[0] for b in bands]
+
+    crops: list[dict] = []
+    for q_num in target_numbers:
+        q_meta = dict(meta_by_num.get(q_num, {}))
+        dest_png = crops_dir / f"q{q_num:02d}.png"
+        if not q_meta.get("customBox") and q_num not in bands_by_num:
+            warnings.append(
+                f"Skipped Q{q_num}: no detected band and no customBox override."
+            )
+            continue
+        w, h = _crop_single_question(
+            q_num=q_num,
+            q_meta=q_meta,
+            page_pngs=page_pngs,
+            page_heights=page_heights,
+            bands_by_num=bands_by_num,
+            dest_png=dest_png,
+        )
+        crops.append(
+            {
+                "number": q_num,
+                "image": str(dest_png),
+                "width": w,
+                "height": h,
+                "method": "customBox" if q_meta.get("customBox") else "dividerBand",
+            }
+        )
+
+    pages_manifest = []
+    for idx, diag in enumerate(page_diagnostics):
+        pages_manifest.append(
+            {
+                **diag,
+                "image": str(page_pngs[idx]),
+                "ruledImage": str(ruled_paths[idx]),
+            }
+        )
+
+    manifest = {
+        "weekId": week_id or metadata.get("weekId") or pdf_path.stem,
+        "pdf": str(pdf_path),
+        "draftDir": str(draft_dir),
+        "generatedAt": datetime.now(timezone.utc).isoformat(),
+        "bandCount": len(bands),
+        "targetQuestions": target_numbers,
+        "pages": pages_manifest,
+        "crops": crops,
+        "warnings": warnings,
+    }
+    (draft_dir / "draft_manifest.json").write_text(
+        json.dumps(manifest, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+    return manifest
+
+
 def compile_pack(
     pdf_path: Path,
     metadata_path: Path,
@@ -476,27 +798,29 @@ def compile_pack(
     with tempfile.TemporaryDirectory(prefix="mk_pack_") as tmp:
         tmp_dir = Path(tmp)
         page_pngs = render_pdf_pages(pdf_path, tmp_dir)
-        bands = detect_all_bands(page_pngs)
-        bands_by_num = {num: (page_png, y0, y1) for num, page_png, y0, y1 in bands}
         page_heights = {p: get_image_dimensions(p)[1] for p in page_pngs}
+
+        needs_bands = any(not meta_by_num[n].get("customBox") for n in selected_numbers)
+        if needs_bands:
+            bands, _diag, _warnings = detect_all_bands_with_diagnostics(
+                page_pngs, strict=False
+            )
+            bands_by_num = {num: (page_png, y0, y1) for num, page_png, y0, y1 in bands}
+        else:
+            bands_by_num = {}
 
         compiled_questions: list[dict] = []
         for q_num in selected_numbers:
-            if q_num not in bands_by_num:
-                raise IndexError(
-                    f"Question #{q_num} not found in detected bands (1..{len(bands)})."
-                )
-            page_png, y0, y1 = bands_by_num[q_num]
             q_meta = dict(meta_by_num[q_num])
             img_name = f"q{q_num:02d}.png"
             dest_png = images_dir / img_name
-            w, h = crop_question_image(
-                page_png=page_png,
-                y0=y0,
-                y1=y1,
-                crop_adjust=q_meta.get("cropAdjust"),
+            w, h = _crop_single_question(
+                q_num=q_num,
+                q_meta=q_meta,
+                page_pngs=page_pngs,
+                page_heights=page_heights,
+                bands_by_num=bands_by_num,
                 dest_png=dest_png,
-                page_height=page_heights[page_png],
             )
             q_record = {
                 "number": int(q_meta["number"]),
@@ -543,6 +867,11 @@ def compile_pack(
     return pack_data
 
 
+def _default_draft_week_id(pdf_path: Path) -> str:
+    slug = re.sub(r"[^a-z0-9-]+", "-", pdf_path.stem.lower()).strip("-")
+    return slug or "draft"
+
+
 def main(argv: list[str] | None = None) -> int:
     """CLI entrypoint."""
     for tool in ("pdftoppm", "convert", "identify"):
@@ -551,7 +880,51 @@ def main(argv: list[str] | None = None) -> int:
             return 1
 
     args = parse_args(argv)
-    metadata_path = Path(args.metadata)
+    pdf_path = Path(args.pdf)
+    metadata_path = Path(args.metadata) if args.metadata else None
+
+    if args.crop_only:
+        metadata = (
+            json.loads(metadata_path.read_text(encoding="utf-8"))
+            if metadata_path is not None
+            else {}
+        )
+        week_id = (
+            args.week_id
+            or metadata.get("weekId")
+            or _default_draft_week_id(pdf_path)
+        )
+        if args.draft_dir:
+            draft_dir = Path(args.draft_dir)
+        elif args.out_dir:
+            draft_dir = Path(args.out_dir) / "draft"
+        else:
+            draft_dir = Path(tempfile.gettempdir()) / f"mk_draft_{week_id}"
+
+        q_override = None
+        if args.questions:
+            q_override = [
+                int(item.strip())
+                for item in args.questions.split(",")
+                if item.strip()
+            ]
+        manifest = run_crop_only(
+            pdf_path=pdf_path,
+            draft_dir=draft_dir,
+            part=args.part,
+            questions_override=q_override,
+            metadata_path=metadata_path,
+            week_id=week_id,
+        )
+        print(
+            f"Draft crops for '{manifest['weekId']}' ({len(manifest['crops'])} cropped, "
+            f"{manifest['bandCount']} bands across {len(manifest['pages'])} pages) -> {draft_dir}"
+        )
+        for warning in manifest["warnings"]:
+            print(f"WARNING: {warning}", file=sys.stderr)
+        return 0
+
+    assert metadata_path is not None
     metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
     selected_numbers = resolve_question_numbers(args, metadata)
     week_id = args.week_id or metadata["weekId"]
@@ -560,7 +933,7 @@ def main(argv: list[str] | None = None) -> int:
     answer_key_path = Path(args.answer_key) if args.answer_key else None
 
     pack_data = compile_pack(
-        pdf_path=Path(args.pdf),
+        pdf_path=pdf_path,
         metadata_path=metadata_path,
         part=args.part,
         questions_override=selected_numbers,

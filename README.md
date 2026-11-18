@@ -13,14 +13,22 @@ python3 serve.py
 Open [http://127.0.0.1:8000](http://127.0.0.1:8000) in any browser or tablet on your local network (`--host 0.0.0.0`).
 
 - **Pre-seeded Student PINs (local server & demo mode):**
-  - Ada Guzhu (`2418`), Andrew Ahmadi (`5931`), Berrit Martz (`7264`), Camile Gauthier (`3847`), Elliot An (`6159`), Elliot Huang (`8492`), Hanna Bieniasz-Krzywiec (`4726`), Keshav Junnarkar (`9315`), Ting Zhao (`1683`)
+  - Ada Guzhu (`2418`), Andrew Ahmadi (`5931`), Berrit Martz (`7264`), Camile Gauthier (`3847`), Elliot An (`6159`), Elliot Huang (`8492`), Hanna Bieniasz-Krzywiec (`4726`), Keshav Junnarkar (`9315`), Ting Zhao (`1683`), Łukasz BK (`5042`), Maria BK (`6719`)
 - **Teacher Zone PIN:** `885174`
 
 ## Compiling a Weekly Question Pack from PDF
 
-Requires `pdftoppm` (Poppler) and `convert` / `identify` (ImageMagick):
+Use the [`compile-weekly-pack`](.agents/skills/compile-weekly-pack/SKILL.md) workflow or run `pack-compiler/compile_pack.py` directly (requires `pdftoppm` and `convert`/`identify`):
 
 ```bash
+# Stage 1: render 300-DPI pages, ruled reference grids, and draft crops
+python3 pack-compiler/compile_pack.py \
+  --pdf pack-compiler/input/2022-g34.pdf \
+  --part 1 \
+  --week-id 2022-g34-part1 \
+  --crop-only
+
+# Stage 5: compile final pack with verified answers & teaching guides
 python3 pack-compiler/compile_pack.py \
   --pdf pack-compiler/input/2022-g34.pdf \
   --part 1 \
@@ -28,7 +36,7 @@ python3 pack-compiler/compile_pack.py \
   --out-dir webapp/packs/2022-g34-part1
 ```
 
-- Supports `--part 1` (`1–4, 9–12, 17–20`), `--part 2` (`5–8, 13–16, 21–24`), or `--questions 1,2,...`.
+- Supports `--part 1` (`1–4, 9–12, 17–20`), `--part 2` (`5–8, 13–16, 21–24`), or `--questions 1,2,...`, plus per-question `customBox` / `maskRects` overrides for arbitrary PDF layouts.
 - Outputs 12 cropped PNG diagrams (`q01.png`…), `pack.json`, `webapp/packs/index.json`, and a visual verification sheet at `preview.html`.
 
 ## Connecting Google Sheets in 60 Seconds
@@ -37,6 +45,7 @@ See [`sheet-backend/SETUP.md`](sheet-backend/SETUP.md):
 
 1. Open the **Math Circle 2026/2027** Google Sheet (`1uWyyPhBvUgaU1odlJQ20d9X6Io5icrF4EQMkDwDC-kE`).
 2. Go to **Extensions → Apps Script** and paste [`sheet-backend/Code.gs`](sheet-backend/Code.gs).
+   - Includes `onEdit` and the **🦘 Math Circle → Sync Participants to Students** menu (`onOpen`) to sync `Participants!A1:A` into `Students` automatically.
 3. Click **Deploy → New deployment → Web app** (`Execute as: Me`, `Who has access: Anyone`) and copy the `/exec` URL.
 4. Paste the `/exec` URL into `appsScriptUrl` in [`webapp/config.js`](webapp/config.js) or inside **Teacher Zone → Roster, PINs & Sheet Link**.
 

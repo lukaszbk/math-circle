@@ -20,7 +20,9 @@ const DEMO_SEED_PINS = {
   'elliot-huang': '8492',
   'hanna-bieniasz-krzywiec': '4726',
   'keshav-junnarkar': '9315',
-  'ting-zhao': '1683'
+  'ting-zhao': '1683',
+  'lukasz-bk': '5042',
+  'maria-bk': '6719'
 };
 
 function safeJsonParse(raw, fallback) {
@@ -50,6 +52,19 @@ function isExactPinMatch(enteredPin, storedPin) {
 
 function slugifyName(name, usedIds) {
   let base = String(name || '')
+    .replace(/ł/g, 'l')
+    .replace(/Ł/g, 'L')
+    .replace(/ß/g, 'ss')
+    .replace(/æ/g, 'ae')
+    .replace(/Æ/g, 'AE')
+    .replace(/ø/g, 'o')
+    .replace(/Ø/g, 'O')
+    .replace(/đ/g, 'd')
+    .replace(/Đ/g, 'D')
+    .replace(/œ/g, 'oe')
+    .replace(/Œ/g, 'OE')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()
     .trim()
     .replace(/[^a-z0-9]+/g, '-')

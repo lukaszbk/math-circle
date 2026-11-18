@@ -141,8 +141,10 @@ def ref_triage_questions(pack: dict, submissions: list[dict]) -> list[dict]:
 class TestScoringParityAndStaticInvariants(unittest.TestCase):
     CODE_GS_PATH = REPO_ROOT / "sheet-backend" / "Code.gs"
     SCORING_JS_PATH = REPO_ROOT / "webapp" / "src" / "scoring.js"
+    STORAGE_JS_PATH = REPO_ROOT / "webapp" / "src" / "storage.js"
     CONFIG_JS_PATH = REPO_ROOT / "webapp" / "config.js"
     PACK_JSON_PATH = REPO_ROOT / "webapp" / "packs" / "2022-g34-part1" / "pack.json"
+    SKILL_MD_PATH = REPO_ROOT / ".agents" / "skills" / "compile-weekly-pack" / "SKILL.md"
 
     def test_code_gs_static_invariants(self) -> None:
         src = self.CODE_GS_PATH.read_text(encoding="utf-8")
@@ -151,6 +153,11 @@ class TestScoringParityAndStaticInvariants(unittest.TestCase):
         self.assertIn("setNumberFormat('@')", src)
         self.assertIn("ContentService.MimeType.JSON", src)
         self.assertIn("1uWyyPhBvUgaU1odlJQ20d9X6Io5icrF4EQMkDwDC-kE", src)
+        self.assertIn("function onOpen()", src)
+        self.assertIn("function onEdit(e)", src)
+        self.assertIn("syncParticipantsMenuAction", src)
+        self.assertIn("replace(/ł/g, 'l')", src)
+        self.assertIn("replace(/Ł/g, 'L')", src)
 
         # Ensure handleGetPublicRoster_ never exposes pin inside publicStudents.push({...})
         match = re.search(
@@ -173,6 +180,37 @@ class TestScoringParityAndStaticInvariants(unittest.TestCase):
         )
         self.assertIsNotNone(sync_match)
         self.assertNotIn("participantsSheet.getRange", sync_match.group("body").replace("participantsSheet.getRange(1, 1, participantsSheet.getLastRow(), 1).getValues()", ""))
+
+    def test_unicode_slugification_and_skill_runbook(self) -> None:
+        # Python slugifier
+        self.assertEqual(serve.slugify_name("Łukasz BK", set()), "lukasz-bk")
+        self.assertEqual(serve.slugify_name("Maria BK", set()), "maria-bk")
+        self.assertEqual(serve.slugify_name("Zażółć gęślą jaźń", set()), "zazolc-gesla-jazn")
+
+        # JS storage slugifier static check
+        storage_src = self.STORAGE_JS_PATH.read_text(encoding="utf-8")
+        self.assertIn("replace(/ł/g, 'l')", storage_src)
+        self.assertIn("replace(/Ł/g, 'L')", storage_src)
+        self.assertIn(".normalize('NFD')", storage_src)
+
+        # Workspace skill validation
+        self.assertTrue(self.SKILL_MD_PATH.is_file(), "Missing compile-weekly-pack SKILL.md")
+        skill_text = self.SKILL_MD_PATH.read_text(encoding="utf-8")
+        fm_match = re.match(r"^---\n(.*?)\n---\n", skill_text, re.DOTALL)
+        self.assertIsNotNone(fm_match, "SKILL.md missing YAML frontmatter")
+        fm = fm_match.group(1)
+        self.assertIn("name: compile-weekly-pack", fm)
+        self.assertIn("description:", fm)
+        for required_term in (
+            "--crop-only",
+            "customBox",
+            "maskRects",
+            "search_web",
+            "Matched Published Key",
+            "Resolved Discrepancy",
+            "Self-Verified Only",
+        ):
+            self.assertIn(required_term, skill_text)
 
     def test_scoring_js_contract_and_student_roster_parity(self) -> None:
         js_src = self.SCORING_JS_PATH.read_text(encoding="utf-8")

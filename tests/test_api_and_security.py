@@ -54,16 +54,21 @@ class TestApiAndSecurity(unittest.TestCase):
         with self.opener.open(f"{self.base_url}/api", timeout=5) as resp:
             health = json.loads(resp.read().decode("utf-8"))
             self.assertTrue(health["ok"])
-            self.assertEqual(health["studentCount"], 9)
+            self.assertEqual(health["studentCount"], 11)
 
     def test_public_roster_never_leaks_pins(self) -> None:
         res = self._post_api({"action": "getPublicRoster", "weekId": "2022-g34-part1"})
         self.assertTrue(res["ok"])
         self.assertEqual(res["activeWeekId"], "2022-g34-part1")
         students = res["students"]
-        self.assertEqual(len(students), 9)
+        self.assertEqual(len(students), 11)
+        student_ids = {s["studentId"] for s in students}
+        self.assertIn("lukasz-bk", student_ids)
+        self.assertIn("maria-bk", student_ids)
         raw_text = json.dumps(res)
         self.assertNotIn("2418", raw_text)
+        self.assertNotIn("5042", raw_text)
+        self.assertNotIn("6719", raw_text)
         self.assertNotIn("885174", raw_text)
         self.assertNotIn("teacher_pin", raw_text)
         self.assertNotIn("teacherPin", raw_text)
@@ -177,6 +182,8 @@ class TestApiAndSecurity(unittest.TestCase):
             ("hanna-bieniasz-krzywiec", "4726"),
             ("keshav-junnarkar", "9315"),
             ("ting-zhao", "1683"),
+            ("lukasz-bk", "5042"),
+            ("maria-bk", "6719"),
         ]
 
         def submit_one(item: tuple[str, str]) -> dict:
@@ -192,7 +199,7 @@ class TestApiAndSecurity(unittest.TestCase):
                 }
             )
 
-        with concurrent.futures.ThreadPoolExecutor(max_workers=9) as pool:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=11) as pool:
             results = list(pool.map(submit_one, expected))
 
         self.assertTrue(all(r["ok"] for r in results))
@@ -200,7 +207,7 @@ class TestApiAndSecurity(unittest.TestCase):
         self.assertTrue(report["ok"])
         submitted_ids = {s["studentId"] for s in report["submissions"]}
         self.assertEqual(submitted_ids, {sid for sid, _ in expected})
-        self.assertEqual(len(report["submissions"]), 9)
+        self.assertEqual(len(report["submissions"]), 11)
 
     def test_teacher_auth_and_participants_sync(self) -> None:
         denied = self._post_api({"action": "getTeacherReport", "teacherPin": "123456"})
@@ -208,7 +215,7 @@ class TestApiAndSecurity(unittest.TestCase):
 
         ok_report = self._post_api({"action": "getTeacherReport", "teacherPin": "885174"})
         self.assertTrue(ok_report["ok"])
-        self.assertEqual(len(ok_report["students"]), 9)
+        self.assertEqual(len(ok_report["students"]), 11)
 
         # Simulate adding a new name in Participants!A1:A; existing students stay untouched.
         state = json.loads(self.state_file.read_text(encoding="utf-8"))
@@ -218,7 +225,7 @@ class TestApiAndSecurity(unittest.TestCase):
         roster = self._post_api({"action": "getPublicRoster"})
         names = [s["name"] for s in roster["students"]]
         self.assertIn("Maya Lin", names)
-        self.assertEqual(len(names), 10)
+        self.assertEqual(len(names), 12)
         synced_state = json.loads(self.state_file.read_text(encoding="utf-8"))
         self.assertEqual(synced_state["participants"][-1], "Maya Lin")
         maya = next(s for s in synced_state["students"] if s["name"] == "Maya Lin")

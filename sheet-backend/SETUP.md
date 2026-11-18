@@ -21,7 +21,8 @@ Follow these steps once to link the tablet web app directly to your Google Sheet
 - **Option B (On-the-spot per tablet):** Open **Teacher Zone** (PIN `885174`) → **Roster, PINs & Sheet Link**, paste the `/exec` URL, and tap **Save & Test Connection**.
 
 ## 4. Verify Auto-Initialization & Roster Sync
-On the first API call (or by running `doGet()` in the Apps Script editor):
-- Missing `Students`, `Submissions`, and `Config` tabs are created automatically.
+Once `Code.gs` is saved in the sheet's Apps Script editor:
+- Reloading the spreadsheet adds the **🦘 Math Circle → Sync Participants to Students** menu (`onOpen`), and typing a new student name in `Participants!A1:A` immediately syncs it to `Students` (`onEdit`).
+- On the first API call (or by running `doGet()` in the Apps Script editor), any missing `Students`, `Submissions`, and `Config` tabs are created automatically.
 - Any student name in `Participants!A1:A` not yet in `Students` is appended with a unique `student_id`, a 4-digit plain-text PIN (leading zeros preserved), an animal avatar, and `active = TRUE`.
 - `Participants` is never modified.

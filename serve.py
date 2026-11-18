@@ -18,6 +18,7 @@ from pathlib import Path
 import random
 import re
 import threading
+import unicodedata
 
 DEFAULT_TEACHER_PIN = "885174"
 DEFAULT_WEEK_ID = "2022-g34-part1"
@@ -47,6 +48,8 @@ SEED_STUDENTS = [
     {"studentId": "hanna-bieniasz-krzywiec", "name": "Hanna Bieniasz-Krzywiec", "pin": "4726", "avatar": "🐼", "active": True},
     {"studentId": "keshav-junnarkar", "name": "Keshav Junnarkar", "pin": "9315", "avatar": "🐢", "active": True},
     {"studentId": "ting-zhao", "name": "Ting Zhao", "pin": "1683", "avatar": "🦁", "active": True},
+    {"studentId": "lukasz-bk", "name": "Łukasz BK", "pin": "5042", "avatar": "🐧", "active": True},
+    {"studentId": "maria-bk", "name": "Maria BK", "pin": "6719", "avatar": "🦄", "active": True},
 ]
 
 
@@ -69,9 +72,26 @@ def is_pin_match(entered_pin: object, stored_pin: object) -> bool:
     return bool(re.fullmatch(r"\d{4}", raw) and re.fullmatch(r"\d{4}", canonical) and raw == canonical)
 
 
+_TRANSLITERATE_MAP = str.maketrans({
+    "ł": "l",
+    "Ł": "L",
+    "ß": "ss",
+    "æ": "ae",
+    "Æ": "AE",
+    "ø": "o",
+    "Ø": "O",
+    "đ": "d",
+    "Đ": "D",
+    "œ": "oe",
+    "Œ": "OE",
+})
+
+
 def slugify_name(name: str, used_ids: set[str]) -> str:
     """Generate a unique lowercase slug student_id from a display name."""
-    base = re.sub(r"[^a-z0-9]+", "-", str(name or "").lower().strip()).strip("-")
+    transliterated = str(name or "").translate(_TRANSLITERATE_MAP)
+    ascii_text = unicodedata.normalize("NFKD", transliterated).encode("ascii", "ignore").decode("ascii")
+    base = re.sub(r"[^a-z0-9]+", "-", ascii_text.lower().strip()).strip("-")
     if not base:
         base = "student"
     candidate = base
