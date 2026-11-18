@@ -464,6 +464,27 @@ export class StorageClient {
   _loadDemoDb() {
     const existing = safeJsonParse(localStorage.getItem(KEYS.DEMO_DB), null);
     if (existing && Array.isArray(existing.students)) {
+      const knownIds = new Set(existing.students.map((s) => s.studentId));
+      const knownNames = new Set(existing.students.map((s) => String(s.name || '').trim().toLowerCase()));
+      let added = false;
+      for (const st of (this.config.demoStudents || [])) {
+        const nameKey = String(st.name || '').trim().toLowerCase();
+        if (!knownIds.has(st.studentId) && !knownNames.has(nameKey)) {
+          existing.students.push({
+            studentId: st.studentId,
+            name: st.name,
+            avatar: st.avatar,
+            pin: DEMO_SEED_PINS[st.studentId] || '0000',
+            active: true
+          });
+          knownIds.add(st.studentId);
+          knownNames.add(nameKey);
+          added = true;
+        }
+      }
+      if (added) {
+        localStorage.setItem(KEYS.DEMO_DB, JSON.stringify(existing));
+      }
       return existing;
     }
     const seeded = {

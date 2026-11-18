@@ -247,6 +247,42 @@ class TestApiAndSecurity(unittest.TestCase):
         roster_after = self._post_api({"action": "getPublicRoster"})
         self.assertEqual(roster_after["activeWeekId"], "2022-g34-part2")
 
+    def test_legacy_state_file_merges_new_seed_students_preserving_submissions(self) -> None:
+        # Simulate an older /tmp/math_circle_state.json created when only 9 students existed.
+        legacy_students = [dict(s) for s in serve.SEED_STUDENTS[:9]]
+        legacy_state = {
+            "teacherPin": "885174",
+            "activeWeekId": "2022-g34-part1",
+            "participants": [s["name"] for s in legacy_students],
+            "students": legacy_students,
+            "submissions": [
+                {
+                    "updatedAt": "2026-11-18T21:00:00Z",
+                    "weekId": "2022-g34-part1",
+                    "studentId": "hanna-bieniasz-krzywiec",
+                    "studentName": "Hanna Bieniasz-Krzywiec",
+                    "totalScore": 48,
+                    "maxScore": 48,
+                    "answers": {"1": "A"},
+                }
+            ],
+        }
+        self.state_file.write_text(json.dumps(legacy_state), encoding="utf-8")
+
+        roster = self._post_api({"action": "getPublicRoster", "weekId": "2022-g34-part1"})
+        self.assertTrue(roster["ok"])
+        self.assertEqual(len(roster["students"]), 11)
+        by_id = {s["studentId"]: s for s in roster["students"]}
+        self.assertIn("lukasz-bk", by_id)
+        self.assertIn("maria-bk", by_id)
+        self.assertTrue(by_id["hanna-bieniasz-krzywiec"]["hasSubmitted"])
+
+        # Verify Łukasz BK's exact seeded PIN (5042) works immediately.
+        verify_lukasz = self._post_api(
+            {"action": "verifyStudentPin", "studentId": "lukasz-bk", "pin": "5042"}
+        )
+        self.assertTrue(verify_lukasz["valid"])
+
 
 if __name__ == "__main__":
     unittest.main()

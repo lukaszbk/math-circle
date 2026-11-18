@@ -154,12 +154,26 @@ class SheetStateStore:
         os.replace(tmp_path, self.state_file)
 
     def _sync_participants_locked(self, data: dict) -> bool:
-        """Append any name in participants not yet in students (case-insensitive)."""
-        participants = data.get("participants") or []
+        """Merge any new SEED_STUDENTS and append any name in participants not yet in students."""
+        participants = data.setdefault("participants", [])
         students = data.setdefault("students", [])
         existing_names = {str(s.get("name", "")).strip().lower() for s in students}
         used_ids = {str(s.get("studentId", "")).strip() for s in students if s.get("studentId")}
+        participant_names_lower = {str(p or "").strip().lower() for p in participants if str(p or "").strip()}
         changed = False
+
+        # Ensure newly added SEED_STUDENTS merge into pre-existing /tmp state files without wiping submissions.
+        for seed in SEED_STUDENTS:
+            seed_name_key = seed["name"].strip().lower()
+            if seed_name_key not in participant_names_lower:
+                participants.append(seed["name"])
+                participant_names_lower.add(seed_name_key)
+                changed = True
+            if seed_name_key not in existing_names and seed["studentId"] not in used_ids:
+                existing_names.add(seed_name_key)
+                used_ids.add(seed["studentId"])
+                students.append(dict(seed))
+                changed = True
 
         for idx, raw_name in enumerate(participants):
             name = str(raw_name or "").strip()
@@ -423,6 +437,11 @@ class MathCircleRequestHandler(SimpleHTTPRequestHandler):
     def log_message(self, format: str, *args) -> None:
         if not self.quiet:
             super().log_message(format, *args)
+
+    def end_headers(self) -> None:
+        if self.path.split("?", 1)[0] != "/api":
+            self.send_header("Cache-Control", "no-cache")
+        super().end_headers()
 
     def _send_json(self, status: int, body: dict) -> None:
         encoded = json.dumps(body, ensure_ascii=False).encode("utf-8")
