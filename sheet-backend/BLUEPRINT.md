@@ -11,7 +11,11 @@ Uses a pre-defined Google Sheet as a transparent, human-editable database for st
 
 ## Google Sheet Schema
 
-The script auto-initializes missing tabs and headers on first run so setup requires only creating an empty Google Sheet and pasting `Code.gs`:
+Target Spreadsheet: **Math Circle 2026/2027** (`1uWyyPhBvUgaU1odlJQ20d9X6Io5icrF4EQMkDwDC-kE`).
+
+The existing **`Participants`** tab (listing student full names in column A) is preserved intact. Whenever the script runs, any newly added name in `Participants` not yet present in `Students` is automatically appended to `Students` with a generated 4-digit PIN and `active = TRUE`.
+
+The script also auto-initializes missing tabs and headers on first run:
 
 ### 1. `Students` Tab
 Stores the math circle roster. Can be edited either directly in Google Sheets or from the Teacher Zone UI.

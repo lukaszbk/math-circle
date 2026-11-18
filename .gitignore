@@ -1,0 +1,5 @@
+# Raw competition PDFs (keep cropped question packs tracked, ignore full purchased PDFs)
+pack-compiler/input/*.pdf
+__pycache__/
+*.pyc
+.DS_Store

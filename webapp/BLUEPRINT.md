@@ -8,7 +8,7 @@ Provides the touch-first tablet interface used by 3rd graders to view problems a
 
 - **Tablet-First Ergonomics:** Large touch targets (minimum 48×48 px), high-contrast legibility, custom on-screen numeric PIN pad (preventing OS virtual keyboard layout shifts), and tap-to-zoom question diagrams.
 - **Original Question Numbering:** Questions always display their **exact number from the printed PDF** (e.g., `#1–#4`, `#9–#12`, `#17–#20` for Part 1; `#5–#8`, `#13–#16`, `#21–#24` for Part 2) alongside their point badge (`3 pts`, `4 pts`, `5 pts`), so students working from paper scratch sheets never misalign answers.
-- **Clean Styling:** Built with semantic HTML, TypeScript, and modular Vanilla CSS custom properties (no heavy UI frameworks).
+- **Clean Styling & Zero Build Lock-In:** Built with semantic HTML5, modular ES2022 JavaScript (`webapp/src/`), and Vanilla CSS custom properties (`webapp/styles/`), runnable directly from static files without bundlers.
 - **Wi-Fi Drop Resilience:** Every answer tap saves immediately to local device storage (`localStorage`) scoped to `(weekId, studentId)`. If Google Sheet upload fails due to intermittent Wi-Fi, the submission stays queued locally on the tablet with a clear "Retry Sync" banner until confirmed by the Sheet backend.
 
 ## Core User Flows & Business Rules
@@ -30,10 +30,9 @@ Provides the touch-first tablet interface used by 3rd graders to view problems a
   - **Corrections:** A student may log back in with their 4-digit PIN during the work period to revise and resubmit their answers; the latest submission replaces their earlier one for that week.
 
 ### 3. Scoring Rules
-- **Default Scoring (Positive Sum):**
-  - Correct answer: `+3`, `+4`, or `+5` points according to section (maximum `48` points for a 12-question half-test).
-  - Wrong or blank answer: `0` points (no negative penalty for 3rd graders).
-- *(Configurable per Question Pack if official Math Kangaroo penalty scoring — starting base points minus quarter-value wrong-answer deduction — is ever desired.)*
+- **Positive-Only Sum:**
+  - Correct answer: `+3`, `+4`, or `+5` points according to section (`48` points maximum for a 12-question half-test).
+  - Wrong or blank answer: `0` points (no negative penalty).
 
 ### 4. Teacher Zone (Protected by PIN `885174`)
 Entering `885174` on the Teacher keypad unlocks four focused tabs:

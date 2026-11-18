@@ -17,12 +17,12 @@ A standard Grades 3–4 Math Kangaroo paper has 24 questions across three 8-ques
 
 ## Ingestion Pipeline Steps
 
-Running `npm run compile-pack -- --pdf <file.pdf> --part <1|2> --week-id <id>`:
+Running `python3 pack-compiler/compile_pack.py --pdf <file.pdf> --part <1|2> --week-id <id> --metadata <metadata.json>`:
 
-1. **Page Rendering:** Renders each PDF page at 300 DPI PNG so text and line art remain crisp on high-density iPad/tablet screens.
+1. **Page Rendering:** Renders each PDF page at 300 DPI PNG via `pdftoppm` so text and line art remain crisp on high-density iPad/tablet screens.
 2. **Question Bounding-Box Detection & Cropping:**
-   - Identifies vertical/horizontal bounds for each target question (including its prompt, right-aligned or centered figures, and `(A)–(E)` options row, while trimming page headers, footers, and section banners where separated).
-   - Outputs `q01.png`, `q02.png`, etc. into `webapp/public/packs/<week-id>/images/`.
+   - Automatically detects horizontal divider rules across the question column and expands vertical bounds on the right diagram side when tall illustrations extend slightly beyond rule lines (e.g., stacked boxes or 3D cube pyramids).
+   - Outputs `q01.png`, `q02.png`, etc. into `webapp/packs/<week-id>/images/`.
 3. **AI Multimodal Parsing, Solving & Pedagogical Authoring:**
    - Inspects each cropped question image to produce:
      - `promptSummary`: Concise plain-text transcription of the question for teacher tables and accessibility `alt` text.

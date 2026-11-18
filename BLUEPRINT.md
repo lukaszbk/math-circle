@@ -13,9 +13,9 @@ The system supports the three phases of a weekly class:
 
 The system is intentionally split into three decoupled components so the classroom app has zero servers to maintain, loads instantaneously on shaky Wi-Fi, and uses a plain Google Sheet as its single source of truth for student rosters and submissions:
 
-- **[`webapp/`](webapp/BLUEPRINT.md) — Static Tablet Web App:** A static TypeScript + Vanilla CSS single-page app hosted on static hosting (e.g., GitHub Pages, Firebase Hosting, or Cloudflare Pages) and runnable locally. Ships with the weekly Question Pack assets (cropped problem diagrams, answer keys, and AI teaching guides) and communicates with the Google Sheet backend over HTTPS.
-- **[`sheet-backend/`](sheet-backend/BLUEPRINT.md) — Google Sheet & Apps Script Bridge:** A pre-defined Google Sheet holding student profiles, 4-digit PINs, and historical weekly submissions, paired with a small bound Google Apps Script Web App (`Code.gs`) that acts as a serverless JSON API without requiring students to sign into Google accounts or exposing API keys in the browser.
-- **[`pack-compiler/`](pack-compiler/BLUEPRINT.md) — Weekly PDF Ingestion CLI:** A developer/teacher build tool that takes a Math Kangaroo PDF (and target half: Part 1 or Part 2), renders high-DPI page images, crops each visual problem card, uses multimodal AI to extract metadata, independently solve and verify each answer, and write 3rd-grade whiteboard teaching guides into a static Question Pack in `webapp/public/packs/`.
+- **[`webapp/`](webapp/BLUEPRINT.md) — Static Tablet Web App:** A zero-build-dependency static ES Module JavaScript + Vanilla CSS single-page app hosted on static hosting (e.g., GitHub Pages, Firebase Hosting, or Cloudflare Pages) and runnable locally via any static file server (`python3 -m http.server`). Ships with the weekly Question Pack assets (cropped problem diagrams, answer keys, and AI teaching guides) and communicates with the Google Sheet backend over HTTPS (with automatic local demo/offline fallback when not yet connected to a live webhook URL).
+- **[`sheet-backend/`](sheet-backend/BLUEPRINT.md) — Google Sheet & Apps Script Bridge:** Bound to the *Math Circle 2026/2027* Google Sheet (`1uWyyPhBvUgaU1odlJQ20d9X6Io5icrF4EQMkDwDC-kE`), holding student profiles synced from `Participants`, 4-digit PINs, and historical weekly submissions, paired with a bound Google Apps Script Web App (`Code.gs`) that acts as a serverless JSON API without requiring students to sign into Google accounts or exposing API keys in the browser.
+- **[`pack-compiler/`](pack-compiler/BLUEPRINT.md) — Weekly PDF Ingestion CLI:** A Python 3 + Poppler/ImageMagick build tool (`python3 pack-compiler/compile_pack.py`) that takes a Math Kangaroo PDF (and target half: Part 1 or Part 2), renders high-DPI page images, crops each visual problem card with ink-aware bounds, pairs AI/verified metadata, solutions, and 3rd-grade whiteboard teaching guides into `webapp/packs/`, and generates an HTML verification sheet.
 
 ## Repository Layout
 
@@ -43,7 +43,7 @@ All browser requests use `POST` with `Content-Type: text/plain;charset=utf-8` ca
 
 Following **Blueprint-Driven Engineering**:
 1. Behavioral or architectural changes are proposed in `BLUEPRINT.md` first and reviewed in plain English before compiling to source code.
-2. Source files (`.ts`, `.css`, `.gs`) are treated as compiled output verified by automated unit and end-to-end tests.
+2. Source files (`.js`, `.css`, `.py`, `.gs`) are treated as compiled output verified by automated unit and integration tests (`python3 -m unittest`).
 3. **Human Code Review Required (Classifier Exceptions):** Human code inspection is required only when changes touch:
    - **PIN authentication and secret boundaries** in `sheet-backend/` (ensuring student PINs and teacher PIN `885174` are never leaked via public roster endpoints).
    - **Concurrent Google Sheet write locking** in `sheet-backend/` (`LockService` acquisition around simultaneous end-of-class submissions).
