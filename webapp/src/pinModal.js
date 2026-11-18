@@ -17,23 +17,27 @@ export function openPinModal({
 
   let entered = '';
   let busy = false;
+  let closed = false;
   let errorMsg = '';
   let shake = false;
 
   const cleanup = () => {
+    closed = true;
     document.removeEventListener('keydown', onKeyDown);
     modalRoot.innerHTML = '';
   };
 
   const submitPin = async () => {
-    if (busy || entered.length !== pinLength) return;
+    if (closed || busy || entered.length !== pinLength) return;
     busy = true;
     errorMsg = '';
     render();
     try {
       const result = await verifyFn(entered);
+      if (closed) return;
       if (result && result.ok) {
         const verifiedPin = entered;
+        busy = false;
         cleanup();
         onSuccess(verifiedPin, result);
         return;
@@ -42,14 +46,14 @@ export function openPinModal({
       entered = '';
       shake = true;
     } catch (err) {
+      if (closed) return;
       errorMsg = err?.message || 'Connection error. Please try again.';
       entered = '';
       shake = true;
-    } finally {
-      busy = false;
-      render();
-      shake = false;
     }
+    busy = false;
+    render();
+    shake = false;
   };
 
   const pushDigit = (digit) => {
@@ -100,6 +104,7 @@ export function openPinModal({
   document.addEventListener('keydown', onKeyDown);
 
   const render = () => {
+    if (closed) return;
     const dots = Array.from({ length: pinLength }, (_, idx) => {
       const filled = idx < entered.length ? 'filled' : '';
       return `<span class="pin-dot ${filled}" aria-hidden="true"></span>`;
