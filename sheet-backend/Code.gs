@@ -1,15 +1,13 @@
 /**
  * Math Kangaroo Circle — Bound Google Apps Script Web App Bridge
  *
- * Bound to Google Sheet: "Math Circle 2026/2027"
- * Spreadsheet ID: 1uWyyPhBvUgaU1odlJQ20d9X6Io5icrF4EQMkDwDC-kE
+ * Bound to the teacher's Google Sheet (Extensions -> Apps Script).
  *
  * Deploy as Web App:
  *   Execute as: Me
  *   Who has access: Anyone
  */
 
-var SPREADSHEET_ID = '1uWyyPhBvUgaU1odlJQ20d9X6Io5icrF4EQMkDwDC-kE';
 var DEFAULT_TEACHER_PIN = '885174';
 var DEFAULT_WEEK_ID = '2022-g34-part1';
 var LOCK_TIMEOUT_MS = 15000;
@@ -51,10 +49,14 @@ var PARTICIPANT_HEADER_WORDS = {
 };
 
 /**
- * Returns the bound spreadsheet, falling back to openById for standalone testing.
+ * Returns the bound spreadsheet.
  */
 function getSpreadsheet_() {
-  return SpreadsheetApp.getActiveSpreadsheet() || SpreadsheetApp.openById(SPREADSHEET_ID);
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  if (!ss) {
+    throw new Error('Code.gs must be bound to a Google Sheet (Extensions -> Apps Script).');
+  }
+  return ss;
 }
 
 /**
@@ -463,7 +465,6 @@ function doGet() {
     return jsonResponse_({
       ok: true,
       service: 'math-circle-sheet-backend',
-      spreadsheetId: SPREADSHEET_ID,
       activeWeekId: getActiveWeekId_(ss),
       studentCount: activeCount
     });
@@ -691,6 +692,8 @@ function handleGetTeacherReport_(ss, payload) {
     ok: true,
     activeWeekId: activeWeekId,
     weekId: weekId,
+    sheetUrl: ss.getUrl(),
+    sheetName: ss.getName(),
     students: students,
     submissions: submissions
   };

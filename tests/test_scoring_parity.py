@@ -155,7 +155,12 @@ class TestScoringParityAndStaticInvariants(unittest.TestCase):
         self.assertIn("'885174'", src)
         self.assertIn("setNumberFormat('@')", src)
         self.assertIn("ContentService.MimeType.JSON", src)
-        self.assertIn("1uWyyPhBvUgaU1odlJQ20d9X6Io5icrF4EQMkDwDC-kE", src)
+        self.assertNotIn("SPREADSHEET_ID", src)
+        self.assertIn("SpreadsheetApp.getActiveSpreadsheet()", src)
+        config_src = self.CONFIG_JS_PATH.read_text(encoding="utf-8")
+        self.assertNotIn("spreadsheetId", config_src)
+        self.assertNotIn("sheetUrl", config_src)
+        self.assertNotIn("docs.google.com/spreadsheets", config_src)
         self.assertIn("function onOpen()", src)
         self.assertIn("function onEdit(e)", src)
         self.assertIn("syncParticipantsMenuAction", src)
@@ -398,8 +403,10 @@ function setupEnv(loc) {{
   globalThis.window = {{ location: loc }};
 }}
 
-// 1. Static config contains zero hardcoded students; production connects automatically to APP_CONFIG.appsScriptUrl
+// 1. Static config contains zero hardcoded students or sheet identifiers; production connects automatically to APP_CONFIG.appsScriptUrl
 assert.deepEqual(APP_CONFIG.demoStudents, []);
+assert.equal('spreadsheetId' in APP_CONFIG, false);
+assert.equal('sheetUrl' in APP_CONFIG, false);
 const prodLoc = {{ protocol: 'https:', hostname: 'lukaszbk.github.io', port: '' }};
 setupEnv(prodLoc);
 assert.equal(isLocalOrigin(prodLoc), false);

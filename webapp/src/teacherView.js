@@ -264,6 +264,9 @@ function renderRosterTab(packIndex, activeWeekId, report, storage, state) {
   const showPins = state.showPins;
   const configuredUrl = storage.getConfiguredAppsScriptUrl();
   const packs = packIndex?.packs || [];
+  const liveSheetUrl = report?.sheetUrl || '';
+  const liveSheetName = report?.sheetName || '';
+  const hasLiveSheetUrl = liveSheetUrl.startsWith('https://');
 
   const rows = draftRoster.map((st, idx) => `
     <tr data-roster-idx="${idx}">
@@ -349,16 +352,20 @@ function renderRosterTab(packIndex, activeWeekId, report, storage, state) {
         <div>
           <h3>Google Sheet &amp; Apps Script Bridge</h3>
           <p class="brand-subtitle">
-            Linked spreadsheet: <strong>Math Circle 2026/2027</strong> (<code>${escapeHtml(APP_CONFIG.spreadsheetId)}</code>)
+            ${hasLiveSheetUrl
+              ? `Connected spreadsheet: <strong>${escapeHtml(liveSheetName || 'Google Sheet')}</strong>`
+              : 'Paste your deployed Apps Script Web App <code>/exec</code> URL to sync tablets with your Google Sheet.'}
           </p>
         </div>
-        <a
-          class="btn btn-secondary btn-sm"
-          href="${escapeHtml(APP_CONFIG.sheetUrl)}"
-          target="_blank"
-          rel="noopener noreferrer"
-          style="text-decoration:none;"
-        >Open Google Sheet ↗</a>
+        ${hasLiveSheetUrl ? `
+          <a
+            class="btn btn-secondary btn-sm"
+            href="${escapeHtml(liveSheetUrl)}"
+            target="_blank"
+            rel="noopener noreferrer"
+            style="text-decoration:none;"
+          >Open Google Sheet ↗</a>
+        ` : ''}
       </div>
 
       ${!configuredUrl && APP_CONFIG.appsScriptUrl ? `

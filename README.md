@@ -52,7 +52,7 @@ python3 pack-compiler/compile_pack.py \
 
 See [`sheet-backend/SETUP.md`](sheet-backend/SETUP.md):
 
-1. Open the **Math Circle 2026/2027** Google Sheet (`1uWyyPhBvUgaU1odlJQ20d9X6Io5icrF4EQMkDwDC-kE`).
+1. Open your Google Sheet.
 2. Go to **Extensions → Apps Script** and paste [`sheet-backend/Code.gs`](sheet-backend/Code.gs).
    - Includes `onEdit` and the **🦘 Math Circle → Sync Participants to Students** menu (`onOpen`) to sync `Participants!A1:A` into `Students` automatically.
 3. Click **Deploy → New deployment → Web app** (`Execute as: Me`, `Who has access: Anyone`) and copy the `/exec` URL.

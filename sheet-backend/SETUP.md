@@ -1,9 +1,9 @@
-# Connecting *Math Circle 2026/2027* Google Sheet (60-Second Setup)
+# Connecting Your Google Sheet (60-Second Setup)
 
-Follow these steps once to link the tablet web app directly to your Google Sheet (`1uWyyPhBvUgaU1odlJQ20d9X6Io5icrF4EQMkDwDC-kE`).
+Follow these steps once to link the tablet web app directly to your Google Sheet.
 
 ## 1. Open Apps Script on the Sheet
-1. Open the **Math Circle 2026/2027** spreadsheet in Google Sheets.
+1. Open your spreadsheet in Google Sheets.
 2. In the menu bar, click **Extensions → Apps Script**.
 3. Replace everything in `Code.gs` with the full contents of [`sheet-backend/Code.gs`](Code.gs) and click **Save** (`Ctrl+S` / `Cmd+S`).
 
