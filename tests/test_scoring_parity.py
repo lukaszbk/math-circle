@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
 import re
+import shutil
+import subprocess
 import sys
 import unittest
 
@@ -142,6 +144,7 @@ class TestScoringParityAndStaticInvariants(unittest.TestCase):
     CODE_GS_PATH = REPO_ROOT / "sheet-backend" / "Code.gs"
     SCORING_JS_PATH = REPO_ROOT / "webapp" / "src" / "scoring.js"
     STORAGE_JS_PATH = REPO_ROOT / "webapp" / "src" / "storage.js"
+    TEACHER_VIEW_JS_PATH = REPO_ROOT / "webapp" / "src" / "teacherView.js"
     CONFIG_JS_PATH = REPO_ROOT / "webapp" / "config.js"
     PACK_JSON_PATH = REPO_ROOT / "webapp" / "packs" / "2022-g34-part1" / "pack.json"
     SKILL_MD_PATH = REPO_ROOT / ".agents" / "skills" / "compile-weekly-pack" / "SKILL.md"
@@ -323,6 +326,128 @@ class TestScoringParityAndStaticInvariants(unittest.TestCase):
         storage_js = (REPO_ROOT / "webapp" / "src" / "storage.js").read_text(encoding="utf-8")
         self.assertIn("isStaticPublicHost", storage_js)
         self.assertIn(".github.io", storage_js)
+
+    def test_local_vs_production_sheet_isolation(self) -> None:
+        storage_js = self.STORAGE_JS_PATH.read_text(encoding="utf-8")
+        teacher_js = self.TEACHER_VIEW_JS_PATH.read_text(encoding="utf-8")
+
+        # Static checks for storage.js isolation contract
+        for token in (
+            "DISABLE_DEFAULT_SHEET: 'mk_disable_default_sheet'",
+            "export function isLocalOrigin(loc)",
+            "!protocol.startsWith('http')",
+            "h === 'localhost'",
+            "h === '127.0.0.1'",
+            "h === '::1'",
+            "h === '[::1]'",
+            "h === '0.0.0.0'",
+            "h.endsWith('.localhost')",
+            "h.endsWith('.local')",
+            "h.endsWith('.googlers.com')",
+            "h.endsWith('.corp.google.com')",
+            "h.endsWith('.cloudworkstations.dev')",
+            "/^10\\./.test(h)",
+            "/^192\\.168\\./.test(h)",
+            "/^172\\.(1[6-9]|2\\d|3[0-1])\\./.test(h)",
+            "port !== '80' && port !== '443'",
+            "localStorage.getItem(KEYS.DISABLE_DEFAULT_SHEET) === '1'",
+            "isLocalOrigin(window.location)",
+            "localStorage.setItem(KEYS.DISABLE_DEFAULT_SHEET, '1')",
+            "localStorage.removeItem(KEYS.DISABLE_DEFAULT_SHEET)",
+        ):
+            self.assertIn(token, storage_js)
+
+        # Static checks for teacherView.js Connect Live Sheet / Disconnect UI
+        for token in (
+            "!configuredUrl && APP_CONFIG.appsScriptUrl",
+            'data-action="connect-default-sheet"',
+            "Connect Live Sheet",
+            'data-action="clear-url"',
+            "#apps-script-url-input",
+            "handlers.saveAndTestUrl(",
+        ):
+            self.assertIn(token, teacher_js)
+
+        # Behavioral execution via Node ESM when node is available
+        node_bin = shutil.which("node")
+        if node_bin:
+            storage_uri = self.STORAGE_JS_PATH.as_uri()
+            config_uri = self.CONFIG_JS_PATH.as_uri()
+            node_script = f"""
+import assert from 'node:assert/strict';
+import {{ isLocalOrigin, StorageClient }} from {json.dumps(storage_uri)};
+import {{ APP_CONFIG }} from {json.dumps(config_uri)};
+
+function makeLocalStorage() {{
+  const map = new Map();
+  return {{
+    getItem: (k) => (map.has(k) ? map.get(k) : null),
+    setItem: (k, v) => {{ map.set(String(k), String(v)); }},
+    removeItem: (k) => {{ map.delete(String(k)); }},
+    clear: () => {{ map.clear(); }}
+  }};
+}}
+
+function setupEnv(loc) {{
+  globalThis.localStorage = makeLocalStorage();
+  globalThis.window = {{ location: loc }};
+}}
+
+// 1. Production origin connects automatically to APP_CONFIG.appsScriptUrl
+const prodLoc = {{ protocol: 'https:', hostname: 'lukaszbk.github.io', port: '' }};
+setupEnv(prodLoc);
+assert.equal(isLocalOrigin(prodLoc), false);
+let client = new StorageClient(APP_CONFIG);
+assert.equal(client.getConfiguredAppsScriptUrl(), APP_CONFIG.appsScriptUrl);
+assert.equal(client.getBackendMode(), 'apps-script');
+
+// 2. Local / dev / LAN / file origins stay isolated by default
+const localOrigins = [
+  {{ protocol: 'http:', hostname: 'localhost', port: '8080' }},
+  {{ protocol: 'http:', hostname: '127.0.0.1', port: '8080' }},
+  {{ protocol: 'http:', hostname: 'lukaszbk-jetski.c.googlers.com', port: '8080' }},
+  {{ protocol: 'http:', hostname: '192.168.1.25', port: '8080' }},
+  {{ protocol: 'file:', hostname: '', port: '' }}
+];
+for (const loc of localOrigins) {{
+  setupEnv(loc);
+  assert.equal(isLocalOrigin(loc), true, `Expected local origin for ${{JSON.stringify(loc)}}`);
+  const c = new StorageClient(APP_CONFIG);
+  assert.equal(c.getConfiguredAppsScriptUrl(), '');
+  assert.notEqual(c.getBackendMode(), 'apps-script');
+}}
+
+// 3. Explicit connect on localhost enables apps-script; clearing disconnects on both local and github.io
+const localhostLoc = {{ protocol: 'http:', hostname: 'localhost', port: '8080' }};
+setupEnv(localhostLoc);
+client = new StorageClient(APP_CONFIG);
+assert.equal(client.getConfiguredAppsScriptUrl(), '');
+client.setTeacherAppsScriptUrl(APP_CONFIG.appsScriptUrl);
+assert.equal(client.getConfiguredAppsScriptUrl(), APP_CONFIG.appsScriptUrl);
+assert.equal(client.getBackendMode(), 'apps-script');
+client.setTeacherAppsScriptUrl('');
+assert.equal(client.getConfiguredAppsScriptUrl(), '');
+assert.equal(client.getBackendMode(), 'probing');
+
+setupEnv(prodLoc);
+client = new StorageClient(APP_CONFIG);
+assert.equal(client.getConfiguredAppsScriptUrl(), APP_CONFIG.appsScriptUrl);
+client.setTeacherAppsScriptUrl('');
+assert.equal(client.getConfiguredAppsScriptUrl(), '');
+assert.equal(client.getBackendMode(), 'demo-localstorage');
+"""
+            res = subprocess.run(
+                [node_bin, "--input-type=module", "-e", node_script],
+                cwd=str(REPO_ROOT),
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertEqual(
+                res.returncode,
+                0,
+                f"Node ESM sheet isolation check failed:\nSTDOUT:\n{res.stdout}\nSTDERR:\n{res.stderr}",
+            )
 
 
 if __name__ == "__main__":

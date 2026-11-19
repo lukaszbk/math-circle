@@ -361,6 +361,12 @@ function renderRosterTab(packIndex, activeWeekId, report, storage, state) {
         >Open Google Sheet ↗</a>
       </div>
 
+      ${!configuredUrl && APP_CONFIG.appsScriptUrl ? `
+        <p class="brand-subtitle" style="margin:0 0 10px;">
+          Local &amp; dev runs default to <strong>Local Server / Demo Mode</strong> so test submissions don&rsquo;t write to the live sheet.
+        </p>
+      ` : ''}
+
       <div class="settings-row">
         <input
           id="apps-script-url-input"
@@ -370,7 +376,8 @@ function renderRosterTab(packIndex, activeWeekId, report, storage, state) {
           value="${escapeHtml(configuredUrl)}"
         />
         <button type="button" class="btn btn-sage" data-action="save-test-url">Save &amp; Test Connection</button>
-        ${configuredUrl ? `<button type="button" class="btn btn-ghost" data-action="clear-url">Clear URL</button>` : ''}
+        ${!configuredUrl && APP_CONFIG.appsScriptUrl ? `<button type="button" class="btn btn-secondary" data-action="connect-default-sheet">Connect Live Sheet</button>` : ''}
+        ${configuredUrl ? `<button type="button" class="btn btn-ghost" data-action="clear-url">Disconnect / Use Local</button>` : ''}
       </div>
       ${state.connectionStatus ? `<p class="brand-subtitle" style="margin-top:10px;"><strong>${escapeHtml(state.connectionStatus)}</strong></p>` : ''}
     </section>
@@ -485,6 +492,12 @@ export function renderTeacherZone({
   appEl.querySelector('[data-action="save-test-url"]')?.addEventListener('click', () => {
     const input = appEl.querySelector('#apps-script-url-input');
     handlers.saveAndTestUrl(input ? input.value : '');
+  });
+  appEl.querySelector('[data-action="connect-default-sheet"]')?.addEventListener('click', () => {
+    const defaultUrl = APP_CONFIG.appsScriptUrl || '';
+    const input = appEl.querySelector('#apps-script-url-input');
+    if (input) input.value = defaultUrl;
+    handlers.saveAndTestUrl(defaultUrl);
   });
   appEl.querySelector('[data-action="clear-url"]')?.addEventListener('click', handlers.clearUrl);
 

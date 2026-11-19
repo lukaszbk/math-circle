@@ -3,6 +3,7 @@ import { formatAnswersSummary } from './scoring.js';
 
 const KEYS = {
   APPS_SCRIPT_URL: 'mk_apps_script_url',
+  DISABLE_DEFAULT_SHEET: 'mk_disable_default_sheet',
   PENDING_QUEUE: 'mk_pending_sync_queue',
   DEMO_DB: 'mk_demo_db_v1',
   DRAFT_PREFIX: 'mk_draft_v1:',
@@ -92,6 +93,37 @@ function isStaticPublicHost(hostname) {
   );
 }
 
+export function isLocalOrigin(loc) {
+  if (!loc) return false;
+  const protocol = String(loc.protocol || '').toLowerCase();
+  if (protocol && !protocol.startsWith('http')) {
+    return true;
+  }
+  const h = String(loc.hostname || '').toLowerCase();
+  if (
+    h === 'localhost' ||
+    h === '127.0.0.1' ||
+    h === '::1' ||
+    h === '[::1]' ||
+    h === '0.0.0.0' ||
+    h.endsWith('.localhost') ||
+    h.endsWith('.local') ||
+    h.endsWith('.googlers.com') ||
+    h.endsWith('.corp.google.com') ||
+    h.endsWith('.cloudworkstations.dev')
+  ) {
+    return true;
+  }
+  if (/^10\./.test(h) || /^192\.168\./.test(h) || /^172\.(1[6-9]|2\d|3[0-1])\./.test(h)) {
+    return true;
+  }
+  const port = String(loc.port || '');
+  if (port && port !== '80' && port !== '443') {
+    return true;
+  }
+  return false;
+}
+
 export class StorageClient {
   constructor(config = APP_CONFIG) {
     this.config = config;
@@ -105,6 +137,12 @@ export class StorageClient {
   getConfiguredAppsScriptUrl() {
     const saved = (localStorage.getItem(KEYS.APPS_SCRIPT_URL) || '').trim();
     if (saved) return saved;
+    if (localStorage.getItem(KEYS.DISABLE_DEFAULT_SHEET) === '1') {
+      return '';
+    }
+    if (typeof window !== 'undefined' && isLocalOrigin(window.location)) {
+      return '';
+    }
     return (this.config.appsScriptUrl || '').trim();
   }
 
@@ -112,9 +150,14 @@ export class StorageClient {
     const cleaned = String(url || '').trim();
     if (cleaned) {
       localStorage.setItem(KEYS.APPS_SCRIPT_URL, cleaned);
+      localStorage.removeItem(KEYS.DISABLE_DEFAULT_SHEET);
     } else {
       localStorage.removeItem(KEYS.APPS_SCRIPT_URL);
-      this._localApiAvailable = isStaticPublicHost(window.location.hostname) ? false : null;
+      localStorage.setItem(KEYS.DISABLE_DEFAULT_SHEET, '1');
+      this._localApiAvailable =
+        typeof window !== 'undefined' && isStaticPublicHost(window.location.hostname)
+          ? false
+          : null;
     }
   }
 
@@ -128,7 +171,9 @@ export class StorageClient {
     if (this._localApiAvailable === false) {
       return 'demo-localstorage';
     }
-    return window.location.protocol.startsWith('http') ? 'probing' : 'demo-localstorage';
+    return typeof window !== 'undefined' && String(window.location?.protocol || '').startsWith('http')
+      ? 'probing'
+      : 'demo-localstorage';
   }
 
   getBackendLabel() {
@@ -224,7 +269,7 @@ export class StorageClient {
     if (appsUrl) {
       return { mode: 'apps-script', url: appsUrl };
     }
-    if (!window.location.protocol.startsWith('http')) {
+    if (typeof window === 'undefined' || !String(window.location?.protocol || '').startsWith('http')) {
       this._localApiAvailable = false;
       return { mode: 'demo-localstorage', url: null };
     }
