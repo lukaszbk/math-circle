@@ -11,6 +11,17 @@
       "questionCount": 12,
       "maxScore": 48,
       "packUrl": "packs/2022-g34-part1/pack.json"
+    },
+    {
+      "weekId": "2022-g34-part2",
+      "title": "Math Kangaroo 2022 (Grades 3–4) · Part 2",
+      "subtitle": "Second 4 problems in each point section (Questions 5–8, 13–16, 21–24)",
+      "competitionYear": 2022,
+      "gradeBand": "Grades 3 and 4",
+      "part": 2,
+      "questionCount": 12,
+      "maxScore": 48,
+      "packUrl": "packs/2022-g34-part2/pack.json"
     }
   ]
 }

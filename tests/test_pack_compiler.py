@@ -86,6 +86,25 @@ class TestPackCompiler(unittest.TestCase):
         self.assertEqual(index_data.get("defaultWeekId"), "2022-g34-part1")
         week_ids = [p["weekId"] for p in index_data.get("packs", [])]
         self.assertIn("2022-g34-part1", week_ids)
+        self.assertIn("2022-g34-part2", week_ids)
+
+    def test_compiled_part2_pack_manifest_and_images(self) -> None:
+        part2_dir = REPO_ROOT / "webapp" / "packs" / "2022-g34-part2"
+        pack_json_path = part2_dir / "pack.json"
+        self.assertTrue(pack_json_path.is_file(), "Compiled Part 2 pack.json missing")
+        pack = json.loads(pack_json_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(pack["weekId"], "2022-g34-part2")
+        self.assertEqual(pack["maxScore"], 48)
+        self.assertEqual(pack["questionCount"], 12)
+        self.assertEqual(
+            [q["number"] for q in pack["questions"]],
+            [5, 6, 7, 8, 13, 14, 15, 16, 21, 22, 23, 24],
+        )
+        self.assertTrue((part2_dir / "preview.html").is_file())
+        for q in pack["questions"]:
+            img_path = REPO_ROOT / "webapp" / q["imageUrl"]
+            self.assertTrue(img_path.is_file(), f"Missing Part 2 image {img_path}")
 
     @staticmethod
     def _write_synthetic_unruled_pdf(pdf_path: Path) -> None:
