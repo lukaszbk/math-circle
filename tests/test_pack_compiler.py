@@ -85,8 +85,27 @@ class TestPackCompiler(unittest.TestCase):
         index_data = json.loads(self.INDEX_PATH.read_text(encoding="utf-8"))
         self.assertEqual(index_data.get("defaultWeekId"), "2022-g34-part1")
         week_ids = [p["weekId"] for p in index_data.get("packs", [])]
+        self.assertIn("2021-g34-part1", week_ids)
         self.assertIn("2022-g34-part1", week_ids)
         self.assertIn("2022-g34-part2", week_ids)
+
+    def test_compiled_2021_part1_pack_manifest_and_images(self) -> None:
+        pack_dir = REPO_ROOT / "webapp" / "packs" / "2021-g34-part1"
+        pack_json_path = pack_dir / "pack.json"
+        self.assertTrue(pack_json_path.is_file(), "Compiled 2021 Part 1 pack.json missing")
+        pack = json.loads(pack_json_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(pack["weekId"], "2021-g34-part1")
+        self.assertEqual(pack["maxScore"], 48)
+        self.assertEqual(pack["questionCount"], 12)
+        self.assertEqual(
+            [q["number"] for q in pack["questions"]],
+            [1, 2, 3, 4, 9, 10, 11, 12, 17, 18, 19, 20],
+        )
+        self.assertTrue((pack_dir / "preview.html").is_file())
+        for q in pack["questions"]:
+            img_path = REPO_ROOT / "webapp" / q["imageUrl"]
+            self.assertTrue(img_path.is_file(), f"Missing 2021 Part 1 image {img_path}")
 
     def test_compiled_part2_pack_manifest_and_images(self) -> None:
         part2_dir = REPO_ROOT / "webapp" / "packs" / "2022-g34-part2"

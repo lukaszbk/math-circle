@@ -1,0 +1,302 @@
+{
+  "weekId": "2021-g34-part1",
+  "title": "Math Kangaroo 2021 (Grades 3–4) · Part 1",
+  "subtitle": "First 4 problems in each point section (Questions 1–4, 9–12, 17–20)",
+  "competitionYear": 2021,
+  "gradeBand": "Grades 3 and 4",
+  "part": 1,
+  "maxScore": 48,
+  "scoringRule": "positive-only",
+  "questionCount": 12,
+  "compiledAt": "2026-11-19T02:28:06.830260+00:00",
+  "questions": [
+    {
+      "number": 1,
+      "points": 3,
+      "title": "Erik's Four Bricks",
+      "promptSummary": "Erik has 1 white brick and 3 gray bricks (each made of 2 cubes). Which 2×2×2 cube can he build with his 4 bricks?",
+      "correctOption": "C",
+      "imageUrl": "packs/2021-g34-part1/images/q01.png",
+      "imageWidth": 2310,
+      "imageHeight": 440,
+      "teachingGuide": {
+        "headline": "Count the white bricks first—Erik only has ONE white brick (just 2 small cubes!), not two!",
+        "steps": [
+          "Point to Erik's 4 bricks at the top: each brick is 2 unit cubes long (2×1×1), so 4 bricks make a 2×2×2 cube (8 unit cubes total).",
+          "Check the colors: Erik has ONLY 1 white brick (2 unit cubes) and 3 gray bricks (6 unit cubes).",
+          "Check how many white unit cubes appear in each choice! In (A), (B), (D), and (E), you can see at least 3 or 4 white unit cubes (or two separate white bricks)!",
+          "Verify (C): it has ONE vertical white brick on the front-left (2 cubes) and three gray bricks (front-right vertical, back-top horizontal, back-bottom horizontal) -> (C)."
+        ],
+        "askTheKids": [
+          "How many little unit cubes are in ONE brick, and how many white squares can we possibly see from 1 white brick?",
+          "Why is choice (A) impossible even though its front looks like one white brick on the bottom and one gray brick on top?"
+        ],
+        "commonTraps": "Choice (A) tricks kids who glance only at the front face (2 gray on top, 2 white on bottom) and miss the white half-brick sticking up on the right side (making 2 white bricks!). Choices (B), (D), and (E) all contain 2 white bricks."
+      }
+    },
+    {
+      "number": 2,
+      "points": 3,
+      "title": "Fish on a Tangled Line",
+      "promptSummary": "Ten colorful fish are tied along a looped fishing line with a ring at one end. How many fish will have their heads pointing toward the ring when the line is straightened?",
+      "correctOption": "C",
+      "imageUrl": "packs/2021-g34-part1/images/q02.png",
+      "imageWidth": 2310,
+      "imageHeight": 319,
+      "teachingGuide": {
+        "headline": "Walk your finger along the string from the ring to the free end: every fish you enter nose-first points toward the ring!",
+        "steps": [
+          "Explain why straightening the line never flips a fish on the rope: a fish pointing toward the ring along the path STILL points toward the ring when pulled straight!",
+          "Put your finger on the ring 'O' and trace slowly along the rope, numbering each fish 1 to 10 and shouting 'HEAD!' (nose-first) or 'TAIL!' (tail-first).",
+          "Trace #1–#5: #1 green (HEAD ✓), #2 pink (TAIL ✗), #3 yellow (HEAD ✓), #4 pink (TAIL ✗), #5 blue (TAIL ✗).",
+          "Trace #6–#10 carefully through the loop: #6 tilted blue (HEAD ✓), #7 top yellow (HEAD ✓), #8 top-left green (HEAD ✓), #9 upper blue (TAIL ✗), #10 far-right pink (HEAD ✓). Count the checkmarks: 6 fish -> (C)!"
+        ],
+        "askTheKids": [
+          "At a rope crossing, how can we tell which strand continues our path instead of jumping onto a crossing strand?",
+          "If 6 fish out of 10 point toward the ring, how many point away from the ring (and how can we use that to double-check)?"
+        ],
+        "commonTraps": "Choices (B) 5 and (D) 7 happen when kids misread the tilted middle blue fish (#6) or accidentally turn onto the wrong strand where two loops cross. Counting the 4 away-facing fish gives (A) 3 or (B) 5 if one is miscounted."
+      }
+    },
+    {
+      "number": 3,
+      "points": 3,
+      "title": "Jigsaw Puzzle Sum",
+      "promptSummary": "Four jigsaw pieces showing '3', '2', '1', and '+' snap together into a rectangle with a calculation. What is the result of the calculation?",
+      "correctOption": "B",
+      "imageUrl": "packs/2021-g34-part1/images/q03.png",
+      "imageWidth": 2310,
+      "imageHeight": 382,
+      "teachingGuide": {
+        "headline": "Put the flat outer border pieces on the far left and far right first—then snap the tabs and holes together!",
+        "steps": [
+          "Look at the outer straight edges: only the '1' piece has a FLAT left side, so '1' MUST go on the far left! And only the '2' piece has a FLAT right side, so '2' MUST go on the far right!",
+          "Check the middle connection from '1': '1' sticks out a tab on its right, so the next piece must have a hole on its left ('3' or '2', and '2' is already on the right!). So '3' goes next to '1'!",
+          "Check the '+' piece between '3' and '2': '+' has tabs sticking out on BOTH sides, which snap neatly into '3''s right hole and '2''s left hole!",
+          "Read the finished rectangle from left to right: 13 + 2 = 15 -> (B)."
+        ],
+        "askTheKids": [
+          "Can we flip the puzzle pieces upside down, or do the numbers '3', '2', '1' tell us which side is top?",
+          "Which edge clues immediately lock '1' and '2' into the ends without even testing the middle?"
+        ],
+        "commonTraps": "Choice (D) 24 (from 21 + 3 or 23 + 1) and Choice (E) 33 (from 32 + 1 or 31 + 2) come from rearranging the digits freely without checking the flat borders and jigsaw tabs/holes. Choice (A) 6 just adds 3 + 2 + 1."
+      }
+    },
+    {
+      "number": 4,
+      "points": 3,
+      "title": "Alaya's Sun Rays",
+      "promptSummary": "Alaya drew a smiling sun with white, light-gray, and dark-gray rays of different lengths. Which answer choice shows an exact piece of her sun?",
+      "correctOption": "B",
+      "imageUrl": "packs/2021-g34-part1/images/q04.png",
+      "imageWidth": 2310,
+      "imageHeight": 416,
+      "teachingGuide": {
+        "headline": "Notice that color matches length (Dark = Long, Light = Medium, White = Short), and always walk CLOCKWISE around the sun—never flip like a mirror!",
+        "steps": [
+          "Spot the secret code on Alaya's sun: Dark gray rays are LONG, Light gray rays are MEDIUM, and White rays are SHORT!",
+          "Show how spinning a piece to the top of the circle keeps the left-to-right order the same as walking CLOCKWISE around the sun (like a clock hand moving 8 → 9 → 10 → 11).",
+          "Check the left side of Alaya's sun from 8 o'clock to 10 o'clock going clockwise: Dark (Long) → Light gray (Medium) → White (Short) → Dark (Long)!",
+          "Match against the choices: only (B) has Dark-Long, Light-Medium, White-Short, Dark-Long in order -> (B)!"
+        ],
+        "askTheKids": [
+          "Why does spinning a piece of the sun keep the same clockwise order, while reflecting it in a mirror reverses the order?",
+          "Find where choice (E) came from on Alaya's sun—why is (E) backwards?"
+        ],
+        "commonTraps": "Choice (E) (White, White, Dark, White) is the classic mirror trap: it reads the rays from 11:30 back down to 9:30 counterclockwise instead of clockwise! Choices (A), (C), and (D) scramble ray colors or lengths."
+      }
+    },
+    {
+      "number": 9,
+      "points": 4,
+      "title": "Nisa's Fruit Card Swap",
+      "promptSummary": "Nisa wants to swap just 2 cards in a set of 5 fruit cards so that all cards with the same fruit are next to each other. For which set is this NOT possible?",
+      "correctOption": "A",
+      "imageUrl": "packs/2021-g34-part1/images/q09.png",
+      "imageWidth": 2310,
+      "imageHeight": 707,
+      "teachingGuide": {
+        "headline": "Prove four choices work with ONE real swap—and notice in (A) that BOTH pairs of matching fruits are broken apart!",
+        "steps": [
+          "Use letters A (Apple), C (Cherry), G (Grapes) on the whiteboard and remember: Nisa only gets ONE swap of 2 cards!",
+          "Find the winning 1-swap move in the four possible sets: (B) A C A G A → swap #2 (C) & #5 (A) to get A A A G C ✓; (C) G A A G C → swap #1 (G) & #3 (A) to get A A G G C ✓.",
+          "Check (D) and (E): (D) C C A G C → swap #3 (A) & #5 (C) to get C C C G A ✓; (E) A G C G C → swap #3 (C) & #4 (G) to get A G G C C ✓.",
+          "Now test (A) A C G A G: the two Apples (1, 4) are separated AND the two Grapes (3, 5) are separated! You'd need to fix BOTH pairs, which takes at least 2 swaps—so 1 swap can NEVER fix (A) -> (A)!"
+        ],
+        "askTheKids": [
+          "In choice (B), there are three apples at spots 1, 3, and 5—how can a single swap possibly group all three apples together?",
+          "Why does having TWO split-up pairs (apples AND grapes) in choice (A) make a single swap impossible?"
+        ],
+        "commonTraps": "Choice (B) looks suspicious at first glance because 3 apples are spread out (A, C, A, G, A), tricking students who forget they can swap the single Cherry at #2 with the end Apple at #5!"
+      }
+    },
+    {
+      "number": 10,
+      "points": 4,
+      "title": "Sofie's Five Shapes",
+      "promptSummary": "Sofie picks 5 different shapes, taking 1 shape from each of the 5 containers. Which shape must she pick from container 4?",
+      "correctOption": "E",
+      "imageUrl": "packs/2021-g34-part1/images/q10.png",
+      "imageWidth": 2310,
+      "imageHeight": 274,
+      "teachingGuide": {
+        "headline": "Start with the pickiest container—the one that holds only ONE shape—and cross that shape out everywhere else!",
+        "steps": [
+          "Scan containers 1 to 5 to find who has the fewest choices: Container 3 only has a CIRCLE! Lock in Container 3 = Circle.",
+          "Cross out Circle from every other container. Now look at Container 1 (Star, Circle): with Circle gone, Container 1 MUST give STAR!",
+          "Cross out Star everywhere else. Now look at Container 5 (Pentagon, Star): with Star gone, Container 5 MUST give PENTAGON!",
+          "Cross out Pentagon everywhere else and check Container 4 (Star, Pentagon, Circle, Diamond): Star, Pentagon, and Circle are all taken, leaving ONLY DIAMOND -> (E)! (And Container 2 gets Triangle.)"
+        ],
+        "askTheKids": [
+          "Why was Container 2 (with all 5 shapes) the worst place to start, and Container 3 the best place?",
+          "Which shape did Container 2 end up giving Sofie?"
+        ],
+        "commonTraps": "Kids who look at Container 4 right away see 4 shapes and feel stuck, or pick (D) Triangle because Triangle only appears in Container 2 (forgetting Triangle isn't even inside Container 4!)."
+      }
+    },
+    {
+      "number": 11,
+      "points": 4,
+      "title": "Missing Gray Cubes",
+      "promptSummary": "18 unit cubes (white, gray, black) form a 3×3×2 block. Given the white and black pieces on the right, which shape is the gray piece?",
+      "correctOption": "E",
+      "imageUrl": "packs/2021-g34-part1/images/q11.png",
+      "imageWidth": 2310,
+      "imageHeight": 572,
+      "teachingGuide": {
+        "headline": "Split the 18-cube block into two flat 3×3 floors (top floor and bottom floor)—the top floor is already 100% full!",
+        "steps": [
+          "Count the 3×3×2 block by layers: 9 cubes on the top floor and 9 cubes on the bottom floor (18 total).",
+          "Count the top floor first: the black U-piece has 7 cubes, and the white piece has 2 cubes on the top floor (look closely: 7 + 2 = 9!). So NO gray cubes are on the top floor!",
+          "Now check the bottom floor: the black piece uses 0 bottom cubes, and the white piece uses ONLY 2 bottom cubes (front-middle and front-right—notice there's empty air under the back-top white cube!).",
+          "Subtract those 2 front-right white cubes from the 3×3 bottom floor: you have 3 along the back, 3 across the middle, and 1 on the front-left (7 gray cubes) -> (E)!"
+        ],
+        "askTheKids": [
+          "How can we tell from the 18-cube block that the white piece does NOT have a bottom cube on the back-middle?",
+          "Why does the visible gray side on the right wall of the 3×3×2 block immediately rule out choice (C)?"
+        ],
+        "commonTraps": "Choice (C) is a sneaky trap: it misses the middle-right gray cube (even though you can see two gray squares on the right wall of the big block!). Choice (D) misses the middle-left cube, and (A) copies the black U-piece."
+      }
+    },
+    {
+      "number": 12,
+      "points": 4,
+      "title": "Colliding Number Balls",
+      "promptSummary": "Five numbered balls (10→, 9→, ←3, ←7, ←20) move as shown; when opposite balls collide, the bigger ball swallows the smaller one and keeps moving in its direction. What is the final ball?",
+      "correctOption": "C",
+      "imageUrl": "packs/2021-g34-part1/images/q12.png",
+      "imageWidth": 2310,
+      "imageHeight": 875,
+      "teachingGuide": {
+        "headline": "Always collide neighbors moving TOWARD each other first—and watch who wins when 19→ crashes into ←20!",
+        "steps": [
+          "Write all 5 balls with arrows on the board: [10→]  [9→]  [←3]  [←7]  [←20]. Notice [9→] and [←3] are heading straight toward each other!",
+          "Collision 1: [9→] swallows [←3] (9 > 3) to become [12→]. Line is now: [10→]  [12→]  [←7]  [←20].",
+          "Collision 2: [12→] swallows [←7] (12 > 7) to become [19→]. Now ONLY [19→] and [←20] face each other!",
+          "Collision 3 & 4: [←20] is BIGGER than [19→] (20 > 19!), so it flips the winner's direction to LEFT: [←39]! Finally [←39] swallows [10→] (39 > 10) to make [←49] -> (C)!"
+        ],
+        "askTheKids": [
+          "Why don't [10→] and [9→] collide at the very start?",
+          "Why did the final arrow point LEFT instead of RIGHT, even though the first two collisions went RIGHT?"
+        ],
+        "commonTraps": "Choices (A) and (D) say 50, catching kids who mis-add 10 + 9 + 3 + 7 + 20 = 49 as 50! Choice (E) →49 gets the right sum 49 but forgets that 20 > 19 turns the combined ball leftward."
+      }
+    },
+    {
+      "number": 17,
+      "points": 5,
+      "title": "Eva's Five Stickers",
+      "promptSummary": "Eva puts 5 stickers (triangle, circle, star, flower, apple) on squares 1–5: star is not on 5, apple is on 1, and flower is next to both circle and triangle. Which square gets the flower?",
+      "correctOption": "D",
+      "imageUrl": "packs/2021-g34-part1/images/q17.png",
+      "imageWidth": 2310,
+      "imageHeight": 578,
+      "teachingGuide": {
+        "headline": "Glue [Circle – Flower – Triangle] into one 3-square train with Flower in the middle, then check where Star fits!",
+        "steps": [
+          "Draw 5 boxes labeled 1, 2, 3, 4, 5 on the board and immediately put APPLE in box 1.",
+          "Look at the clue 'Flower is next to Circle AND Triangle': that means Flower MUST sit in the middle of a 3-box block [Circle, Flower, Triangle] (or [Triangle, Flower, Circle]).",
+          "There are only 4 empty boxes left (2, 3, 4, 5), so the 3-box train can ONLY go on {2, 3, 4} or {3, 4, 5}!",
+          "Try {2, 3, 4}: that forces STAR onto box 5—which breaks 'Star is NOT on 5'! So the train MUST go on {3, 4, 5} (with Star on box 2), putting FLOWER in the middle on box 4 -> (D)!"
+        ],
+        "askTheKids": [
+          "Why can't Flower sit on square 2 or square 5 if it has to touch BOTH Circle and Triangle?",
+          "How many different complete sticker arrangements satisfy all the clues—and is Flower on square 4 in all of them?"
+        ],
+        "commonTraps": "Choice (C) 3 is the top trap: students drop [Circle, Flower, Triangle] right after Apple on squares 2, 3, 4 and forget to check the leftover rule that Star cannot go on square 5."
+      }
+    },
+    {
+      "number": 18,
+      "points": 5,
+      "title": "Upside-Down Number Cards",
+      "promptSummary": "Seven cards A–G each have a number on top and an upside-down number on bottom. Which single card must the teacher turn upside down so both rows have the same sum?",
+      "correctOption": "E",
+      "imageUrl": "packs/2021-g34-part1/images/q18.png",
+      "imageWidth": 2310,
+      "imageHeight": 479,
+      "teachingGuide": {
+        "headline": "Find the target half-sum first—and remember that flipping ONE card adds to one row AND subtracts the same amount from the other row!",
+        "steps": [
+          "Carefully read each card's (top, bottom) pair right-side up: A(7,4), B(5,3), C(4,5), D(2,5), E(8,7), F(3,7), G(2,4).",
+          "Add the Top row: 7 + 5 + 4 + 2 + 8 + 3 + 2 = 31. Add the Bottom row: 4 + 3 + 5 + 5 + 7 + 7 + 4 = 35.",
+          "Notice the gap is 35 − 31 = 4, and the grand total is 31 + 35 = 66, so BOTH rows must equal 66 ÷ 2 = 33!",
+          "To lift Top from 31 to 33 (+2) and drop Bottom from 35 to 33 (−2), flip a card whose bottom is 2 BIGGER than its top: Card G has 2 on top and 4 on bottom (4 − 2 = 2) -> (E) G!"
+        ],
+        "askTheKids": [
+          "Why does flipping a card with a difference of 4 (like Card F: 3 and 7) change the gap between rows by 8 instead of 4?",
+          "Check our upside-down reading: why is the bottom of Card C a '5' and not a '2' (compare it with the '5' on top of Card B)?"
+        ],
+        "commonTraps": "Choice (C) Card D (2 and 5, difference 3) and Choice (D) Card F (3 and 7, difference 4) catch kids who look for a card whose difference equals the whole gap 4 (forgetting flipping affects BOTH rows!) or misread upside-down 5s and 2s."
+      }
+    },
+    {
+      "number": 19,
+      "points": 5,
+      "title": "Neighboring Sum Strip",
+      "promptSummary": "The numbers 1 to 9 are placed in 9 squares so each bracket shows the sum of two neighbors. Which number belongs in the shaded 5th square?",
+      "correctOption": "D",
+      "imageUrl": "packs/2021-g34-part1/images/q19.png",
+      "imageWidth": 2310,
+      "imageHeight": 258,
+      "teachingGuide": {
+        "headline": "Attack the tiny sum '3' first—the ONLY two different digits from 1 to 9 that add up to 3 are 1 and 2!",
+        "steps": [
+          "Spot the bottom bracket labeled '3' covering squares 3 and 4: using digits 1–9 once each, ONLY 1 and 2 add up to 3!",
+          "Test which order goes in squares 3 and 4 by looking left: could square 3 = 2 and square 4 = 1? Then square 2 = 7 − 2 = 5, which forces square 1 = 15 − 5 = 10 (impossible—10 isn't in 1..9!).",
+          "So square 3 MUST be 1 and square 4 MUST be 2! Double-check going left: square 2 = 7 − 1 = 6, and square 1 = 15 − 6 = 9 (all valid!).",
+          "Now step right from square 4 (= 2) using the top bracket '9' over squares 4 and 5: 2 + shaded = 9, so the shaded square is 7 -> (D)!"
+        ],
+        "askTheKids": [
+          "Why couldn't we start from a big sum like '15' (which could be 6+9 or 7+8), whereas '3' locked in the exact two digits right away?",
+          "Bonus challenge: can you fill in all 9 squares from left to right? (Hint: 1+2+...+9 = 45, and the 4 bottom brackets add to 41!)"
+        ],
+        "commonTraps": "Putting 2 and 1 in the wrong order gives 9 − 1 = 8 (E) without checking the left wall (which would force 10 in square 1). Guessing from the 15-bracket under squares 5–6 leads to picking 6 (C) or 8 (E) without pinning down squares 3–4."
+      }
+    },
+    {
+      "number": 20,
+      "points": 5,
+      "title": "Mia's Dartboard Balloons",
+      "promptSummary": "Mia throws darts at balloons worth 3, 9, 13, 14, and 18 points and scores 30 points total. Which balloon does Mia definitely hit?",
+      "correctOption": "A",
+      "imageUrl": "packs/2021-g34-part1/images/q20.png",
+      "imageWidth": 2310,
+      "imageHeight": 261,
+      "teachingGuide": {
+        "headline": "When a question says 'definitely hit', find ALL ways to make 30—the answer is the balloon that shows up in EVERY solution!",
+        "steps": [
+          "List the balloon values on the board: 3, 9, 13, 14, 18. We need subsets that add up to 30.",
+          "Try using the biggest balloon, 18: 30 − 18 = 12 left. From {3, 9, 13, 14}, only 9 + 3 = 12 works! So Way #1 = {3, 9, 18}.",
+          "Try WITHOUT 18 (using {3, 9, 13, 14}): check 14 + 13 = 27, which needs 30 − 27 = 3 more! So Way #2 = {3, 13, 14}. (Any combo without 13 or without 14 is way below 30: 14+9+3 = 26.)",
+          "Compare Way #1 {3, 9, 18} and Way #2 {3, 13, 14}: which single balloon is in BOTH winning groups? Only 3 -> (A)!"
+        ],
+        "askTheKids": [
+          "If Mia hit 18, 9, and 3, why isn't (E) 18 the right answer?",
+          "Even if balloons didn't pop so Mia could hit the same number twice, could she ever reach 30 without hitting 3? (Check multiples of 3!)"
+        ],
+        "commonTraps": "Students who find ONE way to make 30 (like 18 + 9 + 3 = 30) and stop right away often pick (E) 18 or (B) 9, missing that 'definitely hit' means it must be part of EVERY possible way to score 30!"
+      }
+    }
+  ]
+}
