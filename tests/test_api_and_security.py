@@ -54,21 +54,20 @@ class TestApiAndSecurity(unittest.TestCase):
         with self.opener.open(f"{self.base_url}/api", timeout=5) as resp:
             health = json.loads(resp.read().decode("utf-8"))
             self.assertTrue(health["ok"])
-            self.assertEqual(health["studentCount"], 11)
+            self.assertEqual(health["studentCount"], 6)
 
     def test_public_roster_never_leaks_pins(self) -> None:
         res = self._post_api({"action": "getPublicRoster", "weekId": "2022-g34-part1"})
         self.assertTrue(res["ok"])
         self.assertEqual(res["activeWeekId"], "2022-g34-part1")
         students = res["students"]
-        self.assertEqual(len(students), 11)
+        self.assertEqual(len(students), 6)
         student_ids = {s["studentId"] for s in students}
-        self.assertIn("lukasz-bk", student_ids)
-        self.assertIn("maria-bk", student_ids)
+        self.assertIn("lucja-nowak", student_ids)
+        self.assertIn("sam-patel", student_ids)
         raw_text = json.dumps(res)
-        self.assertNotIn("2418", raw_text)
-        self.assertNotIn("5042", raw_text)
-        self.assertNotIn("6719", raw_text)
+        for seed in serve.SEED_STUDENTS:
+            self.assertNotIn(seed["pin"], raw_text)
         self.assertNotIn("885174", raw_text)
         self.assertNotIn("teacher_pin", raw_text)
         self.assertNotIn("teacherPin", raw_text)
@@ -82,19 +81,19 @@ class TestApiAndSecurity(unittest.TestCase):
 
     def test_pin_verification_and_leading_zeros(self) -> None:
         bad = self._post_api(
-            {"action": "verifyStudentPin", "studentId": "ada-guzhu", "pin": "0000", "weekId": "2022-g34-part1"}
+            {"action": "verifyStudentPin", "studentId": "alice-nguyen", "pin": "0000", "weekId": "2022-g34-part1"}
         )
         self.assertTrue(bad["ok"])
         self.assertFalse(bad["valid"])
 
         good = self._post_api(
-            {"action": "verifyStudentPin", "studentId": "ada-guzhu", "pin": "2418", "weekId": "2022-g34-part1"}
+            {"action": "verifyStudentPin", "studentId": "alice-nguyen", "pin": "1357", "weekId": "2022-g34-part1"}
         )
         self.assertTrue(good["ok"])
         self.assertTrue(good["valid"])
-        self.assertEqual(good["student"]["name"], "Ada Guzhu")
+        self.assertEqual(good["student"]["name"], "Alice Nguyen")
 
-        # Update Ada's PIN to a leading-zero PIN "0412" via Teacher Zone endpoint.
+        # Update Alice's PIN to a leading-zero PIN "0412" via Teacher Zone endpoint.
         report = self._post_api({"action": "getTeacherReport", "teacherPin": "885174"})
         updated_students = report["students"]
         updated_students[0]["pin"] = "0412"
@@ -109,17 +108,17 @@ class TestApiAndSecurity(unittest.TestCase):
         self.assertEqual(report_after["students"][0]["pin"], "0412")
 
         ok_0412 = self._post_api(
-            {"action": "verifyStudentPin", "studentId": "ada-guzhu", "pin": "0412"}
+            {"action": "verifyStudentPin", "studentId": "alice-nguyen", "pin": "0412"}
         )
         self.assertTrue(ok_0412["valid"])
 
         bad_412_str = self._post_api(
-            {"action": "verifyStudentPin", "studentId": "ada-guzhu", "pin": "412"}
+            {"action": "verifyStudentPin", "studentId": "alice-nguyen", "pin": "412"}
         )
         self.assertFalse(bad_412_str["valid"])
 
         bad_412_int = self._post_api(
-            {"action": "verifyStudentPin", "studentId": "ada-guzhu", "pin": 412}
+            {"action": "verifyStudentPin", "studentId": "alice-nguyen", "pin": 412}
         )
         self.assertFalse(bad_412_int["valid"])
 
@@ -128,7 +127,7 @@ class TestApiAndSecurity(unittest.TestCase):
             {
                 "action": "submitAnswers",
                 "weekId": "2022-g34-part1",
-                "studentId": "ada-guzhu",
+                "studentId": "alice-nguyen",
                 "pin": "9999",
                 "answers": {"1": "A"},
                 "scoreSummary": {"totalScore": 3},
@@ -140,8 +139,8 @@ class TestApiAndSecurity(unittest.TestCase):
             {
                 "action": "submitAnswers",
                 "weekId": "2022-g34-part1",
-                "studentId": "ada-guzhu",
-                "pin": "2418",
+                "studentId": "alice-nguyen",
+                "pin": "1357",
                 "answers": {"1": "A", "2": "D"},
                 "scoreSummary": {"totalScore": 3, "score3pt": 3},
             }
@@ -153,8 +152,8 @@ class TestApiAndSecurity(unittest.TestCase):
             {
                 "action": "submitAnswers",
                 "weekId": "2022-g34-part1",
-                "studentId": "ada-guzhu",
-                "pin": "2418",
+                "studentId": "alice-nguyen",
+                "pin": "1357",
                 "answers": {"1": "A", "2": "B"},
                 "scoreSummary": {"totalScore": 6, "score3pt": 6},
             }
@@ -162,28 +161,23 @@ class TestApiAndSecurity(unittest.TestCase):
         self.assertTrue(second["ok"])
 
         verified = self._post_api(
-            {"action": "verifyStudentPin", "studentId": "ada-guzhu", "pin": "2418", "weekId": "2022-g34-part1"}
+            {"action": "verifyStudentPin", "studentId": "alice-nguyen", "pin": "1357", "weekId": "2022-g34-part1"}
         )
         self.assertEqual(verified["existingAnswers"], {"1": "A", "2": "B"})
 
         report = self._post_api({"action": "getTeacherReport", "teacherPin": "885174", "weekId": "2022-g34-part1"})
-        ada_subs = [s for s in report["submissions"] if s["studentId"] == "ada-guzhu"]
-        self.assertEqual(len(ada_subs), 1)
-        self.assertEqual(ada_subs[0]["totalScore"], 6)
+        alice_subs = [s for s in report["submissions"] if s["studentId"] == "alice-nguyen"]
+        self.assertEqual(len(alice_subs), 1)
+        self.assertEqual(alice_subs[0]["totalScore"], 6)
 
     def test_concurrent_submissions_all_persist(self) -> None:
         expected = [
-            ("ada-guzhu", "2418"),
-            ("andrew-ahmadi", "5931"),
-            ("berrit-martz", "7264"),
-            ("camile-gauthier", "3847"),
-            ("elliot-an", "6159"),
-            ("elliot-huang", "8492"),
-            ("hanna-bieniasz-krzywiec", "4726"),
-            ("keshav-junnarkar", "9315"),
-            ("ting-zhao", "1683"),
-            ("lukasz-bk", "5042"),
-            ("maria-bk", "6719"),
+            ("alice-nguyen", "1357"),
+            ("ben-carter", "2468"),
+            ("claire-davis", "3691"),
+            ("diego-morales", "4820"),
+            ("lucja-nowak", "5739"),
+            ("sam-patel", "7531"),
         ]
 
         def submit_one(item: tuple[str, str]) -> dict:
@@ -199,7 +193,7 @@ class TestApiAndSecurity(unittest.TestCase):
                 }
             )
 
-        with concurrent.futures.ThreadPoolExecutor(max_workers=11) as pool:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:
             results = list(pool.map(submit_one, expected))
 
         self.assertTrue(all(r["ok"] for r in results))
@@ -207,7 +201,7 @@ class TestApiAndSecurity(unittest.TestCase):
         self.assertTrue(report["ok"])
         submitted_ids = {s["studentId"] for s in report["submissions"]}
         self.assertEqual(submitted_ids, {sid for sid, _ in expected})
-        self.assertEqual(len(report["submissions"]), 11)
+        self.assertEqual(len(report["submissions"]), 6)
 
     def test_teacher_auth_and_participants_sync(self) -> None:
         denied = self._post_api({"action": "getTeacherReport", "teacherPin": "123456"})
@@ -215,7 +209,7 @@ class TestApiAndSecurity(unittest.TestCase):
 
         ok_report = self._post_api({"action": "getTeacherReport", "teacherPin": "885174"})
         self.assertTrue(ok_report["ok"])
-        self.assertEqual(len(ok_report["students"]), 11)
+        self.assertEqual(len(ok_report["students"]), 6)
 
         # Simulate adding a new name in Participants!A1:A; existing students stay untouched.
         state = json.loads(self.state_file.read_text(encoding="utf-8"))
@@ -225,7 +219,7 @@ class TestApiAndSecurity(unittest.TestCase):
         roster = self._post_api({"action": "getPublicRoster"})
         names = [s["name"] for s in roster["students"]]
         self.assertIn("Maya Lin", names)
-        self.assertEqual(len(names), 12)
+        self.assertEqual(len(names), 7)
         synced_state = json.loads(self.state_file.read_text(encoding="utf-8"))
         self.assertEqual(synced_state["participants"][-1], "Maya Lin")
         maya = next(s for s in synced_state["students"] if s["name"] == "Maya Lin")
@@ -248,8 +242,8 @@ class TestApiAndSecurity(unittest.TestCase):
         self.assertEqual(roster_after["activeWeekId"], "2022-g34-part2")
 
     def test_legacy_state_file_merges_new_seed_students_preserving_submissions(self) -> None:
-        # Simulate an older /tmp/math_circle_state.json created when only 9 students existed.
-        legacy_students = [dict(s) for s in serve.SEED_STUDENTS[:9]]
+        # Simulate an older /tmp/math_circle_state.json created when only 4 students existed.
+        legacy_students = [dict(s) for s in serve.SEED_STUDENTS[:4]]
         legacy_state = {
             "teacherPin": "885174",
             "activeWeekId": "2022-g34-part1",
@@ -259,8 +253,8 @@ class TestApiAndSecurity(unittest.TestCase):
                 {
                     "updatedAt": "2026-11-18T21:00:00Z",
                     "weekId": "2022-g34-part1",
-                    "studentId": "hanna-bieniasz-krzywiec",
-                    "studentName": "Hanna Bieniasz-Krzywiec",
+                    "studentId": "diego-morales",
+                    "studentName": "Diego Morales",
                     "totalScore": 48,
                     "maxScore": 48,
                     "answers": {"1": "A"},
@@ -271,17 +265,17 @@ class TestApiAndSecurity(unittest.TestCase):
 
         roster = self._post_api({"action": "getPublicRoster", "weekId": "2022-g34-part1"})
         self.assertTrue(roster["ok"])
-        self.assertEqual(len(roster["students"]), 11)
+        self.assertEqual(len(roster["students"]), 6)
         by_id = {s["studentId"]: s for s in roster["students"]}
-        self.assertIn("lukasz-bk", by_id)
-        self.assertIn("maria-bk", by_id)
-        self.assertTrue(by_id["hanna-bieniasz-krzywiec"]["hasSubmitted"])
+        self.assertIn("lucja-nowak", by_id)
+        self.assertIn("sam-patel", by_id)
+        self.assertTrue(by_id["diego-morales"]["hasSubmitted"])
 
-        # Verify Łukasz BK's exact seeded PIN (5042) works immediately.
-        verify_lukasz = self._post_api(
-            {"action": "verifyStudentPin", "studentId": "lukasz-bk", "pin": "5042"}
+        # Verify Łucja Nowak's exact seeded PIN (5739) works immediately.
+        verify_lucja = self._post_api(
+            {"action": "verifyStudentPin", "studentId": "lucja-nowak", "pin": "5739"}
         )
-        self.assertTrue(verify_lukasz["valid"])
+        self.assertTrue(verify_lucja["valid"])
 
 
 if __name__ == "__main__":

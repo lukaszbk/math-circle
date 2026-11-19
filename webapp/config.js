@@ -10,17 +10,5 @@ export const APP_CONFIG = {
   appsScriptUrl: 'https://script.google.com/macros/s/AKfycbyVhfEZvHI9WDRoKqRtrvUpxEYI9h_SEcCO_GNnThx0YGzfqn20U74pGXC6HpvOK6XqFg/exec',
   defaultTeacherPin: '885174',
   defaultWeekId: '2022-g34-part1',
-  demoStudents: [
-    { studentId: 'ada-guzhu', name: 'Ada Guzhu', avatar: '🦘' },
-    { studentId: 'andrew-ahmadi', name: 'Andrew Ahmadi', avatar: '🐨' },
-    { studentId: 'berrit-martz', name: 'Berrit Martz', avatar: '🐝' },
-    { studentId: 'camile-gauthier', name: 'Camile Gauthier', avatar: '🦊' },
-    { studentId: 'elliot-an', name: 'Elliot An', avatar: '🦉' },
-    { studentId: 'elliot-huang', name: 'Elliot Huang', avatar: '🐬' },
-    { studentId: 'hanna-bieniasz-krzywiec', name: 'Hanna Bieniasz-Krzywiec', avatar: '🐼' },
-    { studentId: 'keshav-junnarkar', name: 'Keshav Junnarkar', avatar: '🐢' },
-    { studentId: 'ting-zhao', name: 'Ting Zhao', avatar: '🦁' },
-    { studentId: 'lukasz-bk', name: 'Łukasz BK', avatar: '🐧' },
-    { studentId: 'maria-bk', name: 'Maria BK', avatar: '🦄' }
-  ]
+  demoStudents: []
 };

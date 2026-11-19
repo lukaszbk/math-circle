@@ -99,7 +99,7 @@ function isPinMatch_(enteredPin, storedPin) {
 
 /**
  * Generates a unique lowercase slug student_id from a student name.
- * Transliterates Polish/Latin characters (e.g. "Łukasz BK" -> "lukasz-bk").
+ * Transliterates Polish/Latin characters (e.g. "Łucja Nowak" -> "lucja-nowak").
  */
 function slugifyName_(name, usedIds) {
   var text = String(name || '')

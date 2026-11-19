@@ -11,21 +11,6 @@ const KEYS = {
   LOCAL_SUBMITTED_PREFIX: 'mk_local_submitted_v1:'
 };
 
-// Demo-mode PINs matching the local serve.py pre-seeded roster so static preview works out of the box.
-const DEMO_SEED_PINS = {
-  'ada-guzhu': '2418',
-  'andrew-ahmadi': '5931',
-  'berrit-martz': '7264',
-  'camile-gauthier': '3847',
-  'elliot-an': '6159',
-  'elliot-huang': '8492',
-  'hanna-bieniasz-krzywiec': '4726',
-  'keshav-junnarkar': '9315',
-  'ting-zhao': '1683',
-  'lukasz-bk': '5042',
-  'maria-bk': '6719'
-};
-
 function safeJsonParse(raw, fallback) {
   if (!raw) return fallback;
   try {
@@ -342,7 +327,7 @@ export class StorageClient {
           .filter((q) => q.weekId === fallbackWeek)
           .map((q) => q.studentId)
       );
-      const baseStudents = cached?.students || this.config.demoStudents;
+      const baseStudents = cached?.students || this.config.demoStudents || [];
       return {
         ok: true,
         offlineFallback: true,
@@ -534,7 +519,7 @@ export class StorageClient {
             studentId: st.studentId,
             name: st.name,
             avatar: st.avatar,
-            pin: DEMO_SEED_PINS[st.studentId] || '0000',
+            pin: st.pin || '0000',
             active: true
           });
           knownIds.add(st.studentId);
@@ -550,11 +535,11 @@ export class StorageClient {
     const seeded = {
       activeWeekId: this.config.defaultWeekId,
       teacherPin: this.config.defaultTeacherPin,
-      students: this.config.demoStudents.map((st) => ({
+      students: (this.config.demoStudents || []).map((st) => ({
         studentId: st.studentId,
         name: st.name,
         avatar: st.avatar,
-        pin: DEMO_SEED_PINS[st.studentId] || '0000',
+        pin: st.pin || '0000',
         active: true
       })),
       submissions: []

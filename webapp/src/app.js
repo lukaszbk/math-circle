@@ -366,21 +366,33 @@ function renderHomeScreen() {
     </div>
   ` : '';
 
-  const cards = state.roster.map((st) => {
-    let badge = `<span class="pending-dot">Tap to start</span>`;
-    if (st.queuedOffline) {
-      badge = `<span class="submitted-badge queued-badge">Saved Locally ⏳</span>`;
-    } else if (st.hasSubmitted) {
-      badge = `<span class="submitted-badge">Submitted ✓</span>`;
-    }
-    return `
-      <button type="button" class="student-card ${st.hasSubmitted ? 'submitted' : ''}" data-student-id="${escapeHtml(st.studentId)}">
-        <div class="student-avatar" aria-hidden="true">${escapeHtml(st.avatar)}</div>
-        <div class="student-name">${escapeHtml(st.name)}</div>
-        ${badge}
-      </button>
+  const cards = state.roster.length > 0
+    ? state.roster.map((st) => {
+        let badge = `<span class="pending-dot">Tap to start</span>`;
+        if (st.queuedOffline) {
+          badge = `<span class="submitted-badge queued-badge">Saved Locally ⏳</span>`;
+        } else if (st.hasSubmitted) {
+          badge = `<span class="submitted-badge">Submitted ✓</span>`;
+        }
+        return `
+          <button type="button" class="student-card ${st.hasSubmitted ? 'submitted' : ''}" data-student-id="${escapeHtml(st.studentId)}">
+            <div class="student-avatar" aria-hidden="true">${escapeHtml(st.avatar)}</div>
+            <div class="student-name">${escapeHtml(st.name)}</div>
+            ${badge}
+          </button>
+        `;
+      }).join('')
+    : `
+      <div class="panel-card" style="grid-column: 1 / -1; text-align: center; padding: 32px 24px; margin-bottom: 0;">
+        <div class="loading-icon" aria-hidden="true">${state.rosterOfflineFallback ? '📡' : '🦘'}</div>
+        <h3 style="margin: 0 0 8px;">${state.rosterOfflineFallback ? 'Tablet is offline' : 'No student profiles loaded yet'}</h3>
+        <p class="brand-subtitle" style="max-width: 460px; margin: 0 auto;">
+          ${state.rosterOfflineFallback
+            ? 'This tablet does not have a cached student roster yet. Once connected, tap Refresh Roster above.'
+            : 'Tap Refresh Roster to load students from the connected sheet, or add students in Teacher Zone.'}
+        </p>
+      </div>
     `;
-  }).join('');
 
   appEl.innerHTML = `
     <header class="top-header">

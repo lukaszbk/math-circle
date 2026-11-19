@@ -186,8 +186,8 @@ class TestScoringParityAndStaticInvariants(unittest.TestCase):
 
     def test_unicode_slugification_and_skill_runbook(self) -> None:
         # Python slugifier
-        self.assertEqual(serve.slugify_name("Łukasz BK", set()), "lukasz-bk")
-        self.assertEqual(serve.slugify_name("Maria BK", set()), "maria-bk")
+        self.assertEqual(serve.slugify_name("Łucja Nowak", set()), "lucja-nowak")
+        self.assertEqual(serve.slugify_name("Michał Kowalski", set()), "michal-kowalski")
         self.assertEqual(serve.slugify_name("Zażółć gęślą jaźń", set()), "zazolc-gesla-jazn")
 
         # JS storage slugifier static check
@@ -235,12 +235,14 @@ class TestScoringParityAndStaticInvariants(unittest.TestCase):
             self.assertIn(token, js_src)
 
         config_src = self.CONFIG_JS_PATH.read_text(encoding="utf-8")
+        storage_src = self.STORAGE_JS_PATH.read_text(encoding="utf-8")
+        self.assertNotIn("DEMO_SEED_PINS", config_src)
+        self.assertNotIn("DEMO_SEED_PINS", storage_src)
         for st in serve.SEED_STUDENTS:
-            self.assertIn(st["studentId"], config_src)
-            self.assertIn(st["name"], config_src)
-            self.assertIn(st["avatar"], config_src)
-            # config.js must not expose student PINs
-            self.assertNotIn(st["pin"], config_src)
+            for src_text in (config_src, storage_src):
+                self.assertNotIn(st["studentId"], src_text)
+                self.assertNotIn(st["name"], src_text)
+                self.assertNotIn(st["pin"], src_text)
 
     def test_positive_scoring_and_competition_ranks(self) -> None:
         pack = json.loads(self.PACK_JSON_PATH.read_text(encoding="utf-8"))
@@ -271,16 +273,19 @@ class TestScoringParityAndStaticInvariants(unittest.TestCase):
         ranked = ref_rank_submissions(
             serve.SEED_STUDENTS[:4],
             [
-                {"studentId": "ada-guzhu", "studentName": "Ada Guzhu", "answers": all_correct},
-                {"studentId": "camile-gauthier", "studentName": "Camile Gauthier", "answers": s3_ans},
-                {"studentId": "andrew-ahmadi", "studentName": "Andrew Ahmadi", "answers": s2_ans},
-                {"studentId": "berrit-martz", "studentName": "Berrit Martz", "answers": s4_ans},
+                {"studentId": "alice-nguyen", "studentName": "Alice Nguyen", "answers": all_correct},
+                {"studentId": "claire-davis", "studentName": "Claire Davis", "answers": s3_ans},
+                {"studentId": "ben-carter", "studentName": "Ben Carter", "answers": s2_ans},
+                {"studentId": "diego-morales", "studentName": "Diego Morales", "answers": s4_ans},
             ],
             pack,
         )
         self.assertEqual([r["rank"] for r in ranked], [1, 2, 2, 4])
-        # Andrew comes before Camile alphabetically on exact tie
-        self.assertEqual([r["studentId"] for r in ranked], ["ada-guzhu", "andrew-ahmadi", "camile-gauthier", "berrit-martz"])
+        # Ben comes before Claire alphabetically on exact tie
+        self.assertEqual(
+            [r["studentId"] for r in ranked],
+            ["alice-nguyen", "ben-carter", "claire-davis", "diego-morales"],
+        )
 
     def test_triage_sorting_and_common_traps(self) -> None:
         pack = json.loads(self.PACK_JSON_PATH.read_text(encoding="utf-8"))
@@ -393,7 +398,8 @@ function setupEnv(loc) {{
   globalThis.window = {{ location: loc }};
 }}
 
-// 1. Production origin connects automatically to APP_CONFIG.appsScriptUrl
+// 1. Static config contains zero hardcoded students; production connects automatically to APP_CONFIG.appsScriptUrl
+assert.deepEqual(APP_CONFIG.demoStudents, []);
 const prodLoc = {{ protocol: 'https:', hostname: 'lukaszbk.github.io', port: '' }};
 setupEnv(prodLoc);
 assert.equal(isLocalOrigin(prodLoc), false);
@@ -435,6 +441,9 @@ assert.equal(client.getConfiguredAppsScriptUrl(), APP_CONFIG.appsScriptUrl);
 client.setTeacherAppsScriptUrl('');
 assert.equal(client.getConfiguredAppsScriptUrl(), '');
 assert.equal(client.getBackendMode(), 'demo-localstorage');
+const demoRoster = await client.getPublicRoster('2022-g34-part1');
+assert.equal(demoRoster.ok, true);
+assert.deepEqual(demoRoster.students, []);
 """
             res = subprocess.run(
                 [node_bin, "--input-type=module", "-e", node_script],

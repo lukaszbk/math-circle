@@ -22,8 +22,7 @@ python3 serve.py
 
 Open [http://127.0.0.1:8000](http://127.0.0.1:8000) in any browser or tablet on your local network (`--host 0.0.0.0`).
 
-- **Pre-seeded Student PINs (local server & demo mode):**
-  - Ada Guzhu (`2418`), Andrew Ahmadi (`5931`), Berrit Martz (`7264`), Camile Gauthier (`3847`), Elliot An (`6159`), Elliot Huang (`8492`), Hanna Bieniasz-Krzywiec (`4726`), Keshav Junnarkar (`9315`), Ting Zhao (`1683`), Łukasz BK (`5042`), Maria BK (`6719`)
+- **Student Roster & PINs:** Real student names and PINs live only in the connected Google Sheet (never in static `webapp/`). For local offline testing, `serve.py` seeds sample fictional students (viewable and editable in **Teacher Zone** or `serve.py`).
 - **Teacher Zone PIN:** `885174`
 
 ## Compiling a Weekly Question Pack from PDF

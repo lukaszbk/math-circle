@@ -39,17 +39,12 @@ PARTICIPANT_HEADER_WORDS = {
 }
 
 SEED_STUDENTS = [
-    {"studentId": "ada-guzhu", "name": "Ada Guzhu", "pin": "2418", "avatar": "🦘", "active": True},
-    {"studentId": "andrew-ahmadi", "name": "Andrew Ahmadi", "pin": "5931", "avatar": "🐨", "active": True},
-    {"studentId": "berrit-martz", "name": "Berrit Martz", "pin": "7264", "avatar": "🐝", "active": True},
-    {"studentId": "camile-gauthier", "name": "Camile Gauthier", "pin": "3847", "avatar": "🦊", "active": True},
-    {"studentId": "elliot-an", "name": "Elliot An", "pin": "6159", "avatar": "🦉", "active": True},
-    {"studentId": "elliot-huang", "name": "Elliot Huang", "pin": "8492", "avatar": "🐬", "active": True},
-    {"studentId": "hanna-bieniasz-krzywiec", "name": "Hanna Bieniasz-Krzywiec", "pin": "4726", "avatar": "🐼", "active": True},
-    {"studentId": "keshav-junnarkar", "name": "Keshav Junnarkar", "pin": "9315", "avatar": "🐢", "active": True},
-    {"studentId": "ting-zhao", "name": "Ting Zhao", "pin": "1683", "avatar": "🦁", "active": True},
-    {"studentId": "lukasz-bk", "name": "Łukasz BK", "pin": "5042", "avatar": "🐧", "active": True},
-    {"studentId": "maria-bk", "name": "Maria BK", "pin": "6719", "avatar": "🦄", "active": True},
+    {"studentId": "alice-nguyen", "name": "Alice Nguyen", "pin": "1357", "avatar": "🦘", "active": True},
+    {"studentId": "ben-carter", "name": "Ben Carter", "pin": "2468", "avatar": "🐨", "active": True},
+    {"studentId": "claire-davis", "name": "Claire Davis", "pin": "3691", "avatar": "🦊", "active": True},
+    {"studentId": "diego-morales", "name": "Diego Morales", "pin": "4820", "avatar": "🦉", "active": True},
+    {"studentId": "lucja-nowak", "name": "Łucja Nowak", "pin": "5739", "avatar": "🐼", "active": True},
+    {"studentId": "sam-patel", "name": "Sam Patel", "pin": "7531", "avatar": "🐢", "active": True},
 ]
 
 
