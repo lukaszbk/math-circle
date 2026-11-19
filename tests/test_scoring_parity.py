@@ -307,6 +307,23 @@ class TestScoringParityAndStaticInvariants(unittest.TestCase):
         self.assertEqual(single[0]["number"], 17)
         self.assertTrue(single[0]["solveTogether"])
 
+    def test_github_pages_static_hosting_entrypoints(self) -> None:
+        root_index = REPO_ROOT / "index.html"
+        nojekyll = REPO_ROOT / ".nojekyll"
+        pages_yml = REPO_ROOT / ".github" / "workflows" / "pages.yml"
+        self.assertTrue(root_index.is_file(), "Root index.html required for branch-mode GitHub Pages")
+        self.assertTrue(nojekyll.is_file(), "Root .nojekyll required for GitHub Pages")
+        self.assertTrue(pages_yml.is_file(), "GitHub Actions Pages workflow missing")
+
+        root_html = root_index.read_text(encoding="utf-8")
+        self.assertIn('<base href="./webapp/" />', root_html)
+        self.assertIn('src="src/app.js"', root_html)
+        self.assertIn('href="styles/main.css"', root_html)
+
+        storage_js = (REPO_ROOT / "webapp" / "src" / "storage.js").read_text(encoding="utf-8")
+        self.assertIn("isStaticPublicHost", storage_js)
+        self.assertIn(".github.io", storage_js)
+
 
 if __name__ == "__main__":
     unittest.main()

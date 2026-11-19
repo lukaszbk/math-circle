@@ -2,6 +2,16 @@
 
 A tablet-first web app, Google Sheet bridge, and weekly PDF pack compiler for a 3rd-grade after-school Math Kangaroo circle.
 
+## Hosting on GitHub Pages (100% Static — No Server Needed)
+
+The web app in `webapp/` is 100% static HTML, ES modules, CSS, JSON, and PNGs (`serve.py` is only for local offline testing). In production on GitHub Pages, browsers talk directly to your Google Sheet via the bound Apps Script Web App (`sheet-backend/Code.gs`).
+
+Both GitHub Pages modes are supported out of the box at `https://<your-username>.github.io/math-circle/`:
+1. **Branch mode (simplest):** In GitHub **Settings → Pages → Build and deployment**, set **Source** to **Deploy from a branch**, choose **`main`** and **`/ (root)`**, and click **Save** (root `index.html` + `.nojekyll` load `webapp/` directly).
+2. **GitHub Actions mode:** Set **Source** to **GitHub Actions** (`.github/workflows/pages.yml` deploys `./webapp` automatically on every push to `main`).
+
+To connect all tablets on GitHub Pages to your Google Sheet permanently, paste your Apps Script `/exec` URL into `appsScriptUrl` in [`webapp/config.js`](webapp/config.js) and push to `main`.
+
 ## Quickstart (Local Class Server)
 
 Start the local web app + Sheet-compatible JSON API server:

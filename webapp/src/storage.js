@@ -80,11 +80,26 @@ function slugifyName(name, usedIds) {
   return candidate;
 }
 
+function isStaticPublicHost(hostname) {
+  const h = String(hostname || '').toLowerCase();
+  return (
+    h.endsWith('.github.io') ||
+    h.endsWith('.pages.dev') ||
+    h.endsWith('.web.app') ||
+    h.endsWith('.firebaseapp.com') ||
+    h.endsWith('.netlify.app') ||
+    h.endsWith('.vercel.app')
+  );
+}
+
 export class StorageClient {
   constructor(config = APP_CONFIG) {
     this.config = config;
     // null = not probed yet, true = serve.py /api available, false = static file mode
-    this._localApiAvailable = null;
+    this._localApiAvailable =
+      typeof window !== 'undefined' && isStaticPublicHost(window.location.hostname)
+        ? false
+        : null;
   }
 
   getConfiguredAppsScriptUrl() {
@@ -99,7 +114,7 @@ export class StorageClient {
       localStorage.setItem(KEYS.APPS_SCRIPT_URL, cleaned);
     } else {
       localStorage.removeItem(KEYS.APPS_SCRIPT_URL);
-      this._localApiAvailable = null;
+      this._localApiAvailable = isStaticPublicHost(window.location.hostname) ? false : null;
     }
   }
 

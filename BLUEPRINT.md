@@ -20,6 +20,7 @@ The system is intentionally split into three decoupled components so the classro
 ## Repository Layout
 
 - `BLUEPRINT.md` — System architecture, cross-cutting contracts, and review gates (this file).
+- `index.html`, `.nojekyll`, & `.github/workflows/pages.yml` — Static hosting entrypoints so the repository runs directly from GitHub Pages (`https://<user>.github.io/math-circle/`) under either `Deploy from a branch (main / root)` or `GitHub Actions` with zero server infrastructure.
 - `.agents/skills/compile-weekly-pack/` — Workspace skill (`SKILL.md`) guiding the agent through adaptive cropping, solve-first verification, cross-checking, and pack compilation.
 - `webapp/` — Tablet student UI, Teacher Zone UI, scoring & triage logic, and bundled weekly Question Packs.
 - `sheet-backend/` — Google Sheet tab specifications and bound Apps Script Web App source (`Code.gs`).
