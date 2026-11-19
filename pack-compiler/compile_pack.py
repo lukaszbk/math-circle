@@ -39,17 +39,78 @@ RULE_GAP_MERGE_PX = 20
 RULE_MAX_THICKNESS_PX = 10
 BANNER_MASK_RECT = (0, 0, 575, 140)
 
+QUESTION_CLASSES = {
+    "spatial-3d": {
+        "domain": "geometry-spatial",
+        "domainLabel": "Geometry & Spatial",
+        "label": "3D Spatial & Cubes",
+        "shortLabel": "3D Spatial",
+        "icon": "🧊",
+    },
+    "shapes-2d": {
+        "domain": "geometry-spatial",
+        "domainLabel": "Geometry & Spatial",
+        "label": "2D Shapes, Symmetry & Paths",
+        "shortLabel": "2D Shapes",
+        "icon": "📐",
+    },
+    "logic-deduction": {
+        "domain": "logic-reasoning",
+        "domainLabel": "Logic & Reasoning",
+        "label": "Deductive Logic & Constraints",
+        "shortLabel": "Logic",
+        "icon": "🧩",
+    },
+    "number-sense": {
+        "domain": "number-arithmetic",
+        "domainLabel": "Number & Arithmetic",
+        "label": "Number Sense, Equations & Grids",
+        "shortLabel": "Number Sense",
+        "icon": "⚖️",
+    },
+    "patterns-simulation": {
+        "domain": "combinatorics-patterns",
+        "domainLabel": "Combinatorics & Patterns",
+        "label": "Patterns, Cycles & Step Simulation",
+        "shortLabel": "Simulation",
+        "icon": "🔄",
+    },
+    "counting-sets": {
+        "domain": "combinatorics-patterns",
+        "domainLabel": "Combinatorics & Patterns",
+        "label": "Systematic Counting & Sets",
+        "shortLabel": "Counting & Sets",
+        "icon": "🔢",
+    },
+    "measurement-time": {
+        "domain": "measurement",
+        "domainLabel": "Measurement & Time",
+        "label": "Measurement, Clocks & Money",
+        "shortLabel": "Measurement",
+        "icon": "⏱️",
+    },
+}
+
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     """Parse CLI arguments for the Question Pack compiler."""
     parser = argparse.ArgumentParser(
         description="Compile a Math Kangaroo PDF into a Question Pack."
     )
-    parser.add_argument("--pdf", required=True, help="Path to source PDF file.")
+    parser.add_argument(
+        "--pdf",
+        default=None,
+        help="Path to source PDF file (required unless --metadata-only is set).",
+    )
     parser.add_argument(
         "--metadata",
         default=None,
         help="Path to question metadata JSON (required unless --crop-only is set).",
+    )
+    parser.add_argument(
+        "--metadata-only",
+        action="store_true",
+        help="Rebuild pack.json and preview.html using existing images/qNN.png without re-rendering PDF.",
     )
     parser.add_argument(
         "--part",
@@ -104,8 +165,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="Optional JSON file mapping question numbers to official letters for cross-check.",
     )
     args = parser.parse_args(argv)
+    if args.crop_only and args.metadata_only:
+        parser.error("--crop-only and --metadata-only cannot be used together.")
     if not args.crop_only and not args.metadata:
         parser.error("--metadata is required unless --crop-only is set.")
+    if not args.metadata_only and not args.pdf:
+        parser.error("--pdf is required unless --metadata-only is set.")
     return args
 
 
@@ -440,6 +505,35 @@ def crop_custom_box(
     )
 
 
+def validate_question_metadata(q_meta: dict) -> tuple[str, str | None]:
+    """Validate required questionClass, optional secondaryClass, and teachingGuide.homeTip."""
+    q_num = q_meta.get("number")
+    q_class = str(q_meta.get("questionClass") or "").strip()
+    if q_class not in QUESTION_CLASSES:
+        raise ValueError(
+            f"Question #{q_num} has invalid or missing questionClass {q_class!r}; "
+            f"expected one of {sorted(QUESTION_CLASSES.keys())}."
+        )
+    sec_raw = q_meta.get("secondaryClass")
+    sec_class = str(sec_raw).strip() if sec_raw else None
+    if sec_class is not None:
+        if sec_class not in QUESTION_CLASSES:
+            raise ValueError(
+                f"Question #{q_num} has invalid secondaryClass {sec_class!r}; "
+                f"expected one of {sorted(QUESTION_CLASSES.keys())}."
+            )
+        if sec_class == q_class:
+            raise ValueError(
+                f"Question #{q_num} secondaryClass {sec_class!r} must differ from questionClass."
+            )
+    guide = q_meta.get("teachingGuide")
+    if not isinstance(guide, dict) or not str(guide.get("homeTip") or "").strip():
+        raise ValueError(
+            f"Question #{q_num} teachingGuide.homeTip must be a non-empty string."
+        )
+    return q_class, sec_class
+
+
 def validate_answer_key(
     selected_questions: list[dict], answer_key_path: Path | None
 ) -> None:
@@ -507,6 +601,24 @@ def build_preview_html(pack_data: dict) -> str:
             for prompt in guide.get("askTheKids", [])
         )
         rel_img = f"images/q{int(q['number']):02d}.png"
+        cls_info = QUESTION_CLASSES.get(q.get("questionClass", ""), {})
+        cls_badge = (
+            f'<span class="badge qcls">{html.escape(cls_info.get("icon", "🏷️"))} {html.escape(cls_info.get("label", q.get("questionClass", "")))}</span>'
+            if q.get("questionClass")
+            else ""
+        )
+        sec_info = QUESTION_CLASSES.get(q.get("secondaryClass", ""), {})
+        sec_badge = (
+            f'<span class="badge qsec">+ {html.escape(sec_info.get("shortLabel", q.get("secondaryClass", "")))}</span>'
+            if q.get("secondaryClass")
+            else ""
+        )
+        home_tip = guide.get("homeTip", "")
+        home_tip_html = (
+            f'<h3>Try at Home</h3><p>{html.escape(home_tip)}</p>'
+            if home_tip
+            else ""
+        )
         cards.append(
             f"""
             <article class="card">
@@ -515,6 +627,8 @@ def build_preview_html(pack_data: dict) -> str:
                   <span class="badge qnum">Question #{q['number']}</span>
                   <span class="badge pts">{q['points']} pts</span>
                   <span class="badge ans">Answer: ({html.escape(q['correctOption'])})</span>
+                  {cls_badge}
+                  {sec_badge}
                 </div>
                 <h2>{html.escape(q.get('title', ''))}</h2>
                 <p class="summary">{html.escape(q.get('promptSummary', ''))}</p>
@@ -534,6 +648,7 @@ def build_preview_html(pack_data: dict) -> str:
                     <ul>{ask_html}</ul>
                     <h3>Common Traps</h3>
                     <p>{html.escape(guide.get('commonTraps', ''))}</p>
+                    {home_tip_html}
                   </div>
                 </div>
               </section>
@@ -587,6 +702,8 @@ def build_preview_html(pack_data: dict) -> str:
     .qnum {{ background: #ECE7DF; color: #1E242B; }}
     .pts {{ background: #FDF2E4; color: #A85A14; }}
     .ans {{ background: #E6F4F1; color: #1F6F61; }}
+    .qcls {{ background: #F2ECE1; color: #1E242B; border: 1px solid #CFC4B2; }}
+    .qsec {{ background: #FCECE7; color: #B94827; }}
     .img-wrap {{
       border: 1px solid #E6DDD0;
       border-radius: 10px;
@@ -763,7 +880,7 @@ def run_crop_only(
 
 
 def compile_pack(
-    pdf_path: Path,
+    pdf_path: Path | None,
     metadata_path: Path,
     part: int | None = None,
     questions_override: list[int] | None = None,
@@ -773,8 +890,9 @@ def compile_pack(
     update_index: bool = True,
     set_default: bool = False,
     answer_key_path: Path | None = None,
+    metadata_only: bool = False,
 ) -> dict:
-    """Run the full PDF-to-Question-Pack compilation pipeline."""
+    """Run the PDF-to-Question-Pack compilation pipeline (or metadata-only rebuild)."""
     metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
     week_id = week_id_override or metadata["weekId"]
 
@@ -791,49 +909,84 @@ def compile_pack(
             f"Metadata {metadata_path} is missing entries for questions: {missing_meta}"
         )
 
+    validated_classes: dict[int, tuple[str, str | None]] = {}
+    for q_num in selected_numbers:
+        validated_classes[q_num] = validate_question_metadata(meta_by_num[q_num])
+
     target_dir = out_dir or (Path("webapp") / "packs" / week_id)
     images_dir = target_dir / "images"
     images_dir.mkdir(parents=True, exist_ok=True)
 
-    with tempfile.TemporaryDirectory(prefix="mk_pack_") as tmp:
-        tmp_dir = Path(tmp)
-        page_pngs = render_pdf_pages(pdf_path, tmp_dir)
-        page_heights = {p: get_image_dimensions(p)[1] for p in page_pngs}
-
-        needs_bands = any(not meta_by_num[n].get("customBox") for n in selected_numbers)
-        if needs_bands:
-            bands, _diag, _warnings = detect_all_bands_with_diagnostics(
-                page_pngs, strict=False
-            )
-            bands_by_num = {num: (page_png, y0, y1) for num, page_png, y0, y1 in bands}
-        else:
-            bands_by_num = {}
-
-        compiled_questions: list[dict] = []
+    compiled_questions: list[dict] = []
+    if metadata_only:
         for q_num in selected_numbers:
             q_meta = dict(meta_by_num[q_num])
             img_name = f"q{q_num:02d}.png"
             dest_png = images_dir / img_name
-            w, h = _crop_single_question(
-                q_num=q_num,
-                q_meta=q_meta,
-                page_pngs=page_pngs,
-                page_heights=page_heights,
-                bands_by_num=bands_by_num,
-                dest_png=dest_png,
-            )
+            if not dest_png.is_file():
+                raise FileNotFoundError(
+                    f"Existing image missing for --metadata-only: {dest_png}"
+                )
+            w, h = get_image_dimensions(dest_png)
+            q_class, sec_class = validated_classes[q_num]
             q_record = {
                 "number": int(q_meta["number"]),
                 "points": int(q_meta["points"]),
                 "title": q_meta["title"],
                 "promptSummary": q_meta["promptSummary"],
                 "correctOption": str(q_meta["correctOption"]).strip().upper(),
+                "questionClass": q_class,
+                **({"secondaryClass": sec_class} if sec_class else {}),
                 "imageUrl": f"packs/{week_id}/images/{img_name}",
                 "imageWidth": w,
                 "imageHeight": h,
                 "teachingGuide": q_meta["teachingGuide"],
             }
             compiled_questions.append(q_record)
+    else:
+        if pdf_path is None:
+            raise ValueError("pdf_path is required unless metadata_only=True.")
+        with tempfile.TemporaryDirectory(prefix="mk_pack_") as tmp:
+            tmp_dir = Path(tmp)
+            page_pngs = render_pdf_pages(pdf_path, tmp_dir)
+            page_heights = {p: get_image_dimensions(p)[1] for p in page_pngs}
+
+            needs_bands = any(not meta_by_num[n].get("customBox") for n in selected_numbers)
+            if needs_bands:
+                bands, _diag, _warnings = detect_all_bands_with_diagnostics(
+                    page_pngs, strict=False
+                )
+                bands_by_num = {num: (page_png, y0, y1) for num, page_png, y0, y1 in bands}
+            else:
+                bands_by_num = {}
+
+            for q_num in selected_numbers:
+                q_meta = dict(meta_by_num[q_num])
+                img_name = f"q{q_num:02d}.png"
+                dest_png = images_dir / img_name
+                w, h = _crop_single_question(
+                    q_num=q_num,
+                    q_meta=q_meta,
+                    page_pngs=page_pngs,
+                    page_heights=page_heights,
+                    bands_by_num=bands_by_num,
+                    dest_png=dest_png,
+                )
+                q_class, sec_class = validated_classes[q_num]
+                q_record = {
+                    "number": int(q_meta["number"]),
+                    "points": int(q_meta["points"]),
+                    "title": q_meta["title"],
+                    "promptSummary": q_meta["promptSummary"],
+                    "correctOption": str(q_meta["correctOption"]).strip().upper(),
+                    "questionClass": q_class,
+                    **({"secondaryClass": sec_class} if sec_class else {}),
+                    "imageUrl": f"packs/{week_id}/images/{img_name}",
+                    "imageWidth": w,
+                    "imageHeight": h,
+                    "teachingGuide": q_meta["teachingGuide"],
+                }
+                compiled_questions.append(q_record)
 
     validate_answer_key(compiled_questions, answer_key_path)
 
@@ -874,16 +1027,18 @@ def _default_draft_week_id(pdf_path: Path) -> str:
 
 def main(argv: list[str] | None = None) -> int:
     """CLI entrypoint."""
-    for tool in ("pdftoppm", "convert", "identify"):
+    args = parse_args(argv)
+    required_tools = ("identify",) if args.metadata_only else ("pdftoppm", "convert", "identify")
+    for tool in required_tools:
         if not shutil.which(tool):
             print(f"Error: required tool '{tool}' not found in PATH.", file=sys.stderr)
             return 1
 
-    args = parse_args(argv)
-    pdf_path = Path(args.pdf)
+    pdf_path = Path(args.pdf) if args.pdf else None
     metadata_path = Path(args.metadata) if args.metadata else None
 
     if args.crop_only:
+        assert pdf_path is not None
         metadata = (
             json.loads(metadata_path.read_text(encoding="utf-8"))
             if metadata_path is not None
@@ -943,6 +1098,7 @@ def main(argv: list[str] | None = None) -> int:
         update_index=not args.no_index,
         set_default=args.set_default,
         answer_key_path=answer_key_path,
+        metadata_only=args.metadata_only,
     )
     print(
         f"Compiled pack '{pack_data['weekId']}' ({pack_data['questionCount']} questions, "

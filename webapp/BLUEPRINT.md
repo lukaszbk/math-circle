@@ -13,9 +13,10 @@ Provides the touch-first tablet interface used by 3rd graders to view problems a
 
 ## Core User Flows & Business Rules
 
-### 1. Home Screen (Profile Picker)
+### 1. Home Screen (Profile Picker) & URL Routing
 - Displays the active week title (e.g., *"Math Kangaroo 2022 · Part 1"*) and a grid of student profile cards showing each student's name, friendly animal icon, and a subtle `"Submitted ✓"` badge if they already turned in answers this week.
-- Includes a discreet **"Teacher Zone"** button in the header/corner.
+- Includes discreet **"👪 Parent Zone"** and **"🔒 Teacher Zone"** buttons in the header.
+- Visiting `?parent`, `?zone=parent`, or `#parent` routes directly to a clean mobile-friendly Parent Zone unlock screen and opens the 6-digit Parent PIN modal (keeping phone users off the kid profile picker if cancelled).
 
 ### 2. Student PIN Entry & Answer Input
 - Tapping a student card opens a 4-digit numeric keypad. The PIN is verified against `sheet-backend`.
@@ -35,26 +36,29 @@ Provides the touch-first tablet interface used by 3rd graders to view problems a
   - Wrong or blank answer: `0` points (no negative penalty).
 
 ### 4. Teacher Zone (Protected by PIN `885174`)
-Entering `885174` on the Teacher keypad unlocks four focused tabs:
+Entering `885174` on the Teacher keypad unlocks five focused tabs:
 
 1. **Class Ranking & Answer Matrix:**
    - Shows submission progress (`X of Y students submitted`) with a one-tap **Refresh** button (plus optional auto-refresh during break).
-   - Ranks submitted students by **Total Score descending** (ties broken by 5-point score, then 4-point score, then alphabetical name; tied scores share the same rank number).
+   - Ranks submitted active students by **Total Score descending** (ties broken by 5-point score, then 4-point score, then alphabetical name; tied scores share the same rank number).
    - Displays a compact student × question matrix: green `✓` for correct, red letter (e.g., `✗ B`) showing the **exact wrong choice picked**, and muted `—` for blank.
 
 2. **"Solve Together" Priority List:**
-   - Automatically ranks all 12 questions by classroom difficulty to build the post-break whiteboard agenda:
-     1. **Missed count** (wrong + blank) descending,
-     2. **Wrong count** descending (active misconception prioritized over skipped),
-     3. **Point value** descending (`5 > 4 > 3`),
-     4. **Question number** ascending.
-   - Flags any question missed by **≥ 40% of submitted students** (or ≥ 2 students in groups smaller than 5) with a **"Solve Together"** highlight badge.
-   - Displays an **A–E + Blank distribution bar** per question and triggers a **"Common Trap"** callout whenever 2 or more students select the same wrong option (e.g., *"Trap Alert: 4 kids picked B"*).
+   - Automatically ranks all 12 questions by classroom difficulty to build the post-break whiteboard agenda (`missedCount` desc → `wrongCount` desc → `points` desc → `number` asc), displaying each problem's `questionClass` pill, A–E + Blank distribution bar, and **"Common Trap"** callouts.
 
 3. **Whiteboard & AI Teaching Companion:**
-   - Selecting any question opens a dedicated view with two modes:
-     - **Whiteboard Projection View:** Clean, large view of the problem diagram and choices with the answer hidden, suitable for showing on a TV/projector or tablet at the board.
-     - **Teacher Solution Guide (Toggle):** Reveals the verified correct answer, the core mathematical idea in 3rd-grade language, a concrete step-by-step whiteboard walkthrough, Socratic questions to ask the kids, and explanations of why the common wrong options fail.
+   - Selecting any question opens a clean **Whiteboard Projection View** with its `questionClass` badge and a toggleable **Teacher Solution Guide** (`correctOption`, core idea, walkthrough steps, Socratic questions, common traps). Supports projecting questions from past weeks opened from Tab 5 without changing the global active week for tablets.
 
-4. **Roster & Week Selector:**
-   - Allows the teacher to add/edit student names, avatars, and 4-digit PINs (synced directly to the Google Sheet `Students` tab) and switch between bundled weekly Question Packs.
+4. **Roster, PINs & Cards:**
+   - Allows the teacher to add/edit student names, avatars, 4-digit student PINs, and unique 6-digit `parentPin`s (with per-row regenerate button and show/hide toggle), switch the active weekly pack, configure/test the Apps Script `/exec` URL, and open **🖨️ Print Parent Cards** (2×4 printable cards featuring an offline-generated SVG QR code to `?parent` from `qr.js` and 6 boxed PIN digits).
+
+5. **Multi-Week & Topics:**
+   - Per-pack **Parent Release Controls** (`🔒 Locked` ↔ `🔓 Released to Parents`).
+   - **Class-Wide Accuracy by Math Kangaroo Class** (sorted weakest → strongest across all submitted packs, with clickable toughest-question chips jumping to Whiteboard).
+   - **Student × Question-Class Mastery Heatmap** across all active students and practiced classes.
+
+### 5. Parent Zone (Protected by Unique 6-Digit Family `parentPin`)
+Mobile-first (`360px+`) family portal unlocked via the student's unique 6-digit `parentPin`. Unreleased submitted weeks appear only as `"✓ Submitted <Pack Title> in class — detailed review unlocks once released by the teacher"`, and class benchmarks are suppressed whenever `< 4` active students submitted:
+1. **Scores & Progress:** Interactive SVG multi-week progression chart (`Trajectory + Class Band` over `P25–P75` + `Median`, toggleable to `3 / 4 / 5-Pt Stacked Bars`), clickable weeks, upleveled `0–48` cohort gauge (`🚀 Leading the Pack` / `🎯 Right in the Pack` / `🌱 Building Foundations`), deterministic habit callouts (positive-only blank tip, 3-pt warmup check), and `3 / 4 / 5-pt` Child vs. Class Average bars.
+2. **Test Review:** Week switcher and `Needs Review` / `All 12` / `Solved ✓` filters, `questionClass` & upleveled class solve-rate badges, tap-to-zoom problem diagrams, deterministic Common Trap reassurance, and 2-stage Socratic coaching (`askTheKids` + `homeTip` upfront; `correctOption`, `headline`, `steps`, `commonTraps` revealed on demand).
+3. **Work On at Home:** Cumulative Question-Class Skill Profile (`Focus Areas` & `Strong Areas`), curated screen-free 3rd-grade tabletop playbooks (`HOME_PLAYBOOKS`), and a Priority Re-Try Queue (3-pt & 4-pt foundations first) that jumps directly into Test Review.

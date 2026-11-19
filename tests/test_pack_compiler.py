@@ -73,6 +73,11 @@ class TestPackCompiler(unittest.TestCase):
             self.assertIsInstance(guide.get("askTheKids"), list)
             self.assertGreaterEqual(len(guide["askTheKids"]), 1)
             self.assertTrue(guide.get("commonTraps", "").strip())
+            self.assertTrue(guide.get("homeTip", "").strip())
+            self.assertIn(q.get("questionClass"), compile_pack.QUESTION_CLASSES)
+            if "secondaryClass" in q and q["secondaryClass"]:
+                self.assertIn(q["secondaryClass"], compile_pack.QUESTION_CLASSES)
+                self.assertNotEqual(q["secondaryClass"], q["questionClass"])
 
     def test_preview_and_index_files_exist(self) -> None:
         preview = self.PACK_DIR / "preview.html"
@@ -80,6 +85,8 @@ class TestPackCompiler(unittest.TestCase):
         html_text = preview.read_text(encoding="utf-8")
         self.assertIn("q01.png", html_text)
         self.assertIn("q20.png", html_text)
+        self.assertIn("Try at Home", html_text)
+        self.assertIn("2D Shapes, Symmetry &amp; Paths", html_text)
 
         self.assertTrue(self.INDEX_PATH.is_file())
         index_data = json.loads(self.INDEX_PATH.read_text(encoding="utf-8"))
@@ -106,6 +113,11 @@ class TestPackCompiler(unittest.TestCase):
         for q in pack["questions"]:
             img_path = REPO_ROOT / "webapp" / q["imageUrl"]
             self.assertTrue(img_path.is_file(), f"Missing 2021 Part 1 image {img_path}")
+            self.assertIn(q.get("questionClass"), compile_pack.QUESTION_CLASSES)
+            self.assertTrue(q["teachingGuide"].get("homeTip", "").strip())
+            if q.get("secondaryClass"):
+                self.assertIn(q["secondaryClass"], compile_pack.QUESTION_CLASSES)
+                self.assertNotEqual(q["secondaryClass"], q["questionClass"])
 
     def test_compiled_part2_pack_manifest_and_images(self) -> None:
         part2_dir = REPO_ROOT / "webapp" / "packs" / "2022-g34-part2"
@@ -124,6 +136,19 @@ class TestPackCompiler(unittest.TestCase):
         for q in pack["questions"]:
             img_path = REPO_ROOT / "webapp" / q["imageUrl"]
             self.assertTrue(img_path.is_file(), f"Missing Part 2 image {img_path}")
+            self.assertIn(q.get("questionClass"), compile_pack.QUESTION_CLASSES)
+            self.assertTrue(q["teachingGuide"].get("homeTip", "").strip())
+            if q.get("secondaryClass"):
+                self.assertIn(q["secondaryClass"], compile_pack.QUESTION_CLASSES)
+                self.assertNotEqual(q["secondaryClass"], q["questionClass"])
+
+    def test_metadata_validation_rejects_invalid_fields(self) -> None:
+        with self.assertRaises(ValueError):
+            compile_pack.validate_question_metadata({"number": 1, "questionClass": "bad-id", "teachingGuide": {"homeTip": "x"}})
+        with self.assertRaises(ValueError):
+            compile_pack.validate_question_metadata({"number": 1, "questionClass": "shapes-2d", "secondaryClass": "shapes-2d", "teachingGuide": {"homeTip": "x"}})
+        with self.assertRaises(ValueError):
+            compile_pack.validate_question_metadata({"number": 1, "questionClass": "shapes-2d", "teachingGuide": {"homeTip": "   "}})
 
     @staticmethod
     def _write_synthetic_unruled_pdf(pdf_path: Path) -> None:
@@ -223,6 +248,7 @@ class TestPackCompiler(unittest.TestCase):
                         "title": "Custom Box Question",
                         "promptSummary": "Synthetic unruled box test",
                         "correctOption": "A",
+                        "questionClass": "shapes-2d",
                         "customBox": {
                             "page": 1,
                             "x": 400,
@@ -238,6 +264,7 @@ class TestPackCompiler(unittest.TestCase):
                             "steps": ["Read coordinates from page-1-ruled.png."],
                             "askTheKids": ["What does the mask cover?"],
                             "commonTraps": "None.",
+                            "homeTip": "Practice measuring boxes on ruled paper.",
                         },
                     }
                 ],

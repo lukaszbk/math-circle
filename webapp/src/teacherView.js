@@ -1,4 +1,10 @@
 import { APP_CONFIG } from '../config.js';
+import { renderQrSvg } from './qr.js';
+import {
+  QUESTION_CLASSES,
+  computeCohortClassStats,
+  getQuestionClassMeta
+} from './questionClasses.js';
 import { VALID_OPTIONS, rankSubmissions, triageQuestions } from './scoring.js';
 import { escapeHtml } from './utils.js';
 
@@ -15,7 +21,99 @@ function rankBadgeClass(rank) {
   return '';
 }
 
-function renderRankingTab(pack, report, onOpenWhiteboard) {
+function shortWeekLabel(weekId) {
+  const m = String(weekId || '').match(/^(\d{4})-g\d+-part(\d+)$/i);
+  if (m) return `${m[1]} P${m[2]}`;
+  return String(weekId || '');
+}
+
+export function getParentPortalUrl(loc = (typeof window !== 'undefined' ? window.location : null)) {
+  if (!loc) return '?parent';
+  const base = `${loc.origin || ''}${loc.pathname || '/'}`;
+  return `${base}?parent`;
+}
+
+export function openPrintParentCardsModal({ students, onClose }) {
+  const modalRoot = document.getElementById('modal-root');
+  if (!modalRoot) return;
+
+  const activeStudents = (students || []).filter((s) => s.active !== false);
+  const parentUrl = getParentPortalUrl();
+
+  const cleanup = () => {
+    document.removeEventListener('keydown', onKeyDown);
+    modalRoot.innerHTML = '';
+    if (onClose) onClose();
+  };
+  const onKeyDown = (ev) => {
+    if (ev.key === 'Escape') cleanup();
+  };
+  document.addEventListener('keydown', onKeyDown);
+
+  const cardsHtml = activeStudents.length === 0
+    ? `<p class="brand-subtitle">No active students in roster yet.</p>`
+    : activeStudents.map((st) => {
+      const pPin = String(st.parentPin || '000000').padStart(6, '0');
+      const digitBoxes = pPin
+        .split('')
+        .map((d) => `<span class="pin-box">${escapeHtml(d)}</span>`)
+        .join('');
+      const qrSvg = renderQrSvg(parentUrl, {
+        sizePx: 112,
+        quiet: 4,
+        label: `Parent Zone QR for ${st.name}`
+      });
+      return `
+        <article class="parent-print-card">
+          <div class="print-card-top">
+            <div>
+              <div class="print-card-eyebrow">🦘 Math Kangaroo Circle · Parent Zone</div>
+              <h4 class="print-card-name">${escapeHtml(st.avatar || '🦊')} ${escapeHtml(st.name)}</h4>
+            </div>
+          </div>
+          <div class="print-card-body">
+            <div class="print-card-qr">${qrSvg}</div>
+            <div class="print-card-info">
+              <div class="print-pin-label">6-Digit Family Parent PIN</div>
+              <div class="print-pin-boxes" aria-label="Parent PIN ${escapeHtml(pPin)}">${digitBoxes}</div>
+              <p class="print-card-url">${escapeHtml(parentUrl)}</p>
+              <p class="print-card-note">Scan QR &amp; enter your private PIN to view released scores, step-by-step solutions, and at-home practice ideas.</p>
+            </div>
+          </div>
+        </article>
+      `;
+    }).join('');
+
+  modalRoot.innerHTML = `
+    <div class="modal-backdrop print-modal-backdrop" role="dialog" aria-modal="true" aria-label="Print Parent Access Cards">
+      <div class="modal-card zoom-modal print-modal-card">
+        <div class="modal-head no-print">
+          <div>
+            <h3>🖨️ Printable Parent Zone Access Cards (${activeStudents.length})</h3>
+            <p class="brand-subtitle">Cut along borders (2×4 per page). Each card shows one family's private 6-digit Parent PIN.</p>
+          </div>
+          <div class="header-actions">
+            <button type="button" class="btn btn-primary btn-sm" data-action="trigger-print">🖨️ Print Cards</button>
+            <button type="button" class="btn btn-secondary btn-sm" data-action="close-print-cards">Done</button>
+          </div>
+        </div>
+        <div class="print-cards-grid">
+          ${cardsHtml}
+        </div>
+      </div>
+    </div>
+  `;
+
+  modalRoot.querySelector('[data-action="trigger-print"]')?.addEventListener('click', () => {
+    window.print();
+  });
+  modalRoot.querySelector('[data-action="close-print-cards"]')?.addEventListener('click', cleanup);
+  modalRoot.querySelector('.modal-backdrop')?.addEventListener('click', (ev) => {
+    if (ev.target.classList.contains('modal-backdrop')) cleanup();
+  });
+}
+
+function renderRankingTab(pack, report) {
   const students = report?.students || [];
   const activeStudents = students.filter((s) => s.active !== false);
   const submissions = report?.submissions || [];
@@ -76,7 +174,7 @@ function renderRankingTab(pack, report, onOpenWhiteboard) {
         <div>
           <h2>Class Ranking</h2>
           <p class="brand-subtitle">
-            <strong>${submissions.length} of ${activeStudents.length}</strong> students submitted
+            <strong>${submissions.length} of ${activeStudents.length}</strong> active students submitted
             · Class average: <strong>${avgScore} / ${pack.maxScore}</strong>
           </p>
         </div>
@@ -130,6 +228,7 @@ function renderTriageTab(pack, report) {
 
   const cards = triaged.map((q) => {
     const pct = q.submittedCount > 0 ? Math.round(q.accuracyRate * 100) : 0;
+    const qc = q.questionClass ? getQuestionClassMeta(q.questionClass) : null;
     const trapBadges = q.commonTraps.map(
       (t) => `<span class="tag-badge tag-trap">Common Trap: ${t.count} picked (${escapeHtml(t.option)})</span>`
     ).join('');
@@ -150,6 +249,7 @@ function renderTriageTab(pack, report) {
           <div class="badge-row">
             <span class="problem-num-badge">#${q.number}</span>
             <span class="tier-label ${tierClass(q.points)}">${q.points} pts</span>
+            ${qc ? `<span class="tag-badge class-pill">${escapeHtml(qc.icon)} ${escapeHtml(qc.shortLabel)}</span>` : ''}
             <strong>${escapeHtml(q.title)}</strong>
             ${q.solveTogether ? `<span class="tag-badge tag-solve">Solve Together</span>` : ''}
             ${q.submittedCount > 0 && !q.solveTogether ? `<span class="tag-badge tag-ok">${pct}% correct</span>` : ''}
@@ -181,17 +281,25 @@ function renderTriageTab(pack, report) {
   `;
 }
 
-function renderWhiteboardTab(pack, report, state) {
-  const questions = pack?.questions || [];
+function renderWhiteboardTab(pack, packsById, activeWeekId, report, state) {
+  const wbWeekId = state.whiteboardWeekId || activeWeekId;
+  const wbPack = (packsById && packsById[wbWeekId]) || pack;
+  const questions = wbPack?.questions || [];
   const activeNum = state.whiteboardQuestionNum || questions[0]?.number;
   const q = questions.find((item) => item.number === activeNum) || questions[0];
   if (!q) return '';
 
+  const isActiveWeek = wbPack.weekId === activeWeekId;
+  const subList = isActiveWeek
+    ? (report?.submissions || [])
+    : (report?.allSubmissions || []).filter((s) => s.weekId === wbPack.weekId);
+
   const triagedMap = new Map(
-    triageQuestions(pack, report?.submissions || []).map((item) => [item.number, item])
+    triageQuestions(wbPack, subList).map((item) => [item.number, item])
   );
   const stats = triagedMap.get(q.number);
   const guide = q.teachingGuide || {};
+  const qc = q.questionClass ? getQuestionClassMeta(q.questionClass) : null;
 
   const strip = [3, 4, 5].map((pts) => {
     const group = questions.filter((item) => item.points === pts);
@@ -235,13 +343,22 @@ function renderWhiteboardTab(pack, report, state) {
     </div>
   ` : '';
 
+  const previewBanner = !isActiveWeek ? `
+    <div class="sync-banner" style="margin-bottom:14px;">
+      <div>Viewing <strong>${escapeHtml(wbPack.title)}</strong> on Whiteboard (student tablets stay on ${escapeHtml(activeWeekId)}).</div>
+      <button type="button" class="btn btn-secondary btn-sm" data-action="wb-reset-week">Return to Active Week</button>
+    </div>
+  ` : '';
+
   return `
+    ${previewBanner}
     <div class="q-strip-card">${strip}</div>
     <section class="problem-card">
       <div class="problem-head">
         <div class="problem-title-wrap">
           <span class="problem-num-badge">Question #${q.number}</span>
           <span class="tier-label ${tierClass(q.points)}">${q.points} Points</span>
+          ${qc ? `<span class="tag-badge class-pill">${escapeHtml(qc.icon)} ${escapeHtml(qc.label)}</span>` : ''}
           <h2 class="problem-name">${escapeHtml(q.title)}</h2>
         </div>
         <button type="button" class="btn ${state.revealGuide ? 'btn-secondary' : 'btn-sage'}" data-action="toggle-guide">
@@ -281,14 +398,36 @@ function renderRosterTab(packIndex, activeWeekId, report, storage, state) {
       </td>
       <td>
         <input
-          type="${showPins ? 'text' : 'password'}"
+          type="text"
           inputmode="numeric"
           maxlength="4"
-          class="input-field input-pin"
+          autocomplete="off"
+          data-1p-ignore="true"
+          data-lpignore="true"
+          class="input-field input-pin ${showPins ? '' : 'pin-masked'}"
           data-field="pin"
           value="${escapeHtml(st.pin || '')}"
           placeholder="0000"
+          aria-label="Student 4-digit PIN"
         />
+      </td>
+      <td>
+        <div class="parent-pin-cell">
+          <input
+            type="text"
+            inputmode="numeric"
+            maxlength="6"
+            autocomplete="off"
+            data-1p-ignore="true"
+            data-lpignore="true"
+            class="input-field input-parent-pin ${showPins ? '' : 'pin-masked'}"
+            data-field="parentPin"
+            value="${escapeHtml(st.parentPin || '')}"
+            placeholder="auto-6"
+            aria-label="Parent 6-digit PIN"
+          />
+          <button type="button" class="btn btn-ghost btn-sm" data-regen-parent-pin="${idx}" title="Regenerate unique 6-digit Parent PIN" aria-label="Regenerate Parent PIN">🎲</button>
+        </div>
       </td>
       <td style="text-align:center;">
         <input type="checkbox" data-field="active" ${st.active !== false ? 'checked' : ''} aria-label="Active" style="width:22px; height:22px;" />
@@ -300,13 +439,14 @@ function renderRosterTab(packIndex, activeWeekId, report, storage, state) {
     <section class="panel-card">
       <div class="panel-head">
         <div>
-          <h2>Student Roster &amp; 4-Digit PINs</h2>
-          <p class="brand-subtitle">Leading-zero PINs like <code>0412</code> are preserved as 4-character text.</p>
+          <h2>Student Roster, PINs &amp; Parent Access</h2>
+          <p class="brand-subtitle">Leading-zero 4-digit Student PINs and unique 6-digit Parent PINs are preserved as plain text.</p>
         </div>
         <div class="header-actions">
           <button type="button" class="btn btn-secondary btn-sm" data-action="toggle-show-pins">
             ${showPins ? '🙈 Hide PINs' : '👁️ Show PINs'}
           </button>
+          <button type="button" class="btn btn-sage btn-sm" data-action="print-parent-cards">🖨️ Print Parent Cards</button>
           <button type="button" class="btn btn-secondary btn-sm" data-action="add-student-row">+ Add Student</button>
           <button type="button" class="btn btn-primary btn-sm" data-action="save-roster">Save Roster to Sheet</button>
         </div>
@@ -319,7 +459,8 @@ function renderRosterTab(packIndex, activeWeekId, report, storage, state) {
               <th>Avatar</th>
               <th>Name</th>
               <th>Student ID</th>
-              <th>4-Digit PIN</th>
+              <th>Student PIN (4)</th>
+              <th>Parent PIN (6)</th>
               <th>Active</th>
             </tr>
           </thead>
@@ -391,10 +532,173 @@ function renderRosterTab(packIndex, activeWeekId, report, storage, state) {
   `;
 }
 
+function renderMultiWeekTab(packIndex, packsById, report) {
+  const packs = packIndex?.packs || [];
+  const students = report?.students || [];
+  const activeStudents = students.filter((s) => s.active !== false);
+  const activeIdSet = new Set(activeStudents.map((s) => s.studentId));
+  const releasedSet = new Set(report?.releasedWeekIds || []);
+  const allSubs = (report?.allSubmissions || report?.submissions || []).filter((s) => activeIdSet.has(s.studentId));
+
+  // 1. Parent Release Controls
+  const subCountByWeek = {};
+  for (const sub of allSubs) {
+    subCountByWeek[sub.weekId] = (subCountByWeek[sub.weekId] || 0) + 1;
+  }
+
+  const releaseCards = packs.map((p) => {
+    const isReleased = releasedSet.has(p.weekId);
+    const count = subCountByWeek[p.weekId] || 0;
+    return `
+      <div class="release-card ${isReleased ? 'released' : ''}">
+        <div>
+          <div class="badge-row" style="margin-bottom:4px;">
+            <strong>${escapeHtml(p.title)}</strong>
+            <span class="tag-badge ${isReleased ? 'tag-ok' : 'tag-trap'}">
+              ${isReleased ? '🔓 Released to Parents' : '🔒 Locked'}
+            </span>
+          </div>
+          <p class="brand-subtitle" style="margin:0;">
+            ${count} of ${activeStudents.length} active students submitted · ${escapeHtml(p.weekId)}
+          </p>
+        </div>
+        <button
+          type="button"
+          class="btn btn-sm ${isReleased ? 'btn-secondary' : 'btn-primary'}"
+          data-toggle-release="${escapeHtml(p.weekId)}"
+          data-next-released="${isReleased ? '0' : '1'}"
+        >${isReleased ? '🔒 Lock Results' : '🔓 Release to Parents'}</button>
+      </div>
+    `;
+  }).join('');
+
+  // 2. Class-Wide Question-Class Accuracy + 3. Student x Class Heatmap
+  const cohortStats = computeCohortClassStats({
+    packs: packsById,
+    allSubmissions: allSubs,
+    students
+  });
+
+  const classBarsHtml = cohortStats.classesSortedWeakestFirst.length === 0
+    ? `<p class="brand-subtitle" style="margin:0;">No multi-week submissions recorded for active students yet.</p>`
+    : cohortStats.classesSortedWeakestFirst.map((cls) => {
+      const barCls = cls.accuracyPct >= 75 ? 'child' : (cls.accuracyPct >= 50 ? 'warn' : 'focus');
+      const toughestChips = cls.questions.slice(0, 3).map((q) => `
+        <button
+          type="button"
+          class="chip-btn"
+          data-open-wb-week="${escapeHtml(q.weekId)}"
+          data-open-wb-q="${q.number}"
+          title="Open ${escapeHtml(q.weekTitle)} #${q.number} on Whiteboard"
+        >${escapeHtml(shortWeekLabel(q.weekId))} #${q.number} (${q.accuracyPct}%)</button>
+      `).join('');
+
+      return `
+        <article class="triage-card">
+          <div class="triage-top">
+            <div class="badge-row">
+              <strong>${escapeHtml(cls.icon)} ${escapeHtml(cls.label)}</strong>
+              <span class="brand-subtitle">(${cls.correct}/${cls.total} attempts · <strong>${cls.accuracyPct}%</strong>)</span>
+            </div>
+          </div>
+          <div class="compare-bar-track" style="margin-bottom:10px;">
+            <div class="compare-bar-fill ${barCls}" style="width:${cls.accuracyPct}%"></div>
+          </div>
+          <div class="badge-row">
+            <span class="brand-subtitle" style="font-size:0.82rem;">Toughest:</span>
+            ${toughestChips}
+          </div>
+        </article>
+      `;
+    }).join('');
+
+  const practicedClassIds = new Set(cohortStats.classesSortedWeakestFirst.map((c) => c.id));
+  const heatmapClasses = QUESTION_CLASSES.filter((qc) => practicedClassIds.has(qc.id));
+  const displayCols = heatmapClasses.length > 0 ? heatmapClasses : QUESTION_CLASSES;
+
+  const subsByStudentId = {};
+  for (const sub of allSubs) {
+    if (!subsByStudentId[sub.studentId]) subsByStudentId[sub.studentId] = [];
+    subsByStudentId[sub.studentId].push(sub);
+  }
+
+  const heatmapRows = activeStudents.length === 0
+    ? `<tr><td colspan="${displayCols.length + 3}" style="text-align:center; padding:20px; color:var(--ink-muted);">No active students in roster.</td></tr>`
+    : activeStudents.map((st) => {
+      const stSubs = subsByStudentId[st.studentId] || [];
+      const wksCount = stSubs.length;
+      const avgScore = wksCount > 0
+        ? (stSubs.reduce((acc, s) => acc + Number(s.totalScore || 0), 0) / wksCount).toFixed(1)
+        : '—';
+      const stMap = cohortStats.byStudentId[st.studentId] || {};
+      const cells = displayCols.map((qc) => {
+        const b = stMap[qc.id];
+        if (!b || b.total === 0) {
+          return `<td class="matrix-cell cell-blank">—</td>`;
+        }
+        const cls = b.pct >= 75 ? 'cell-ok' : (b.pct >= 50 ? 'cell-warn' : 'cell-wrong');
+        return `<td class="matrix-cell ${cls}" title="${escapeHtml(qc.label)}: ${b.correct}/${b.total}">${b.pct}%<br/><small>${b.correct}/${b.total}</small></td>`;
+      }).join('');
+      return `
+        <tr>
+          <td><strong>${escapeHtml(st.avatar)} ${escapeHtml(st.name)}</strong></td>
+          <td class="matrix-cell">${wksCount}</td>
+          <td class="matrix-cell"><strong>${avgScore}</strong></td>
+          ${cells}
+        </tr>
+      `;
+    }).join('');
+
+  return `
+    <section class="panel-card">
+      <div class="panel-head">
+        <div>
+          <h2>Parent Zone Release Controls</h2>
+          <p class="brand-subtitle">Packs stay locked to families until you release them after class whiteboard review.</p>
+        </div>
+      </div>
+      <div class="release-list">${releaseCards}</div>
+    </section>
+
+    <section class="panel-card">
+      <div class="panel-head">
+        <div>
+          <h2>Class-Wide Accuracy by Math Kangaroo Class</h2>
+          <p class="brand-subtitle">Sorted weakest → strongest across all submitted sessions. Click a tough question chip to project it on Whiteboard.</p>
+        </div>
+      </div>
+      <div class="triage-list">${classBarsHtml}</div>
+    </section>
+
+    <section class="panel-card">
+      <div class="panel-head">
+        <div>
+          <h2>Student × Question-Class Mastery Heatmap</h2>
+          <p class="brand-subtitle">Cumulative accuracy per student across all submitted packs.</p>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Student</th>
+              <th class="matrix-cell">Wks</th>
+              <th class="matrix-cell">Avg</th>
+              ${displayCols.map((qc) => `<th class="matrix-cell">${escapeHtml(qc.icon)}<br/>${escapeHtml(qc.shortLabel)}</th>`).join('')}
+            </tr>
+          </thead>
+          <tbody>${heatmapRows}</tbody>
+        </table>
+      </div>
+    </section>
+  `;
+}
+
 export function renderTeacherZone({
   appEl,
   pack,
   packIndex,
+  packsById,
   activeWeekId,
   report,
   storage,
@@ -406,16 +710,19 @@ export function renderTeacherZone({
     { id: 'ranking', label: '1. Class Ranking & Matrix' },
     { id: 'triage', label: '2. Solve Together Agenda' },
     { id: 'whiteboard', label: '3. Whiteboard & AI Guide' },
-    { id: 'roster', label: '4. Roster, PINs & Sheet Link' }
+    { id: 'roster', label: '4. Roster, PINs & Cards' },
+    { id: 'topics', label: '5. Multi-Week & Topics' }
   ];
 
   let bodyHtml = '';
   if (teacherState.activeTab === 'ranking') {
-    bodyHtml = renderRankingTab(pack, report, handlers.openWhiteboard);
+    bodyHtml = renderRankingTab(pack, report);
   } else if (teacherState.activeTab === 'triage') {
     bodyHtml = renderTriageTab(pack, report);
   } else if (teacherState.activeTab === 'whiteboard') {
-    bodyHtml = renderWhiteboardTab(pack, report, teacherState);
+    bodyHtml = renderWhiteboardTab(pack, packsById, activeWeekId, report, teacherState);
+  } else if (teacherState.activeTab === 'topics') {
+    bodyHtml = renderMultiWeekTab(packIndex, packsById, report);
   } else {
     bodyHtml = renderRosterTab(packIndex, activeWeekId, report, storage, teacherState);
   }
@@ -474,10 +781,18 @@ export function renderTeacherZone({
     btn.addEventListener('click', () => handlers.switchTab(btn.dataset.tab));
   });
   appEl.querySelectorAll('[data-whiteboard-q]').forEach((btn) => {
-    btn.addEventListener('click', () => handlers.openWhiteboard(Number(btn.dataset.whiteboardQ)));
+    btn.addEventListener('click', () => handlers.openWhiteboard(Number(btn.dataset.whiteboardQ), activeWeekId));
   });
   appEl.querySelectorAll('[data-open-wb]').forEach((btn) => {
-    btn.addEventListener('click', () => handlers.openWhiteboard(Number(btn.dataset.openWb)));
+    btn.addEventListener('click', () => handlers.openWhiteboard(Number(btn.dataset.openWb), activeWeekId));
+  });
+  appEl.querySelectorAll('[data-open-wb-week]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      handlers.openWhiteboard(Number(btn.dataset.openWbQ), btn.dataset.openWbWeek);
+    });
+  });
+  appEl.querySelector('[data-action="wb-reset-week"]')?.addEventListener('click', () => {
+    handlers.openWhiteboard(null, activeWeekId);
   });
   appEl.querySelectorAll('[data-wb-select]').forEach((btn) => {
     btn.addEventListener('click', () => handlers.selectWhiteboardQuestion(Number(btn.dataset.wbSelect)));
@@ -488,10 +803,23 @@ export function renderTeacherZone({
     handlers.openZoom(el.dataset.img, el.dataset.title);
   });
 
+  // Tab 5 release toggles
+  appEl.querySelectorAll('[data-toggle-release]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const wid = btn.dataset.toggleRelease;
+      const nextReleased = btn.dataset.nextReleased === '1';
+      handlers.setWeekReleased(wid, nextReleased);
+    });
+  });
+
   // Roster tab handlers
   appEl.querySelector('[data-action="toggle-show-pins"]')?.addEventListener('click', handlers.toggleShowPins);
+  appEl.querySelector('[data-action="print-parent-cards"]')?.addEventListener('click', handlers.openPrintCards);
   appEl.querySelector('[data-action="add-student-row"]')?.addEventListener('click', handlers.addStudentRow);
   appEl.querySelector('[data-action="save-roster"]')?.addEventListener('click', handlers.saveRoster);
+  appEl.querySelectorAll('[data-regen-parent-pin]').forEach((btn) => {
+    btn.addEventListener('click', () => handlers.regenerateDraftParentPin(Number(btn.dataset.regenParentPin)));
+  });
   appEl.querySelector('[data-action="apply-active-week"]')?.addEventListener('click', () => {
     const sel = appEl.querySelector('#week-select');
     if (sel) handlers.setActiveWeek(sel.value);

@@ -1,15 +1,17 @@
 import { APP_CONFIG } from '../config.js';
+import { renderParentZone } from './parentView.js';
 import { openPinModal } from './pinModal.js';
 import { VALID_OPTIONS, computeStudentScore, normalizeChoice } from './scoring.js';
 import { StorageClient } from './storage.js';
-import { renderTeacherZone } from './teacherView.js';
+import { openPrintParentCardsModal, renderTeacherZone } from './teacherView.js';
 import { escapeHtml, showToast } from './utils.js';
 
 const storage = new StorageClient(APP_CONFIG);
 
 const state = {
-  screen: 'home', // 'home' | 'student' | 'celebration' | 'teacher'
+  screen: 'home', // 'home' | 'student' | 'celebration' | 'teacher' | 'parent-gate' | 'parent'
   packIndex: null,
+  packsById: {},
   activeWeekId: APP_CONFIG.defaultWeekId,
   pack: null,
   roster: [],
@@ -22,11 +24,24 @@ const state = {
   currentQuestionIdx: 0,
   celebrationInfo: null,
 
+  // Parent session (cleared on Lock & Exit)
+  parentPin: null,
+  parentReport: null,
+  parentState: {
+    activeTab: 'scores',
+    chartMode: 'trajectory',
+    selectedWeekId: null,
+    reviewFilter: null,
+    revealedSolutions: {},
+    highlightQuestionKey: null
+  },
+
   // Teacher session
   teacherPin: null,
   teacherReport: null,
   teacherState: {
     activeTab: 'ranking',
+    whiteboardWeekId: null,
     whiteboardQuestionNum: null,
     revealGuide: false,
     showPins: false,
@@ -45,6 +60,17 @@ async function fetchJson(path) {
     throw new Error(`Failed to load ${path} (${res.status})`);
   }
   return res.json();
+}
+
+function isParentUrlRoute() {
+  if (typeof window === 'undefined' || !window.location) return false;
+  const params = new URLSearchParams(window.location.search || '');
+  return params.has('parent') || params.get('zone') === 'parent' || window.location.hash === '#parent';
+}
+
+function clearParentUrlRoute() {
+  if (typeof window === 'undefined' || !window.history?.replaceState || !isParentUrlRoute()) return;
+  window.history.replaceState({}, '', window.location.pathname || './');
 }
 
 function tierClass(points) {
@@ -218,6 +244,34 @@ async function performStudentSubmit(closeModalFn) {
   render();
 }
 
+async function ensurePackLoaded(weekId) {
+  if (!weekId) return null;
+  if (state.packsById[weekId]) return state.packsById[weekId];
+  if (!state.packIndex) {
+    state.packIndex = await fetchJson('packs/index.json');
+  }
+  const packEntry = (state.packIndex.packs || []).find((p) => p.weekId === weekId);
+  const packUrl = packEntry ? packEntry.packUrl : `packs/${weekId}/pack.json`;
+  const loaded = await fetchJson(packUrl);
+  state.packsById[weekId] = loaded;
+  return loaded;
+}
+
+async function ensurePacksLoaded(weekIds) {
+  const unique = Array.from(new Set((weekIds || []).filter(Boolean)));
+  await Promise.all(
+    unique.map((wid) => ensurePackLoaded(wid).catch(() => null))
+  );
+}
+
+async function ensureAllPacksLoaded() {
+  if (!state.packIndex) {
+    state.packIndex = await fetchJson('packs/index.json');
+  }
+  const allIds = (state.packIndex.packs || []).map((p) => p.weekId);
+  await ensurePacksLoaded(allIds);
+}
+
 async function loadPackAndRoster(preferredWeekId = null) {
   if (!state.packIndex) {
     state.packIndex = await fetchJson('packs/index.json');
@@ -229,12 +283,8 @@ async function loadPackAndRoster(preferredWeekId = null) {
     state.packIndex.defaultWeekId ||
     APP_CONFIG.defaultWeekId;
 
-  const packEntry = (state.packIndex.packs || []).find((p) => p.weekId === resolvedWeekId);
-  const packUrl = packEntry ? packEntry.packUrl : `packs/${resolvedWeekId}/pack.json`;
-
-  if (!state.pack || state.pack.weekId !== resolvedWeekId) {
-    state.pack = await fetchJson(packUrl);
-  }
+  const pack = await ensurePackLoaded(resolvedWeekId);
+  state.pack = pack;
   state.activeWeekId = resolvedWeekId;
   state.roster = rosterRes.students || [];
   state.rosterOfflineFallback = Boolean(rosterRes.offlineFallback);
@@ -292,16 +342,69 @@ function handleStudentCardTap(student) {
   });
 }
 
+function handleParentZoneTap() {
+  openPinModal({
+    title: '👪 Parent Zone',
+    subtitle: 'Enter your family’s 6-digit Parent PIN',
+    pinLength: 6,
+    verifyFn: async (pin) => {
+      const res = await storage.getParentReport(pin);
+      if (!res.ok) {
+        return { ok: false, error: res.error || 'Could not verify Parent PIN.' };
+      }
+      if (!res.valid) {
+        return { ok: false, error: 'That 6-digit Parent PIN did not match. Please try again.' };
+      }
+      const needWeeks = [...(res.releasedWeekIds || []), ...(res.unreleasedSubmittedWeekIds || [])];
+      await ensurePacksLoaded(needWeeks);
+      return { ok: true, report: res };
+    },
+    onSuccess: (verifiedPin, result) => {
+      const report = result.report;
+      const released = report.releasedWeekIds || [];
+      state.parentPin = verifiedPin;
+      state.parentReport = report;
+      state.parentState = {
+        activeTab: 'scores',
+        chartMode: 'trajectory',
+        selectedWeekId: released.length > 0 ? released[released.length - 1] : null,
+        reviewFilter: null,
+        revealedSolutions: {},
+        highlightQuestionKey: null
+      };
+      state.screen = 'parent';
+      render();
+    }
+  });
+}
+
+async function refreshParentReport() {
+  if (!state.parentPin) return;
+  const res = await storage.getParentReport(state.parentPin);
+  if (!res.ok || !res.valid) {
+    showToast(res.error || 'Could not refresh Parent Zone.', 'error');
+    return;
+  }
+  const needWeeks = [...(res.releasedWeekIds || []), ...(res.unreleasedSubmittedWeekIds || [])];
+  await ensurePacksLoaded(needWeeks);
+  state.parentReport = res;
+  const released = res.releasedWeekIds || [];
+  if (released.length > 0 && !released.includes(state.parentState.selectedWeekId)) {
+    state.parentState.selectedWeekId = released[released.length - 1];
+  }
+}
+
 function handleTeacherZoneTap() {
   openPinModal({
     title: '🔒 Teacher Zone',
     subtitle: 'Enter 6-digit Teacher PIN',
     pinLength: 6,
     verifyFn: async (pin) => {
-      const res = await storage.getTeacherReport(state.activeWeekId, pin);
+      const res = await storage.getTeacherReport(state.activeWeekId, pin, { includeAllWeeks: true });
       if (!res.ok) {
         return { ok: false, error: res.error || 'Incorrect Teacher PIN.' };
       }
+      await ensureAllPacksLoaded();
       return { ok: true, report: res };
     },
     onSuccess: (verifiedPin, result) => {
@@ -316,6 +419,9 @@ function handleTeacherZoneTap() {
 function applyTeacherReport(report) {
   state.teacherReport = report;
   state.teacherState.rosterDraft = (report.students || []).map((s) => ({ ...s }));
+  if (!state.teacherState.whiteboardWeekId) {
+    state.teacherState.whiteboardWeekId = state.activeWeekId;
+  }
   if (!state.teacherState.whiteboardQuestionNum && state.pack?.questions?.length) {
     state.teacherState.whiteboardQuestionNum = state.pack.questions[0].number;
   }
@@ -323,12 +429,31 @@ function applyTeacherReport(report) {
 
 async function loadTeacherReport() {
   if (!state.teacherPin) return;
-  const res = await storage.getTeacherReport(state.activeWeekId, state.teacherPin);
+  const res = await storage.getTeacherReport(state.activeWeekId, state.teacherPin, { includeAllWeeks: true });
   if (res.ok) {
+    await ensureAllPacksLoaded();
     applyTeacherReport(res);
   } else {
     showToast(res.error || 'Could not refresh report.', 'error');
   }
+}
+
+function generateDraftUniqueParentPin(rosterDraft, excludeIdx) {
+  const teacherPin = String(state.teacherPin || APP_CONFIG.defaultTeacherPin || '885174').trim();
+  const used = new Set();
+  rosterDraft.forEach((row, i) => {
+    if (i !== excludeIdx && row.parentPin) {
+      used.add(String(row.parentPin).trim());
+    }
+  });
+  for (let attempt = 0; attempt < 5000; attempt++) {
+    const candidate = String(Math.floor(Math.random() * 1000000)).padStart(6, '0');
+    const isWeak = /^(\d)\1{5}$/.test(candidate) || candidate === '123456' || candidate === '654321';
+    if (!isWeak && candidate !== teacherPin && !used.has(candidate)) {
+      return candidate;
+    }
+  }
+  return '000000';
 }
 
 function stopAutoRefresh() {
@@ -406,6 +531,7 @@ function renderHomeScreen() {
         </div>
         <div class="header-actions">
           <span class="status-pill ${statusCls}">${escapeHtml(storage.getBackendLabel())}</span>
+          <button type="button" class="btn btn-secondary btn-sm" data-action="open-parent">👪 Parent Zone</button>
           <button type="button" class="btn btn-secondary btn-sm" data-action="open-teacher">🔒 Teacher Zone</button>
         </div>
       </div>
@@ -426,6 +552,7 @@ function renderHomeScreen() {
     </main>
   `;
 
+  appEl.querySelector('[data-action="open-parent"]')?.addEventListener('click', handleParentZoneTap);
   appEl.querySelector('[data-action="open-teacher"]')?.addEventListener('click', handleTeacherZoneTap);
   appEl.querySelector('[data-action="retry-sync"]')?.addEventListener('click', handleRetrySync);
   appEl.querySelector('[data-action="refresh-home"]')?.addEventListener('click', async () => {
@@ -436,6 +563,50 @@ function renderHomeScreen() {
     card.addEventListener('click', () => {
       const student = state.roster.find((s) => s.studentId === card.dataset.studentId);
       if (student) handleStudentCardTap(student);
+    });
+  });
+}
+
+function renderParentGateScreen() {
+  const backendMode = storage.getBackendMode();
+  const statusCls = backendMode === 'apps-script' || backendMode === 'local-api' ? 'connected' : 'warn';
+
+  appEl.innerHTML = `
+    <header class="top-header">
+      <div class="top-header-inner">
+        <div class="brand-block">
+          <div class="brand-badge" aria-hidden="true">👪</div>
+          <div>
+            <h1 class="brand-title">Math Kangaroo Circle · Parent Zone</h1>
+            <p class="brand-subtitle">Weekly scores, step-by-step explanations &amp; home practice</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <span class="status-pill ${statusCls}">${escapeHtml(storage.getBackendLabel())}</span>
+          <button type="button" class="btn btn-ghost btn-sm" data-action="back-home">← Classroom Home</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="celebrate-wrap" style="border-color: var(--border);">
+        <div class="celebrate-emoji" aria-hidden="true">👪</div>
+        <h2>Welcome, Math Circle Families!</h2>
+        <p>Enter the private 6-digit Parent PIN from your child&rsquo;s printed Parent Access Card to view released test results and hands-on tabletop tips.</p>
+        <div class="header-actions" style="justify-content: center;">
+          <button type="button" class="btn btn-primary" data-action="unlock-parent">🔐 Enter 6-Digit Parent PIN</button>
+          <button type="button" class="btn btn-secondary" data-action="back-home">← Classroom Home</button>
+        </div>
+      </section>
+    </main>
+  `;
+
+  appEl.querySelector('[data-action="unlock-parent"]')?.addEventListener('click', handleParentZoneTap);
+  appEl.querySelectorAll('[data-action="back-home"]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      clearParentUrlRoute();
+      state.screen = 'home';
+      render();
     });
   });
 }
@@ -636,11 +807,94 @@ function render() {
     renderCelebrationScreen();
     return;
   }
+  if (state.screen === 'parent' && state.parentPin && state.parentReport) {
+    renderParentZone({
+      appEl,
+      packIndex: state.packIndex,
+      packsById: state.packsById,
+      report: state.parentReport,
+      storage,
+      parentState: state.parentState,
+      handlers: {
+        exitParent: async () => {
+          state.parentPin = null;
+          state.parentReport = null;
+          state.parentState = {
+            activeTab: 'scores',
+            chartMode: 'trajectory',
+            selectedWeekId: null,
+            reviewFilter: null,
+            revealedSolutions: {},
+            highlightQuestionKey: null
+          };
+          clearParentUrlRoute();
+          state.screen = 'home';
+          await refreshRosterOnly();
+          render();
+        },
+        refreshParentReport: async () => {
+          await refreshParentReport();
+          render();
+          showToast('Parent report refreshed.');
+        },
+        switchTab: (tabId) => {
+          state.parentState.activeTab = tabId;
+          state.parentState.highlightQuestionKey = null;
+          render();
+        },
+        setChartMode: (mode) => {
+          state.parentState.chartMode = mode;
+          render();
+        },
+        selectWeek: async (weekId) => {
+          await ensurePackLoaded(weekId).catch(() => null);
+          state.parentState.selectedWeekId = weekId;
+          state.parentState.highlightQuestionKey = null;
+          render();
+        },
+        setReviewFilter: (filter) => {
+          state.parentState.reviewFilter = filter;
+          state.parentState.highlightQuestionKey = null;
+          render();
+        },
+        toggleRevealSolution: (key) => {
+          state.parentState.revealedSolutions[key] = !state.parentState.revealedSolutions[key];
+          render();
+        },
+        jumpToQuestionReview: async (weekId, qNum) => {
+          await ensurePackLoaded(weekId).catch(() => null);
+          state.parentState.selectedWeekId = weekId;
+          state.parentState.activeTab = 'review';
+          state.parentState.reviewFilter = 'needs-review';
+          state.parentState.highlightQuestionKey = `${weekId}:${qNum}`;
+          render();
+          window.requestAnimationFrame(() => {
+            const el = document.getElementById(`review-q-${weekId}-${qNum}`);
+            if (el) {
+              el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+              // Fallback to all if puzzle wasn't in needs-review filter
+              state.parentState.reviewFilter = 'all';
+              render();
+              document.getElementById(`review-q-${weekId}-${qNum}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          });
+        },
+        openZoom: (img, title) => openZoomModal(img, title)
+      }
+    });
+    return;
+  }
+  if (state.screen === 'parent-gate') {
+    renderParentGateScreen();
+    return;
+  }
   if (state.screen === 'teacher' && state.teacherPin && state.pack) {
     renderTeacherZone({
       appEl,
       pack: state.pack,
       packIndex: state.packIndex,
+      packsById: state.packsById,
       activeWeekId: state.activeWeekId,
       report: state.teacherReport,
       storage,
@@ -651,6 +905,7 @@ function render() {
           state.teacherPin = null;
           state.teacherReport = null;
           state.teacherState.autoRefresh = false;
+          state.teacherState.whiteboardWeekId = null;
           state.screen = 'home';
           await refreshRosterOnly();
           render();
@@ -669,9 +924,12 @@ function render() {
           state.teacherState.activeTab = tabId;
           render();
         },
-        openWhiteboard: (qNum) => {
+        openWhiteboard: async (qNum, wbWeekId) => {
+          const targetWeek = wbWeekId || state.activeWeekId;
+          const wbPack = await ensurePackLoaded(targetWeek).catch(() => state.pack);
           state.teacherState.activeTab = 'whiteboard';
-          state.teacherState.whiteboardQuestionNum = qNum;
+          state.teacherState.whiteboardWeekId = targetWeek;
+          state.teacherState.whiteboardQuestionNum = qNum || wbPack?.questions?.[0]?.number || null;
           state.teacherState.revealGuide = false;
           render();
         },
@@ -694,10 +952,29 @@ function render() {
             studentId: '',
             name: '',
             pin: '0000',
+            parentPin: generateDraftUniqueParentPin(state.teacherState.rosterDraft, -1),
             avatar: '🦊',
             active: true
           });
           render();
+        },
+        regenerateDraftParentPin: (idx) => {
+          const row = state.teacherState.rosterDraft[idx];
+          if (!row) return;
+          row.parentPin = generateDraftUniqueParentPin(state.teacherState.rosterDraft, idx);
+          render();
+          showToast('Generated new 6-digit Parent PIN (remember to Save Roster).');
+        },
+        openPrintCards: () => {
+          const savedStudents = state.teacherReport?.students || [];
+          const normRow = (s) => `${s.studentId}|${s.name}|${s.pin}|${s.parentPin}|${s.avatar}|${s.active !== false}`;
+          const draftChanged =
+            savedStudents.length !== state.teacherState.rosterDraft.length ||
+            savedStudents.some((s, i) => normRow(s) !== normRow(state.teacherState.rosterDraft[i] || {}));
+          if (draftChanged) {
+            showToast('Unsaved draft changes detected — showing currently saved PINs. Save Roster first if you edited PINs.', 'info', 4500);
+          }
+          openPrintParentCardsModal({ students: savedStudents });
         },
         updateDraftField: (idx, field, val) => {
           if (state.teacherState.rosterDraft[idx]) {
@@ -723,9 +1000,23 @@ function render() {
           }
           await loadPackAndRoster(weekId);
           await loadTeacherReport();
+          state.teacherState.whiteboardWeekId = weekId;
           state.teacherState.whiteboardQuestionNum = state.pack?.questions?.[0]?.number || null;
           state.teacherState.revealGuide = false;
           showToast(`Active week set to ${weekId}.`, 'success');
+          render();
+        },
+        setWeekReleased: async (weekId, released) => {
+          const res = await storage.setWeekReleased(state.teacherPin, weekId, released);
+          if (!res.ok) {
+            showToast(res.error || 'Could not update parent release setting.', 'error');
+            return;
+          }
+          await loadTeacherReport();
+          showToast(
+            released ? `Released ${weekId} to Parent Zone.` : `Locked ${weekId} in Parent Zone.`,
+            'success'
+          );
           render();
         },
         saveAndTestUrl: async (url) => {
@@ -770,6 +1061,14 @@ async function init() {
     window.addEventListener('online', () => {
       handleRetrySync();
     });
+
+    if (isParentUrlRoute()) {
+      state.screen = 'parent-gate';
+      render();
+      handleParentZoneTap();
+      return;
+    }
+
     render();
   } catch (err) {
     appEl.innerHTML = `

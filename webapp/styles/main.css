@@ -1042,6 +1042,470 @@ table.data-table tr:last-child td {
   flex: 1 1 320px;
 }
 
+/* ---- Question Class & Heatmap Pills ---- */
+.class-pill {
+  background: var(--bg-muted);
+  color: var(--ink);
+  border: 1px solid var(--border-strong);
+}
+
+.class-pill-sec {
+  background: var(--bg-paper);
+  color: var(--ink-muted);
+  border: 1px solid var(--border);
+}
+
+.cell-warn {
+  color: var(--accent-amber-ink);
+  background: var(--accent-amber-soft);
+}
+
+.parent-pin-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.input-parent-pin {
+  width: 102px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.08em;
+  text-align: center;
+  font-weight: 700;
+}
+
+/* ---- Parent Zone Charts & Gauges ---- */
+.svg-chart-wrap {
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px;
+}
+
+.progress-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+  margin-top: 8px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--ink-muted);
+}
+
+.chart-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.legend-dot.child { background: var(--accent-terracotta); }
+.legend-dot.tier3 { background: var(--accent-sage); }
+.legend-dot.tier4 { background: var(--accent-amber); }
+.legend-dot.tier5 { background: var(--accent-terracotta); }
+
+.legend-line.median {
+  width: 18px;
+  border-top: 2px dashed var(--accent-sage);
+  display: inline-block;
+}
+
+.legend-band {
+  width: 16px;
+  height: 10px;
+  border-radius: 3px;
+  background: rgba(31, 111, 97, 0.18);
+  display: inline-block;
+}
+
+.week-pills-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.big-score-pill {
+  background: var(--accent-sage-soft);
+  border: 1.5px solid #9ED3C7;
+  color: var(--accent-sage-dark);
+  padding: 8px 16px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.big-score-pill strong {
+  font-size: 1.7rem;
+  line-height: 1;
+}
+
+.cohort-gauge-wrap {
+  margin-top: 12px;
+  padding: 14px 16px;
+  background: var(--bg-paper);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.cohort-gauge-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.cohort-gauge-track {
+  position: relative;
+  height: 14px;
+  border-radius: 999px;
+  background: var(--bg-muted);
+  border: 1px solid var(--border);
+}
+
+.cohort-gauge-band {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 999px;
+  background: rgba(31, 111, 97, 0.25);
+}
+
+.cohort-gauge-median {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  width: 3px;
+  margin-left: -1.5px;
+  background: var(--accent-sage-dark);
+  border-radius: 2px;
+}
+
+.cohort-gauge-child {
+  position: absolute;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent-terracotta);
+  border: 3px solid #FFFFFF;
+  box-shadow: 0 2px 6px rgba(30, 36, 43, 0.25);
+  transform: translate(-50%, -50%);
+}
+
+.cohort-gauge-scale {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--ink-muted);
+  margin-top: 6px;
+}
+
+.habit-callouts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.habit-callout {
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 0.92rem;
+  border: 1.5px solid var(--border);
+  background: var(--bg-paper);
+}
+
+.habit-callout.warn {
+  background: var(--accent-amber-soft);
+  border-color: #E9BD82;
+  color: var(--accent-amber-ink);
+}
+
+.habit-callout.info {
+  background: var(--accent-terracotta-soft);
+  border-color: #EEB3A1;
+  color: var(--accent-terracotta-dark);
+}
+
+.habit-callout.ok {
+  background: var(--accent-sage-soft);
+  border-color: #9ED3C7;
+  color: var(--accent-sage-dark);
+}
+
+.section-compare-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.section-compare-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.compare-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.compare-bar-track {
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--bg-muted);
+  overflow: hidden;
+}
+
+.compare-bar-track.muted {
+  height: 7px;
+  background: #ECE5D9;
+}
+
+.compare-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.2s ease;
+}
+
+.compare-bar-fill.child { background: var(--accent-sage); }
+.compare-bar-fill.class-avg { background: #8E9AA6; }
+.compare-bar-fill.focus { background: var(--accent-terracotta); }
+.compare-bar-fill.warn { background: var(--accent-amber); }
+
+/* ---- Parent Test Review & Home Playbook ---- */
+.review-puzzle-card.highlighted {
+  border-color: var(--accent-terracotta);
+  box-shadow: 0 0 0 3px rgba(217, 93, 57, 0.18);
+}
+
+.revealed-solution {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.mastery-row + .mastery-row {
+  margin-top: 12px;
+}
+
+.mastery-row-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 5px;
+  font-size: 0.92rem;
+}
+
+.playbook-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+.playbook-card {
+  background: var(--bg-paper);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.playbook-activities {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.playbook-act {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.playbook-act p {
+  margin: 4px 0 0;
+  font-size: 0.9rem;
+  color: var(--ink-muted);
+}
+
+.retry-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.retry-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg-paper);
+}
+
+/* ---- Teacher Multi-Week & Release Controls ---- */
+.pin-masked {
+  -webkit-text-security: disc;
+  text-security: disc;
+}
+
+.release-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.release-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--border);
+  background: var(--bg-paper);
+}
+
+.release-card.released {
+  background: #F7FCFA;
+  border-color: #B4DDD4;
+}
+
+.chip-btn {
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-paper);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.chip-btn:hover {
+  border-color: var(--accent-terracotta);
+  background: var(--accent-terracotta-soft);
+}
+
+/* ---- Printable Parent Cards (2x4 Grid) ---- */
+.print-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.parent-print-card {
+  border: 1.5px dashed var(--border-strong);
+  border-radius: 14px;
+  padding: 14px;
+  background: #FFFFFF;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.print-card-eyebrow {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--accent-sage-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.print-card-name {
+  margin: 2px 0 10px;
+  font-size: 1.15rem;
+}
+
+.print-card-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.print-card-qr {
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 4px;
+  background: #FFFFFF;
+}
+
+.print-card-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.print-pin-label {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.print-pin-boxes {
+  display: inline-flex;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.pin-box {
+  width: 24px;
+  height: 30px;
+  border: 1.5px solid var(--ink);
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 900;
+  font-size: 1rem;
+  background: var(--bg-paper);
+}
+
+.print-card-url {
+  margin: 0 0 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent-sage-dark);
+  word-break: break-all;
+}
+
+.print-card-note {
+  margin: 0;
+  font-size: 0.74rem;
+  color: var(--ink-muted);
+  line-height: 1.3;
+}
+
 /* ---- Toast ---- */
 .toast-root {
   position: fixed;
@@ -1081,5 +1545,57 @@ table.data-table tr:last-child td {
   }
   .dist-bar {
     grid-template-columns: repeat(3, 1fr);
+  }
+  .print-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .container {
+    padding: 14px 12px 36px;
+  }
+  .panel-card {
+    padding: 16px 14px;
+  }
+  .top-header-inner {
+    padding: 12px 14px;
+  }
+  .tab-btn {
+    flex: 1 1 auto;
+    font-size: 0.9rem;
+    padding: 8px 12px;
+  }
+}
+
+@media print {
+  body {
+    background: #FFFFFF;
+  }
+  .app-shell,
+  .toast-root,
+  .no-print {
+    display: none !important;
+  }
+  .print-modal-backdrop {
+    position: static;
+    background: none;
+    padding: 0;
+    display: block;
+  }
+  .print-modal-card {
+    box-shadow: none;
+    border: none;
+    max-width: none;
+    max-height: none;
+    padding: 0;
+    overflow: visible;
+  }
+  .print-cards-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .parent-print-card {
+    padding: 10px;
   }
 }

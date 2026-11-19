@@ -81,6 +81,15 @@ python3 pack-compiler/compile_pack.py \
 
 1. Author `pack-compiler/packs/<weekId>.meta.json` matching this schema:
 
+   Valid `questionClass` values (and optional `secondaryClass`, which must differ from `questionClass` if present):
+   - `spatial-3d` — 3D Spatial & Cubes (`geometry-spatial`)
+   - `shapes-2d` — 2D Shapes, Symmetry & Paths (`geometry-spatial`)
+   - `logic-deduction` — Deductive Logic & Constraints (`logic-reasoning`)
+   - `number-sense` — Number Sense, Equations & Grids (`number-arithmetic`)
+   - `patterns-simulation` — Patterns, Cycles & Step Simulation (`combinatorics-patterns`)
+   - `counting-sets` — Systematic Counting & Sets (`combinatorics-patterns`)
+   - `measurement-time` — Measurement, Clocks & Money (`measurement`)
+
 ```json
 {
   "weekId": "2022-g34-part2",
@@ -96,6 +105,8 @@ python3 pack-compiler/compile_pack.py \
       "title": "Short Kid-Friendly Title",
       "promptSummary": "Concise plain-text summary for alt text and teacher triage cards.",
       "correctOption": "A",
+      "questionClass": "patterns-simulation",
+      "secondaryClass": "number-sense",
       "cropAdjust": { "trimSectionBanner": true },
       "teachingGuide": {
         "headline": "One-sentence core mathematical idea in 3rd-grade language.",
@@ -105,13 +116,14 @@ python3 pack-compiler/compile_pack.py \
         "askTheKids": [
           "1–2 Socratic prompts to spark discussion."
         ],
-        "commonTraps": "Explanation of the most tempting wrong choices."
+        "commonTraps": "Explanation of the most tempting wrong choices.",
+        "homeTip": "1–2 sentences of concrete, hands-on tabletop guidance tailored to this problem (no student names)."
       }
     }
   ]
 }
 ```
-*(Include optional `"customBox"` or `"cropAdjust"` fields where needed.)*
+*(Include optional `"secondaryClass"`, `"customBox"`, or `"cropAdjust"` fields where needed.)*
 
 2. Run the final pack build (pass `--set-default` if this pack should become the active default in `webapp/packs/index.json`):
 

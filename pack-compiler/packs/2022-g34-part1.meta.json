@@ -12,6 +12,8 @@
       "title": "Buzz the Bee's Path",
       "promptSummary": "Buzz the bee starts in the top-left square of a 4×4 grid and wants to reach the flower in the bottom-right square. Which sequence of arrows gets him there?",
       "correctOption": "A",
+      "questionClass": "shapes-2d",
+      "secondaryClass": "counting-sets",
       "cropAdjust": { "trimSectionBanner": true },
       "teachingGuide": {
         "headline": "Every valid path from top-left to bottom-right on a 4×4 grid needs exactly 3 steps right (→) and 3 steps down (↓).",
@@ -25,7 +27,8 @@
           "Does the order of right and down arrows change where Buzz finishes, as long as he stays inside the grid?",
           "Why do we need 3 jumps instead of 4 on a 4-square-wide grid?"
         ],
-        "commonTraps": "Kids who pick (C) or (D) only have 5 arrows total (missing one step down or right). Kids who count 4 squares instead of 3 jumps often get confused by (B) or (E), which have 4 down arrows and walk Buzz off the bottom of the board."
+        "commonTraps": "Kids who pick (C) or (D) only have 5 arrows total (missing one step down or right). Kids who count 4 squares instead of 3 jumps often get confused by (B) or (E), which have 4 down arrows and walk Buzz off the bottom of the board.",
+        "homeTip": "Draw a 4×4 grid on scrap paper with 'B' in top-left and 'F' in bottom-right, and let your child hop a coin step by step to see why 4 squares wide takes 3 jumps."
       }
     },
     {
@@ -34,6 +37,7 @@
       "title": "Mirror Laser Maze",
       "promptSummary": "Laser beams bounce at 90° off slanted mirrors as shown in the example. Where does the laser beam exit in the second mirror box?",
       "correctOption": "B",
+      "questionClass": "shapes-2d",
       "teachingGuide": {
         "headline": "Both sides of every slanted mirror reflect light—slow down at the bottom-right mirror!",
         "steps": [
@@ -46,7 +50,8 @@
           "Imagine rolling a ball straight down onto a slide tilted like '/' — does the ball bounce to the left or to the right?",
           "Can the same mirror bounce the laser twice—once on its top side and once on its bottom side?"
         ],
-        "commonTraps": "Choice (D) is the #1 trap: students trace smoothly until (C, D) and carelessly bounce right out to D instead of bouncing left back toward column B. Choice (C) happens if they ignore the mirror at (C, D)."
+        "commonTraps": "Choice (D) is the #1 trap: students trace smoothly until (C, D) and carelessly bounce right out to D instead of bouncing left back toward column B. Choice (C) happens if they ignore the mirror at (C, D).",
+        "homeTip": "Sketch the 3×2 mirror box on paper and stand a pencil or pocket mirror along each diagonal slash so your child can bounce a finger beam off both sides."
       }
     },
     {
@@ -55,6 +60,8 @@
       "title": "Two Coins per Row & Column",
       "promptSummary": "Rossitza wants exactly 2 coins in every row and every column of the 5×5 grid. Which labeled coin must she move to an empty square?",
       "correctOption": "C",
+      "questionClass": "logic-deduction",
+      "secondaryClass": "shapes-2d",
       "teachingGuide": {
         "headline": "Write the coin count next to every row and column—the crowded row and crowded column cross right on the coin to move!",
         "steps": [
@@ -67,7 +74,8 @@
           "Which row has 3 coins? Which column has 3 coins? Which single coin sits in BOTH of them at the same time?",
           "Where is the exact empty square that coin C should move into?"
         ],
-        "commonTraps": "Students who pick (B) see Column 1 has 3 coins and Row 4 is weird, so they grab B—moving B out of Row 4 would leave Row 4 with 0 coins! Students who pick (E) notice Row 5 has 3 coins without checking Column 3."
+        "commonTraps": "Students who pick (B) see Column 1 has 3 coins and Row 4 is weird, so they grab B—moving B out of Row 4 would leave Row 4 with 0 coins! Students who pick (E) notice Row 5 has 3 coins without checking Column 3.",
+        "homeTip": "Lay out 10 pennies on a hand-drawn 5×5 grid and write the count beside each row and column—ask which coin sits at the crossing of a 3-coin row and a 3-coin column."
       }
     },
     {
@@ -76,6 +84,8 @@
       "title": "Opening the TRAIN Box",
       "promptSummary": "What is the smallest number of boxes Bill must move so he can open the lid of the dark TRAIN box at the bottom?",
       "correctOption": "C",
+      "questionClass": "logic-deduction",
+      "secondaryClass": "spatial-3d",
       "cropAdjust": { "diagramPadBottom": 4, "diagramSplitX": 1400 },
       "teachingGuide": {
         "headline": "Work upwards from TRAIN to mark every box sitting on it—and don't count TRAIN itself!",
@@ -89,7 +99,8 @@
           "Do we need to move the 'puzzles' box to lift 'bedding', or is 'puzzles' underneath 'board games'?",
           "Should we count the TRAIN box itself, or only the boxes blocking its lid?"
         ],
-        "commonTraps": "Choice (B) 4 happens when a student misses that 'board games' overlaps the right corner of 'bedding' (or double-forgets 'books'). Choice (D) 6 happens when a student either counts the TRAIN box itself or unnecessarily moves 'puzzles'."
+        "commonTraps": "Choice (B) 4 happens when a student misses that 'board games' overlaps the right corner of 'bedding' (or double-forgets 'books'). Choice (D) 6 happens when a student either counts the TRAIN box itself or unnecessarily moves 'puzzles'.",
+        "homeTip": "Stack books, board-game boxes, and cereal boxes on the table like the diagram so your child can test which top boxes must lift before the bottom lid opens."
       }
     },
     {
@@ -98,6 +109,8 @@
       "title": "Five Overtaking Cars",
       "promptSummary": "Cars 1, 2, 3, 4, 5 drive left (1 in front, 5 last). First the last car passes 2 cars; next the second-to-last car passes 2 cars; finally the middle car passes 2 cars. What is the final order?",
       "correctOption": "B",
+      "questionClass": "patterns-simulation",
+      "secondaryClass": "logic-deduction",
       "cropAdjust": { "trimSectionBanner": true },
       "teachingGuide": {
         "headline": "Check the arrow direction first (left = front!), and rewrite all 5 numbers cleanly after every single pass.",
@@ -111,7 +124,8 @@
           "After Move 1, is Car 4 still the second-to-last car, or did someone else take that spot?",
           "Bonus live demo: invite 5 volunteers to stand in a line facing left holding numbers 1–5 and act out the three passes!"
         ],
-        "commonTraps": "Choice (C) 2, 1, 5, 3, 4 happens if students think 'second-to-last' means Car 4 (from the original order) instead of Car 3 in the updated line. Other errors come from treating right as 'ahead' instead of following the left arrow."
+        "commonTraps": "Choice (C) 2, 1, 5, 3, 4 happens if students think 'second-to-last' means Car 4 (from the original order) instead of Car 3 in the updated line. Other errors come from treating right as 'ahead' instead of following the left arrow.",
+        "homeTip": "Line up 5 toy cars or numbered playing cards facing LEFT and physically act out each pass—calling out who is second-to-last and middle fresh after every single move."
       }
     },
     {
@@ -120,6 +134,7 @@
       "title": "Kangaroo Family Ages",
       "promptSummary": "Six kangaroos have ages 2, 4, 5, 6, 8, and 10. Four of their ages add up to 22. What are the ages of the other two kangaroos?",
       "correctOption": "C",
+      "questionClass": "number-sense",
       "teachingGuide": {
         "headline": "Instead of guessing four numbers that make 22, subtract 22 from the total age of ALL six kangaroos!",
         "steps": [
@@ -132,7 +147,8 @@
           "Can two even numbers ever add up to 13? What does that immediately tell us about the 5-year-old kangaroo?",
           "How can we add 2 + 4 + 5 + 6 + 8 + 10 in our heads super fast by making tens?"
         ],
-        "commonTraps": "Students who guess-and-check 4 numbers often mis-add (e.g., thinking 4 + 5 + 6 + 8 = 22 when it's 23) or accidentally report two kangaroos from INSIDE the 22-group like 6 and 10 (E) or 2 and 8 (A)."
+        "commonTraps": "Students who guess-and-check 4 numbers often mis-add (e.g., thinking 4 + 5 + 6 + 8 = 22 when it's 23) or accidentally report two kangaroos from INSIDE the 22-group like 6 and 10 (E) or 2 and 8 (A).",
+        "homeTip": "Write 2, 4, 5, 6, 8, and 10 on small paper slips, group pairs into tens to find the total (35), and subtract 22 so your child sees how much faster total-minus-part is than guessing."
       }
     },
     {
@@ -141,6 +157,7 @@
       "title": "Five Vacation Postcards",
       "promptSummary": "Five postcards (A)–(E) were sent to Mike, Cara, Paula, Lexi, and Heather based on five clues. Which card did Mike get?",
       "correctOption": "A",
+      "questionClass": "logic-deduction",
       "teachingGuide": {
         "headline": "Start with the clues that match ONLY ONE picture—and look closely at the top-right corner of the ducks card!",
         "steps": [
@@ -153,7 +170,8 @@
           "Why shouldn't we give (A) to Cara right away when we read 'Cara's card has the sun on it'?",
           "How many cards actually have a sun in the picture?"
         ],
-        "commonTraps": "This is a classic Kangaroo observation trap: kids read 'Cara's card has the sun on it', immediately cross out (A) for Cara without noticing the corner sun on (D), and then get stuck or guess (C)."
+        "commonTraps": "This is a classic Kangaroo observation trap: kids read 'Cara's card has the sun on it', immediately cross out (A) for Cara without noticing the corner sun on (D), and then get stuck or guess (C).",
+        "homeTip": "Practice the 'lock in sure matches first' habit on clue puzzles—zoom in together on the small details in every picture before ruling out any card for the sun clue."
       }
     },
     {
@@ -162,6 +180,7 @@
       "title": "George's 3×3 Sum Mistake",
       "promptSummary": "George wanted every row and every column of his 3×3 number grid (9,1,5 / 3,7,6 / 4,7,4) to have the same sum, but made one mistake. Which number must he fix?",
       "correctOption": "B",
+      "questionClass": "number-sense",
       "teachingGuide": {
         "headline": "Changing ONE cell changes exactly ONE row sum and ONE column sum—find where the bad row and bad column cross!",
         "steps": [
@@ -174,7 +193,8 @@
           "How do we know the magic sum George wanted was 15 and not 16?",
           "What number should George write in place of 3?"
         ],
-        "commonTraps": "Students who only check rows see Row 2 (3, 7, 6) = 16 and might pick 'one of the 7s' (E) without checking Column 2 (1+7+7=15, which is already right!)."
+        "commonTraps": "Students who only check rows see Row 2 (3, 7, 6) = 16 and might pick 'one of the 7s' (E) without checking Column 2 (1+7+7=15, which is already right!).",
+        "homeTip": "Copy the 3×3 numbers onto scrap paper, write every row sum to the right and every column sum underneath, and circle where the one wrong row and one wrong column cross."
       }
     },
     {
@@ -183,6 +203,7 @@
       "title": "Wanda's Shapes",
       "promptSummary": "From 6 shapes (small white square, large red square, small red triangle, large white triangle, large white circle, small red circle), Wanda picked a group containing 2 colored, 2 large, and 2 round shapes. What is the smallest number of shapes she could have picked?",
       "correctOption": "B",
+      "questionClass": "counting-sets",
       "cropAdjust": { "trimSectionBanner": true },
       "teachingGuide": {
         "headline": "One single shape can count toward MULTIPLE rules at once—start with the round shapes because there are only two!",
@@ -196,7 +217,8 @@
           "Why couldn't Wanda finish with just 2 shapes?",
           "Why was starting with '2 round shapes' easier than starting with '2 colored shapes'?"
         ],
-        "commonTraps": "Choice (E) 6 comes from thinking 2 + 2 + 2 = 6 without realizing one shape can be both red AND large! Choice (C) 4 happens if kids pick separate shapes (e.g., small red triangle + large white triangle) instead of combining both traits in the large red square."
+        "commonTraps": "Choice (E) 6 comes from thinking 2 + 2 + 2 = 6 without realizing one shape can be both red AND large! Choice (C) 4 happens if kids pick separate shapes (e.g., small red triangle + large white triangle) instead of combining both traits in the large red square.",
+        "homeTip": "Cut 6 quick paper shapes (or use toy blocks of two sizes and colors) and ask your child to build a 2-round, 2-large, 2-colored set using the fewest pieces by picking double-duty shapes."
       }
     },
     {
@@ -205,6 +227,7 @@
       "title": "Three-Team Football Tournament",
       "promptSummary": "Three football teams each play the other two teams once (win = 3 pts, tie = 1 pt, loss = 0 pts). Which point total is IMPOSSIBLE for a team?",
       "correctOption": "D",
+      "questionClass": "counting-sets",
       "teachingGuide": {
         "headline": "Focus on just ONE team: with 3 teams in the tournament, each team plays only 2 games!",
         "steps": [
@@ -217,7 +240,8 @@
           "How many games are played in the whole tournament vs. how many games ONE team plays?",
           "Is there any way to get 5 points in two games when a win is 3 and a tie is 1?"
         ],
-        "commonTraps": "The biggest 3rd-grade trap is thinking '3 teams means each team plays 3 games!' If a team played 3 games, 3 + 1 + 1 = 5 would look possible, leading kids to guess (A) 1 or (B) 2 instead."
+        "commonTraps": "The biggest 3rd-grade trap is thinking '3 teams means each team plays 3 games!' If a team played 3 games, 3 + 1 + 1 = 5 would look possible, leading kids to guess (A) 1 or (B) 2 instead.",
+        "homeTip": "Draw a triangle for Teams A, B, and C with lines connecting each pair, then count how many lines touch Team A so your child sees clearly why each team plays 2 games, not 3."
       }
     },
     {
@@ -226,6 +250,8 @@
       "title": "Ant on the Cube Pyramid",
       "promptSummary": "A 3-layer pyramid is built from 10 cm cubes. An ant climbs up and over the pyramid along the red line. How long is the red path?",
       "correctOption": "E",
+      "questionClass": "spatial-3d",
+      "secondaryClass": "measurement-time",
       "cropAdjust": { "diagramPadBottom": 8, "diagramSplitX": 1600 },
       "teachingGuide": {
         "headline": "Split the ant's walk into three separate directions: all the UP steps, all the FLAT steps ('view from above'), and all the DOWN steps!",
@@ -239,7 +265,8 @@
           "If an elevator goes up 3 floors of 10 cm, does it matter that it stopped on ledges in between? How high did it climb in total?",
           "Why can't we see the three vertical red lines on the left side of the 3D drawing, even though the ant climbed up there?"
         ],
-        "commonTraps": "Choice (B) 60 cm is a huge trap: kids see the 3 vertical red lines on the right (30 cm) and the flat segments (30 cm), forgetting the 3 hidden vertical walls the ant climbed UP on the left side! Choice (C) 70 cm comes from miscounting the half-cube 5 cm ledges as 10 cm."
+        "commonTraps": "Choice (B) 60 cm is a huge trap: kids see the 3 vertical red lines on the right (30 cm) and the flat segments (30 cm), forgetting the 3 hidden vertical walls the ant climbed UP on the left side! Choice (C) 70 cm comes from miscounting the half-cube 5 cm ledges as 10 cm.",
+        "homeTip": "Stack 6 wooden blocks or sugar cubes into a 3-layer staircase and trace a piece of yarn up, across, and down—counting total up-steps, total flat length, and total down-steps separately."
       }
     },
     {
@@ -248,6 +275,7 @@
       "title": "Alma's Hexagonal Road Tile",
       "promptSummary": "Alma places one rotatable hexagon road tile in the center so a child at house A can travel to B and E, but NOT to D. Which two tiles work?",
       "correctOption": "E",
+      "questionClass": "shapes-2d",
       "teachingGuide": {
         "headline": "Count steps around the hexagon from A: B is right next door (+1), D is straight across (+3, forbidden!), and E is +4.",
         "steps": [
@@ -260,7 +288,8 @@
           "Look at Tile 4—what do you notice about where every single road on Tile 4 goes? If you enter at A, where do you end up?",
           "Why can't Tile 3 ever connect house A to house B no matter how much we spin it?"
         ],
-        "commonTraps": "Students often pick (C) 1 and 4 or (D) 4 and 5 because Tile 4 has 4 roads and looks flexible at a glance, missing that opposite-side symmetry forces A to connect directly to opposite house D!"
+        "commonTraps": "Students often pick (C) 1 and 4 or (D) 4 and 5 because Tile 4 has 4 roads and looks flexible at a glance, missing that opposite-side symmetry forces A to connect directly to opposite house D!",
+        "homeTip": "Cut out a quick paper hexagon with edges labeled A–F and draw the tile roads on small hexagon cutouts that your child can physically spin on the table to test paths to B, E, and D."
       }
     }
   ]

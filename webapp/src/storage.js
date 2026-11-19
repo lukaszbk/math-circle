@@ -36,6 +36,125 @@ function isExactPinMatch(enteredPin, storedPin) {
   return /^\d{4}$/.test(raw) && /^\d{4}$/.test(canonical) && raw === canonical;
 }
 
+function normalizeParentPinString(pin) {
+  if (pin === null || pin === undefined || pin === '') return '';
+  const s = String(pin).trim();
+  if (/^\d{1,6}$/.test(s)) {
+    return s.padStart(6, '0');
+  }
+  return s;
+}
+
+function isExactParentPinMatch(enteredPin, storedPin) {
+  if (enteredPin === null || enteredPin === undefined) return false;
+  const raw = String(enteredPin).trim();
+  const canonical = normalizeParentPinString(storedPin);
+  return /^\d{6}$/.test(raw) && /^\d{6}$/.test(canonical) && raw === canonical;
+}
+
+function isWeakParentPin(pin) {
+  return /^(\d)\1{5}$/.test(pin) || pin === '123456' || pin === '654321';
+}
+
+function generateUniqueParentPin(usedPins, teacherPin, deterministicKey = '') {
+  const tPin = String(teacherPin || '885174').trim();
+  if (deterministicKey) {
+    let hash = 2166136261;
+    const key = `mk-parent-pin:${deterministicKey}`;
+    for (let i = 0; i < key.length; i++) {
+      hash ^= key.charCodeAt(i);
+      hash = Math.imul(hash, 16777619) >>> 0;
+    }
+    for (let step = 0; step < 5000; step++) {
+      const candidate = String((hash + step * 7919) % 1000000).padStart(6, '0');
+      if (!isWeakParentPin(candidate) && candidate !== tPin && !usedPins.has(candidate)) {
+        usedPins.add(candidate);
+        return candidate;
+      }
+    }
+  }
+  for (let attempt = 0; attempt < 5000; attempt++) {
+    const candidate = String(Math.floor(Math.random() * 1000000)).padStart(6, '0');
+    if (!isWeakParentPin(candidate) && candidate !== tPin && !usedPins.has(candidate)) {
+      usedPins.add(candidate);
+      return candidate;
+    }
+  }
+  throw new Error('Could not generate unique 6-digit Parent PIN.');
+}
+
+function computePercentileRounded(sortedScores, p) {
+  if (!sortedScores || sortedScores.length === 0) return null;
+  const idx = (sortedScores.length - 1) * p;
+  const lo = Math.floor(idx);
+  const hi = Math.ceil(idx);
+  const frac = idx - lo;
+  const val = sortedScores[lo] + (sortedScores[hi] - sortedScores[lo]) * frac;
+  return Math.floor(val + 0.5);
+}
+
+function computeCohortStatsForWeek(weekSubs) {
+  const n = weekSubs.length;
+  if (n < 4) {
+    return {
+      cohortCount: n,
+      minCohortMet: false,
+      scoreP25: null,
+      scoreMedian: null,
+      scoreP75: null,
+      avgPct3pt: null,
+      avgPct4pt: null,
+      avgPct5pt: null,
+      optionCounts: null
+    };
+  }
+  const scores = weekSubs.map((s) => Number(s.totalScore || 0)).sort((a, b) => a - b);
+  let sum3 = 0;
+  let sum4 = 0;
+  let sum5 = 0;
+  const qKeys = [];
+  const seenQ = new Set();
+  for (const sub of weekSubs) {
+    sum3 += Number(sub.score3pt || 0);
+    sum4 += Number(sub.score4pt || 0);
+    sum5 += Number(sub.score5pt || 0);
+    for (const k of Object.keys(sub.answers || {})) {
+      const sk = String(k);
+      if (!seenQ.has(sk)) {
+        seenQ.add(sk);
+        qKeys.push(sk);
+      }
+    }
+  }
+
+  const optionCounts = {};
+  for (const qKey of qKeys) {
+    const counts = { A: 0, B: 0, C: 0, D: 0, E: 0, blank: 0 };
+    for (const sub of weekSubs) {
+      const rawChoice = (sub.answers || {})[qKey];
+      const choice = rawChoice ? String(rawChoice).trim().toUpperCase() : '';
+      if (choice === 'A' || choice === 'B' || choice === 'C' || choice === 'D' || choice === 'E') {
+        counts[choice] += 1;
+      } else {
+        counts.blank += 1;
+      }
+    }
+    optionCounts[qKey] = counts;
+  }
+
+  return {
+    cohortCount: n,
+    minCohortMet: true,
+    scoreP25: computePercentileRounded(scores, 0.25),
+    scoreMedian: computePercentileRounded(scores, 0.50),
+    scoreP75: computePercentileRounded(scores, 0.75),
+    avgPct3pt: Math.floor((sum3 / (n * 12)) * 100 + 0.5),
+    avgPct4pt: Math.floor((sum4 / (n * 16)) * 100 + 0.5),
+    avgPct5pt: Math.floor((sum5 / (n * 20)) * 100 + 0.5),
+    optionCounts
+  };
+}
+
 function slugifyName(name, usedIds) {
   let base = String(name || '')
     .replace(/ł/g, 'l')
@@ -117,6 +236,7 @@ export class StorageClient {
       typeof window !== 'undefined' && isStaticPublicHost(window.location.hostname)
         ? false
         : null;
+    this._demoParentFailTimestamps = [];
   }
 
   getConfiguredAppsScriptUrl() {
@@ -472,8 +592,8 @@ export class StorageClient {
     };
   }
 
-  async getTeacherReport(weekId, teacherPin) {
-    return this._callRemoteOrDemo('getTeacherReport', { weekId, teacherPin });
+  async getTeacherReport(weekId, teacherPin, { includeAllWeeks = false } = {}) {
+    return this._callRemoteOrDemo('getTeacherReport', { weekId, teacherPin, includeAllWeeks });
   }
 
   async saveStudentRoster(teacherPin, students) {
@@ -482,6 +602,14 @@ export class StorageClient {
 
   async setActiveWeek(teacherPin, weekId) {
     return this._callRemoteOrDemo('setActiveWeek', { teacherPin, weekId });
+  }
+
+  async setWeekReleased(teacherPin, weekId, released) {
+    return this._callRemoteOrDemo('setWeekReleased', { teacherPin, weekId, released });
+  }
+
+  async getParentReport(parentPin) {
+    return this._callRemoteOrDemo('getParentReport', { parentPin });
   }
 
   async testConnection(url) {
@@ -509,39 +637,80 @@ export class StorageClient {
   _loadDemoDb() {
     const existing = safeJsonParse(localStorage.getItem(KEYS.DEMO_DB), null);
     if (existing && Array.isArray(existing.students)) {
+      const teacherPin = String(existing.teacherPin || this.config.defaultTeacherPin || '885174').trim();
       const knownIds = new Set(existing.students.map((s) => s.studentId));
       const knownNames = new Set(existing.students.map((s) => String(s.name || '').trim().toLowerCase()));
-      let added = false;
+      const usedParentPins = new Set();
+      let changed = false;
+
+      if (!Array.isArray(existing.releasedWeekIds)) {
+        existing.releasedWeekIds = [];
+        changed = true;
+      }
+      for (const st of existing.students) {
+        const pPin = normalizeParentPinString(st.parentPin);
+        if (/^\d{6}$/.test(pPin) && pPin !== teacherPin && !usedParentPins.has(pPin)) {
+          if (st.parentPin !== pPin) {
+            st.parentPin = pPin;
+            changed = true;
+          }
+          usedParentPins.add(pPin);
+        } else {
+          st.parentPin = '';
+        }
+      }
+      for (const st of existing.students) {
+        if (!st.parentPin) {
+          st.parentPin = generateUniqueParentPin(usedParentPins, teacherPin, st.studentId || st.name);
+          changed = true;
+        }
+      }
+
       for (const st of (this.config.demoStudents || [])) {
         const nameKey = String(st.name || '').trim().toLowerCase();
         if (!knownIds.has(st.studentId) && !knownNames.has(nameKey)) {
+          const explicitParent = normalizeParentPinString(st.parentPin);
+          const parentPin = (/^\d{6}$/.test(explicitParent) && explicitParent !== teacherPin && !usedParentPins.has(explicitParent))
+            ? (usedParentPins.add(explicitParent), explicitParent)
+            : generateUniqueParentPin(usedParentPins, teacherPin, st.studentId || st.name);
           existing.students.push({
             studentId: st.studentId,
             name: st.name,
             avatar: st.avatar,
             pin: st.pin || '0000',
+            parentPin,
             active: true
           });
           knownIds.add(st.studentId);
           knownNames.add(nameKey);
-          added = true;
+          changed = true;
         }
       }
-      if (added) {
+      if (changed) {
         localStorage.setItem(KEYS.DEMO_DB, JSON.stringify(existing));
       }
       return existing;
     }
+    const teacherPin = String(this.config.defaultTeacherPin || '885174').trim();
+    const usedParentPins = new Set();
     const seeded = {
       activeWeekId: this.config.defaultWeekId,
-      teacherPin: this.config.defaultTeacherPin,
-      students: (this.config.demoStudents || []).map((st) => ({
-        studentId: st.studentId,
-        name: st.name,
-        avatar: st.avatar,
-        pin: st.pin || '0000',
-        active: true
-      })),
+      teacherPin,
+      releasedWeekIds: [],
+      students: (this.config.demoStudents || []).map((st) => {
+        const explicitParent = normalizeParentPinString(st.parentPin);
+        const parentPin = (/^\d{6}$/.test(explicitParent) && explicitParent !== teacherPin && !usedParentPins.has(explicitParent))
+          ? (usedParentPins.add(explicitParent), explicitParent)
+          : generateUniqueParentPin(usedParentPins, teacherPin, st.studentId || st.name);
+        return {
+          studentId: st.studentId,
+          name: st.name,
+          avatar: st.avatar,
+          pin: st.pin || '0000',
+          parentPin,
+          active: true
+        };
+      }),
       submissions: []
     };
     localStorage.setItem(KEYS.DEMO_DB, JSON.stringify(seeded));
@@ -629,21 +798,35 @@ export class StorageClient {
       if (String(payload.teacherPin || '').trim() !== db.teacherPin) {
         return { ok: false, error: 'Incorrect Teacher PIN.' };
       }
-      return {
+      const releasedWeekIds = Array.isArray(db.releasedWeekIds) ? [...db.releasedWeekIds] : [];
+      const activeIds = new Set(db.students.filter((s) => s.active !== false).map((s) => s.studentId));
+      const result = {
         ok: true,
         activeWeekId,
         weekId,
-        students: db.students.map((s) => ({ ...s, pin: normalizePinString(s.pin) })),
-        submissions: db.submissions.filter((s) => s.weekId === weekId)
+        releasedWeekIds,
+        students: db.students.map((s) => ({
+          ...s,
+          pin: normalizePinString(s.pin),
+          parentPin: normalizeParentPinString(s.parentPin)
+        })),
+        submissions: db.submissions.filter((s) => s.weekId === weekId && activeIds.has(s.studentId))
       };
+      if (payload.includeAllWeeks) {
+        result.allSubmissions = db.submissions.filter((s) => activeIds.has(s.studentId));
+      }
+      return result;
     }
 
     if (action === 'saveStudentRoster') {
       if (String(payload.teacherPin || '').trim() !== db.teacherPin) {
         return { ok: false, error: 'Incorrect Teacher PIN.' };
       }
+      const teacherPin = String(db.teacherPin || '885174').trim();
       const usedIds = new Set();
-      const nextStudents = [];
+      const usedParentPins = new Set();
+      const normalizedIncoming = [];
+
       for (const st of (payload.students || [])) {
         const name = String(st.name || '').trim();
         if (!name) continue;
@@ -657,14 +840,39 @@ export class StorageClient {
         if (!/^\d{4}$/.test(pin)) {
           return { ok: false, error: `PIN for ${name} must be exactly 4 digits.` };
         }
-        nextStudents.push({
+        const rawParent = (st.parentPin !== undefined && st.parentPin !== null) ? String(st.parentPin).trim() : '';
+        let parentPin = '';
+        if (rawParent !== '') {
+          parentPin = normalizeParentPinString(rawParent);
+          if (!/^\d{6}$/.test(parentPin)) {
+            return { ok: false, error: `Parent PIN for ${name} must be exactly 6 digits.` };
+          }
+          if (parentPin === teacherPin) {
+            return { ok: false, error: `Parent PIN for ${name} cannot match the Teacher PIN.` };
+          }
+          if (usedParentPins.has(parentPin)) {
+            return {
+              ok: false,
+              error: `Duplicate Parent PIN for ${name}. Each student needs a unique 6-digit Parent PIN.`
+            };
+          }
+          usedParentPins.add(parentPin);
+        }
+
+        normalizedIncoming.push({
           studentId: sid,
           name,
           pin,
+          parentPin,
           avatar: String(st.avatar || '🦊').trim() || '🦊',
           active: st.active !== false
         });
       }
+
+      const nextStudents = normalizedIncoming.map((rec) => ({
+        ...rec,
+        parentPin: rec.parentPin || generateUniqueParentPin(usedParentPins, teacherPin)
+      }));
       db.students = nextStudents;
       this._saveDemoDb(db);
       return { ok: true, students: nextStudents };
@@ -677,6 +885,83 @@ export class StorageClient {
       db.activeWeekId = String(payload.weekId || '').trim() || this.config.defaultWeekId;
       this._saveDemoDb(db);
       return { ok: true, activeWeekId: db.activeWeekId };
+    }
+
+    if (action === 'setWeekReleased') {
+      if (String(payload.teacherPin || '').trim() !== db.teacherPin) {
+        return { ok: false, error: 'Incorrect Teacher PIN.' };
+      }
+      const targetWeek = String(payload.weekId || '').trim();
+      if (!targetWeek) {
+        return { ok: false, error: 'weekId is required.' };
+      }
+      const released = Boolean(payload.released);
+      const next = (Array.isArray(db.releasedWeekIds) ? db.releasedWeekIds : []).filter((w) => w !== targetWeek);
+      if (released) next.push(targetWeek);
+      db.releasedWeekIds = next;
+      this._saveDemoDb(db);
+      return { ok: true, releasedWeekIds: next };
+    }
+
+    if (action === 'getParentReport') {
+      const now = Date.now();
+      const cutoff = now - 60000;
+      this._demoParentFailTimestamps = this._demoParentFailTimestamps.filter((ts) => ts > cutoff);
+      if (this._demoParentFailTimestamps.length >= 10) {
+        return {
+          ok: false,
+          error: 'Too many failed PIN attempts. Please wait a minute and try again.',
+          rateLimited: true
+        };
+      }
+      const matched = db.students.find(
+        (s) => s.active !== false && isExactParentPinMatch(payload.parentPin, s.parentPin)
+      );
+      if (!matched) {
+        this._demoParentFailTimestamps.push(now);
+        return { ok: true, valid: false, student: null };
+      }
+      const releasedWeekIds = Array.isArray(db.releasedWeekIds) ? [...db.releasedWeekIds] : [];
+      const releasedSet = new Set(releasedWeekIds);
+      const activeIds = new Set(db.students.filter((s) => s.active !== false).map((s) => s.studentId));
+      const subsByWeekAll = new Map();
+      const submissionsByWeek = {};
+      const unreleasedSubmittedWeekIds = [];
+      const unreleasedSeen = new Set();
+
+      for (const sub of db.submissions) {
+        if (!activeIds.has(sub.studentId) || !sub.weekId) continue;
+        if (!subsByWeekAll.has(sub.weekId)) subsByWeekAll.set(sub.weekId, []);
+        subsByWeekAll.get(sub.weekId).push(sub);
+        if (sub.studentId === matched.studentId) {
+          if (releasedSet.has(sub.weekId)) {
+            submissionsByWeek[sub.weekId] = { ...sub };
+          } else if (!unreleasedSeen.has(sub.weekId)) {
+            unreleasedSeen.add(sub.weekId);
+            unreleasedSubmittedWeekIds.push(sub.weekId);
+          }
+        }
+      }
+
+      const cohortByWeek = {};
+      for (const wid of releasedWeekIds) {
+        cohortByWeek[wid] = computeCohortStatsForWeek(subsByWeekAll.get(wid) || []);
+      }
+
+      return {
+        ok: true,
+        valid: true,
+        activeWeekId,
+        releasedWeekIds,
+        student: {
+          studentId: matched.studentId,
+          name: matched.name,
+          avatar: matched.avatar || '🦊'
+        },
+        submissionsByWeek,
+        unreleasedSubmittedWeekIds,
+        cohortByWeek
+      };
     }
 
     return { ok: false, error: `Unknown action: ${action}` };

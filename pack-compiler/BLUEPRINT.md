@@ -40,9 +40,11 @@ When the teacher provides a PDF and target part/week (e.g., *"Prepare 2022 Part 
 - **Disagreement:** The agent zooms in on the cropped diagram, re-derives the problem from scratch comparing both candidate answers, determines whether the discrepancy came from a missed visual detail or a regional/erroneous web source, and **explicitly highlights the question and resolution in its human review summary**.
 - **Unpublished / Not Found Online:** Performs a second distractor-elimination pass across all five choices `(A)–(E)` and explicitly flags the question in its summary so the teacher knows no external published key was available.
 
-### Stage 5 — 3rd-Grade Guide Authoring & Final Pack Compilation
-- Authors `pack-compiler/packs/<week-id>.meta.json` with coaching notes written for 8–9 year olds at a whiteboard (`headline`, 3–5 concrete `steps`, `askTheKids` Socratic prompts, and `commonTraps`).
-- Runs `compile_pack.py --pdf ... --metadata ...` to emit `webapp/packs/<week-id>/pack.json`, final `images/q<NN>.png`, `preview.html`, and updated `webapp/packs/index.json`.
+### Stage 5 — 3rd-Grade Guide Authoring, Classification & Final Pack Compilation
+- Authors `pack-compiler/packs/<week-id>.meta.json` with:
+  - Canonical Math Kangaroo `questionClass` (`spatial-3d`, `shapes-2d`, `logic-deduction`, `number-sense`, `patterns-simulation`, `counting-sets`, `measurement-time`) + optional differing `secondaryClass`.
+  - Coaching notes written for 8–9 year olds and their families (`headline`, 3–5 concrete `steps`, `askTheKids` Socratic prompts, `commonTraps`, and hands-on tabletop `homeTip`).
+- Runs `compile_pack.py --pdf ... --metadata ...` (or `--metadata-only` when updating metadata/guides without re-cropping existing PNGs) to validate `questionClass`/`secondaryClass`/`homeTip` and emit `webapp/packs/<week-id>/pack.json`, final `images/q<NN>.png`, `preview.html`, and updated `webapp/packs/index.json`.
 - Reports the 12-question answer table, cross-check status per question (`Matched Published Key` / `Resolved Discrepancy` / `Self-Verified Only`), and link to `preview.html` for teacher sign-off.
 
 ## Initial Seed Pack (Week 1)

@@ -12,6 +12,8 @@
       "title": "Kengu's Number Line Jumps",
       "promptSummary": "Kengu repeats a pattern of 1 large jump (+2) followed by 2 small jumps (+1, +1) starting from 0. How many total jumps does Kengu make to land on 16?",
       "correctOption": "E",
+      "questionClass": "patterns-simulation",
+      "secondaryClass": "number-sense",
       "teachingGuide": {
         "headline": "Group repeating patterns into 'super-steps'—don't mix up how many groups Kengu makes with how many jumps are inside all those groups!",
         "steps": [
@@ -24,7 +26,8 @@
           "Why is (A) 4 such a sneaky trap answer here—what does the number 4 actually count?",
           "What number would Kengu land on after his 10th jump?"
         ],
-        "commonTraps": "Choice (A) 4 is the #1 trap: students divide 16 ÷ 4 = 4 and stop, forgetting each 4-unit cycle contains 3 separate jumps! Choice (C) 8 happens if students pretend every jump has length 2."
+        "commonTraps": "Choice (A) 4 is the #1 trap: students divide 16 ÷ 4 = 4 and stop, forgetting each 4-unit cycle contains 3 separate jumps! Choice (C) 8 happens if students pretend every jump has length 2.",
+        "homeTip": "Draw a 0-to-16 paper number line and hop a small toy along one full '+2, +1, +1' combo, counting both how far it goes (+4) and how many hops it took (3)."
       }
     },
     {
@@ -33,6 +36,8 @@
       "title": "Anna's Neighbor-Number Jigsaw",
       "promptSummary": "In Anna's 6×6 number grid, squares sharing a side cannot have the same number. Which L-shaped 4-square piece fits into the hole?",
       "correctOption": "D",
+      "questionClass": "logic-deduction",
+      "secondaryClass": "shapes-2d",
       "cropAdjust": { "diagramPadTop": 5, "diagramPadBottom": 5, "diagramSplitX": 1920 },
       "teachingGuide": {
         "headline": "Test one square of the hole at a time to cross out bad pieces fast instead of checking all four squares at once!",
@@ -46,7 +51,8 @@
           "Which single square in the empty hole eliminates the most answer choices right away?",
           "Do diagonal corners count as 'common sides', or only up/down/left/right?"
         ],
-        "commonTraps": "Choice (B) and (C) catch students who check left/bottom neighbors carefully but forget to check the numbers hanging above the right arm of the L-hole (5 and 2)."
+        "commonTraps": "Choice (B) and (C) catch students who check left/bottom neighbors carefully but forget to check the numbers hanging above the right arm of the L-hole (5 and 2).",
+        "homeTip": "Copy the blank L-hole and its bordering numbers onto paper and have your child write 'NOT 3, NOT 5' in the top square first to cross out impossible choices quickly."
       }
     },
     {
@@ -55,6 +61,7 @@
       "title": "Balancing 2022 + □ = 2020 + □",
       "promptSummary": "Which pair of numbers can be placed in the two boxes so that 2022 + □ = 2020 + □ is true?",
       "correctOption": "A",
+      "questionClass": "number-sense",
       "teachingGuide": {
         "headline": "Think of the '=' sign as a playground seesaw—2022 is already 2 heavier than 2020!",
         "steps": [
@@ -67,7 +74,8 @@
           "Do we even need to add 2022 in our heads, or can we just compare the gap between the two numbers?",
           "Can you invent another pair of numbers (not on the list) that would also balance the two boxes?"
         ],
-        "commonTraps": "Choice (C) 3 and 4 or (E) 9 and 8 come from misreading 2022 vs 2020 as a gap of 1, or from arithmetic slips when adding four-digit numbers."
+        "commonTraps": "Choice (C) 3 and 4 or (E) 9 and 8 come from misreading 2022 vs 2020 as a gap of 1, or from arithmetic slips when adding four-digit numbers.",
+        "homeTip": "Draw a balance scale with 2022 on one pan and 2020 on the other—ask your child how much extra weight the lighter side needs to tie, without even adding the big four-digit numbers."
       }
     },
     {
@@ -76,6 +84,7 @@
       "title": "John's Tower from Above",
       "promptSummary": "John stacks square wooden blocks of different widths into a tower. What does he see when looking straight down from above?",
       "correctOption": "C",
+      "questionClass": "spatial-3d",
       "cropAdjust": { "diagramPadTop": 5, "diagramSplitX": 1880 },
       "teachingGuide": {
         "headline": "A wide roof hides any smaller blocks tucked completely underneath it!",
@@ -89,7 +98,8 @@
           "If you hold an open umbrella over your head and a bird looks straight down from the sky, can the bird see your shoes?",
           "Why does choice (A) have one square too many?"
         ],
-        "commonTraps": "Choice (A) is the main trap: students count 4 different block widths in the side view and draw 4 nested squares, forgetting that the wide upper slab hides the narrower neck blocks beneath it!"
+        "commonTraps": "Choice (A) is the main trap: students count 4 different block widths in the side view and draw 4 nested squares, forgetting that the wide upper slab hides the narrower neck blocks beneath it!",
+        "homeTip": "Stack a wide book, a smaller coaster, and a cup on a dining chair and let your child look straight down from above to see which smaller pieces disappear under a wider layer."
       }
     },
     {
@@ -98,6 +108,8 @@
       "title": "Aladdin's Folded Square Carpet",
       "promptSummary": "Aladdin's square carpet has two lines of red dots with the same count along each of its four sides, with one edge folded over. How many dots are on the whole carpet?",
       "correctOption": "E",
+      "questionClass": "counting-sets",
+      "secondaryClass": "shapes-2d",
       "cropAdjust": { "diagramPadTop": 5, "diagramPadBottom": 5, "diagramSplitX": 1920 },
       "teachingGuide": {
         "headline": "Use the completely unfolded right side to discover it's a 6×6 grid with a 2×2 empty middle!",
@@ -111,7 +123,8 @@
           "If someone multiplied 12 dots per side × 4 sides = 48, which dots did they accidentally count twice?",
           "How many corner dots sit in each 2×2 corner where two sides overlap?"
         ],
-        "commonTraps": "Every wrong choice matches a classic overcounting slip! (A) 48 = 4 × 12 with zero corner subtraction; (B) 44 subtracts only 4 single corner dots instead of four 2×2 corner blocks (16 dots); (C) 40 doubles the outer 20-dot ring; (D) 36 forgets the 2×2 empty center."
+        "commonTraps": "Every wrong choice matches a classic overcounting slip! (A) 48 = 4 × 12 with zero corner subtraction; (B) 44 subtracts only 4 single corner dots instead of four 2×2 corner blocks (16 dots); (C) 40 doubles the outer 20-dot ring; (D) 36 forgets the 2×2 empty center.",
+        "homeTip": "Place pennies or Cheerios along the outer 2 rings of a drawn 6×6 square (leaving the 2×2 middle blank) so your child sees how 36 minus 4 center holes avoids corner double-counting."
       }
     },
     {
@@ -120,6 +133,7 @@
       "title": "Joanna's Twice-Folded Number Square",
       "promptSummary": "A 6×6 grid numbered 1 to 36 is folded top-down across the middle horizontal line, then left-to-right across the middle vertical line, and punched in the top-middle cell. Which four numbers are punched?",
       "correctOption": "B",
+      "questionClass": "shapes-2d",
       "teachingGuide": {
         "headline": "Keep track of WHERE the fold creases sit—points right next to a crease fold onto each other like a mirror!",
         "steps": [
@@ -132,7 +146,8 @@
           "When you fold Columns 1, 2, 3 onto Columns 4, 5, 6, which column lands on top of Column 5—Column 2 or Column 1?",
           "Which four numbers would be punched if the hole were in the top-left corner right next to BOTH creases?"
         ],
-        "commonTraps": "Choice (A) 8, 11, 26, 29 happens if students think the top row of the 3×3 square is Row 1/2 instead of noticing the red fold line is at the top! Choices (D) and (E) forget that folding mirrors columns (Col 2 ↔ Col 5, Col 3 ↔ Col 4) rather than sliding them."
+        "commonTraps": "Choice (A) 8, 11, 26, 29 happens if students think the top row of the 3×3 square is Row 1/2 instead of noticing the red fold line is at the top! Choices (D) and (E) forget that folding mirrors columns (Col 2 ↔ Col 5, Col 3 ↔ Col 4) rather than sliding them.",
+        "homeTip": "Grab a square sticky note or scrap paper, draw the red and green fold creases, fold top-down then left-right, and poke a pencil through the top-middle spot before unfolding."
       }
     },
     {
@@ -141,6 +156,8 @@
       "title": "Robert's Classroom Rows",
       "promptSummary": "Every row in Robert's class has the same number of students. There are 2 rows in front of Robert, 1 row behind him, 3 students to his left, and 5 to his right. How many students are in the class?",
       "correctOption": "E",
+      "questionClass": "counting-sets",
+      "secondaryClass": "number-sense",
       "teachingGuide": {
         "headline": "Never forget to count Robert himself—both in his row AND among the rows!",
         "steps": [
@@ -153,7 +170,8 @@
           "If there are 3 kids on your left and 5 on your right, why are there 9 kids in your row instead of 8?",
           "Which wrong choice do you get if you count Robert in his row (9) but forget to count Robert's row (3 × 9)?"
         ],
-        "commonTraps": "Choice (D) 27 is the classic trap from adding 2 + 1 = 3 rows (forgetting Robert's own row!) × 9 = 27. Choice (B) 17 comes from adding all the numbers instead of multiplying rows × columns."
+        "commonTraps": "Choice (D) 27 is the classic trap from adding 2 + 1 = 3 rows (forgetting Robert's own row!) × 9 = 27. Choice (B) 17 comes from adding all the numbers instead of multiplying rows × columns.",
+        "homeTip": "Arrange coins or crackers on a napkin with one special token for Robert in the middle—count his full row (3 + Robert + 5) and all rows (2 + Robert's row + 1) so Robert never gets left out."
       }
     },
     {
@@ -162,6 +180,7 @@
       "title": "Wooden Blocks in a 3×3×3 Cube",
       "promptSummary": "A 3×3×3 cube is assembled from 5-unit light-grey L-blocks, 3-unit dark-grey bars, and 1-unit white cubes. How many white cubes are used?",
       "correctOption": "B",
+      "questionClass": "spatial-3d",
       "cropAdjust": { "diagramPadTop": 5, "diagramPadBottom": 5, "diagramSplitX": 2050 },
       "teachingGuide": {
         "headline": "Subtract the grey blocks from 27 total unit cubes—and notice that NO 3-long block can hide without poking out onto a visible face!",
@@ -175,7 +194,8 @@
           "Why is it impossible for another dark-grey 1×1×3 bar to be hiding completely inside without showing on the Front, Top, or Right face?",
           "If someone just counted the white squares visible on the outside (8), why is that too small?"
         ],
-        "commonTraps": "Choice (A) 8 comes from only counting the 8 white square faces visible on the outside surface! Choice (D) 16 forgets the second light-grey L-block tucked along the back wall (27 − 5 − 6 = 16)."
+        "commonTraps": "Choice (A) 8 comes from only counting the 8 white square faces visible on the outside surface! Choice (D) 16 forgets the second light-grey L-block tucked along the back wall (27 − 5 − 6 = 16).",
+        "homeTip": "Draw three 3×3 squares side by side for the Top, Middle, and Bottom layers of the cube and shade the two 5-cube L-blocks and two 3-cube bars to count the blank white spots inside."
       }
     },
     {
@@ -184,6 +204,8 @@
       "title": "Walking Around Two Gardens",
       "promptSummary": "Ahmad and Zhaleh leave corner A at the same speed. Ahmad walks around a 5m×5m square garden; Zhaleh walks around a 10m×5m rectangular garden. What is the smallest number of laps Ahmad makes to meet Zhaleh back at A?",
       "correctOption": "C",
+      "questionClass": "patterns-simulation",
+      "secondaryClass": "measurement-time",
       "cropAdjust": { "diagramPadTop": 5, "diagramPadBottom": 5, "diagramSplitX": 1580 },
       "teachingGuide": {
         "headline": "Find each walker's lap distance—they meet at A at the first distance they BOTH share (60 m)!",
@@ -197,7 +219,8 @@
           "How many laps did Zhaleh finish during that exact same time?",
           "Do the arrows (walking directions) change how long 1 full lap back to A takes?"
         ],
-        "commonTraps": "Choice (B) 2 is the classic 'answered the wrong person' trap: Zhaleh makes 2 laps around the rectangle while Ahmad makes 3 laps around the square!"
+        "commonTraps": "Choice (B) 2 is the classic 'answered the wrong person' trap: Zhaleh makes 2 laps around the rectangle while Ahmad makes 3 laps around the square!",
+        "homeTip": "Trace two fingers around a drawn 5×5 square and 10×5 rectangle side by side, writing down each walker's total distance every time they return to corner A (20, 40, 60 vs. 30, 60)."
       }
     },
     {
@@ -206,6 +229,8 @@
       "title": "Five Girls and the Plums",
       "promptSummary": "Lauren ate 2 more plums than Sophie. Betty ate 3 fewer than Lauren. Claire ate 1 more than Betty and 3 fewer than Alice. Which two girls ate the same number of plums?",
       "correctOption": "B",
+      "questionClass": "logic-deduction",
+      "secondaryClass": "number-sense",
       "teachingGuide": {
         "headline": "Pick a comfy test number (like Sophie = 10 plums) or draw a number line so everyone's plums become crystal clear!",
         "steps": [
@@ -218,7 +243,8 @@
           "Would Claire and Sophie still tie if we started with Sophie = 5 plums instead of 10? Why?",
           "Who ate the most plums of all, and who ate the fewest?"
         ],
-        "commonTraps": "Reversing '3 plums fewer than Alice' into Alice = 10 − 3 = 7 instead of 10 + 3 = 13, or mixing up 'more than' and 'fewer than' on a mental chain without writing numbers down."
+        "commonTraps": "Reversing '3 plums fewer than Alice' into Alice = 10 − 3 = 7 instead of 10 + 3 = 13, or mixing up 'more than' and 'fewer than' on a mental chain without writing numbers down.",
+        "homeTip": "Set out 10 grapes, crackers, or blocks for Sophie as a starting pile and act out '+2, −3, +1, +3' step by step, then try starting with 5 to prove the same two girls always tie."
       }
     },
     {
@@ -227,6 +253,8 @@
       "title": "The Sleeping Caterpillar",
       "promptSummary": "An 8-circle caterpillar (grey tail, alternating yellow and black body segments, orange head) curls into two staggered rows of four circles. Which picture could be the curled caterpillar?",
       "correctOption": "A",
+      "questionClass": "shapes-2d",
+      "secondaryClass": "patterns-simulation",
       "teachingGuide": {
         "headline": "Along the caterpillar, dark and light circles ALWAYS alternate—check the tight bottom-left corner first!",
         "steps": [
@@ -239,7 +267,8 @@
           "Why is the bottom-left circle (which only touches 2 circles) so much easier to check than a middle circle (which touches 4 circles)?",
           "Come up to the board and draw the single line connecting 1 to 8 inside choice (A)!"
         ],
-        "commonTraps": "Choices (B) and (C) have the right total number of yellow, black, grey, and orange circles, tricking students who only count colors without tracing a continuous touching path!"
+        "commonTraps": "Choices (B) and (C) have the right total number of yellow, black, grey, and orange circles, tricking students who only count colors without tracing a continuous touching path!",
+        "homeTip": "Line up 8 alternating dark and light bottle caps or coins into a straight caterpillar and curl them into 2 rows of 4—always checking the tight corner circle with only two neighbors first."
       }
     },
     {
@@ -248,6 +277,7 @@
       "title": "Hidden Numbers Under Colored Squares",
       "promptSummary": "Same-colored squares hide the same number: Row 1 (Grey + White + White) = 34, Row 2 (Grey + White + Black) = 32, Row 3 (White + Grey + Grey) = 26. What number is under the Black square?",
       "correctOption": "D",
+      "questionClass": "number-sense",
       "teachingGuide": {
         "headline": "Combine Row 1 and Row 3 to find (Grey + White) in one swoop—without even finding Grey or White separately first!",
         "steps": [
@@ -260,7 +290,8 @@
           "Compare Row 1 (34) and Row 3 (26): why did the sum drop by 8 when we swapped one White square for one Grey square?",
           "Once we know Grey + White = 20, do we even need to know Grey and White separately to find Black?"
         ],
-        "commonTraps": "Choice (A) 6 is the Grey square's value and Choice (E) 14 is the White square's value—students who solve for G and W by trial-and-error sometimes circle one of those instead of Black (12)!"
+        "commonTraps": "Choice (A) 6 is the Grey square's value and Choice (E) 14 is the White square's value—students who solve for G and W by trial-and-error sometimes circle one of those instead of Black (12)!",
+        "homeTip": "Use gray, white, and black LEGO bricks or paper squares for the three rows and combine Row 1 + Row 3 into one pile to discover what 3 pairs of (Gray + White) add up to together."
       }
     }
   ]

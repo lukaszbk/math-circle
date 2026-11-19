@@ -23,6 +23,7 @@ Follow these steps once to link the tablet web app directly to your Google Sheet
 ## 4. Verify Auto-Initialization & Roster Sync
 Once `Code.gs` is saved in the sheet's Apps Script editor:
 - Reloading the spreadsheet adds the **🦘 Math Circle → Sync Participants to Students** menu (`onOpen`), and typing a new student name in `Participants!A1:A` immediately syncs it to `Students` (`onEdit`).
-- On the first API call (or by running `doGet()` in the Apps Script editor), any missing `Students`, `Submissions`, and `Config` tabs are created automatically.
-- Any student name in `Participants!A1:A` not yet in `Students` is appended with a unique `student_id`, a 4-digit plain-text PIN (leading zeros preserved), an animal avatar, and `active = TRUE`.
+- On the first API call (or by running `doGet()` in the Apps Script editor), any missing `Students`, `Submissions`, and `Config` tabs are created automatically, and any existing 5-column `Students` tab automatically upgrades to include `parent_pin` (column `F`, unique 6-digit plain text).
+- Any student name in `Participants!A1:A` not yet in `Students` is appended with a unique `student_id`, a 4-digit plain-text student `pin` (leading zeros preserved), a unique 6-digit plain-text `parent_pin`, an animal avatar, and `active = TRUE`.
 - `Participants` is never modified.
+- Parents stay gated out of scores until you explicitly release each week in **Teacher Zone → 5. Multi-Week & Topics** (`Config.released_week_ids`), and you can print 2×4 QR access cards in **Teacher Zone → 4. Roster, PINs & Cards**.
