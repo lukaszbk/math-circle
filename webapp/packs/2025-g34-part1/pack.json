@@ -1,0 +1,337 @@
+{
+  "weekId": "2025-g34-part1",
+  "title": "Math Kangaroo 2025 (Grades 3–4) · Part 1",
+  "subtitle": "First 4 problems in each point section (Questions 1–4, 9–12, 17–20)",
+  "competitionYear": 2025,
+  "gradeBand": "Grades 3 and 4",
+  "part": 1,
+  "maxScore": 48,
+  "scoringRule": "positive-only",
+  "questionCount": 12,
+  "compiledAt": "2026-11-20T00:08:50.651690+00:00",
+  "questions": [
+    {
+      "number": 1,
+      "points": 3,
+      "title": "Mia's Growing Cube",
+      "promptSummary": "Mia connects small cubes one at a time to build a 3×3×3 cube and takes 5 photos (A)–(E) along the way. Which picture is Mia's fourth photo?",
+      "correctOption": "A",
+      "questionClass": "spatial-3d",
+      "secondaryClass": "counting-sets",
+      "imageUrl": "packs/2025-g34-part1/images/q01.png",
+      "imageWidth": 1142,
+      "imageHeight": 731,
+      "teachingGuide": {
+        "headline": "Since Mia adds 1 cube at a time, the 5 photos simply go in order from fewest cubes to most cubes!",
+        "steps": [
+          "Ask the circle how many small cubes a finished 3×3×3 cube has: 3 × 3 × 3 = 27 cubes, so (C) must be photo #5 (the very last photo).",
+          "Count the cubes in the smallest shapes: (D) has 3 on the bottom + 1 on top = 4 cubes (photo #1), and (B) has 7 on the bottom + 2 on layer 2 = 9 cubes (photo #2).",
+          "Compare the two nearly finished cubes, (E) and (A), by counting from the top down or counting missing spaces from 27: (E) has 9 + 7 + 2 = 18 cubes (9 missing), while (A) has 9 + 8 + 4 = 21 cubes (only 1 missing on layer 2 and 5 missing on layer 3).",
+          "Order all 5 photos from smallest to largest: (D) 4 → (B) 9 → (E) 18 → (A) 21 → (C) 27. The fourth photo is (A)!"
+        ],
+        "askTheKids": [
+          "Why is counting the EMPTY holes faster than counting every single cube in (A) and (E)?",
+          "Could a later photo ever have fewer cubes than an earlier photo if Mia only adds cubes?"
+        ],
+        "commonTraps": "Choice (E) is tempting if students only glance at height (both (E) and (A) are 3 layers tall), making (E) the 3rd photo instead of the 4th. Choice (C) is the 5th and final photo.",
+        "homeTip": "Build a 3×3×3 cube out of 27 sugar cubes or linking blocks and pause at 4, 9, 18, 21, and 27 blocks so your child can practice counting missing spots in each layer."
+      }
+    },
+    {
+      "number": 2,
+      "points": 3,
+      "title": "Arya's Largest Expression",
+      "promptSummary": "Arya places the four digits 2, 0, 2, 5 into □ + □ − □ + □. Which order gives her the largest result?",
+      "correctOption": "E",
+      "questionClass": "number-sense",
+      "imageUrl": "packs/2025-g34-part1/images/q02.png",
+      "imageWidth": 1142,
+      "imageHeight": 532,
+      "teachingGuide": {
+        "headline": "Look at the signs before the digits—three boxes get ADDED, and only the third box gets SUBTRACTED!",
+        "steps": [
+          "Write □ + □ − □ + □ big on the whiteboard and circle the minus sign in front of the 3rd box.",
+          "Ask: 'If we want the biggest total, which digit should we throw away in the minus box?' The smallest digit, 0!",
+          "Put 0 in the 3rd box and place the remaining digits (5, 2, 2) in the three plus boxes: 5 + 2 − 0 + 2 = 9.",
+          "Check the other choices (A)–(D): every single one puts 2 in the 3rd minus box, giving 5 + 2 − 2 + 0 = 5. Only (E) 5, 2, 0, 2 puts 0 in the minus box and reaches 9 -> (E)."
+        ],
+        "askTheKids": [
+          "Does swapping the digits in the three '+' boxes change the answer at all?",
+          "How much bigger is the answer when we subtract 0 instead of subtracting 2?"
+        ],
+        "commonTraps": "Choices (A)–(D) all put 2 in the 3rd box (and 0 in one of the '+' boxes), giving 5 + 2 + 0 − 2 = 5. Students who grab (D) 5, 0, 2, 2 just because it starts with 5, or (A) because it ends with 5, forget to check which box sits after the minus sign.",
+        "homeTip": "Write the four boxes and signs on index cards and let your child place four digit cards (0, 2, 2, 5) to discover why putting the smallest digit after '−' always maximizes the total."
+      }
+    },
+    {
+      "number": 3,
+      "points": 3,
+      "title": "Pulling the Rope Knot",
+      "promptSummary": "Five loops of rope (A)–(E) have crossings drawn over and under. Which rope ties into a knot when both ends are pulled?",
+      "correctOption": "E",
+      "questionClass": "spatial-3d",
+      "secondaryClass": "patterns-simulation",
+      "imageUrl": "packs/2025-g34-part1/images/q03.png",
+      "imageWidth": 1142,
+      "imageHeight": 660,
+      "teachingGuide": {
+        "headline": "Follow the rope from one end to the other and call out 'OVER' or 'UNDER'—a real knot has to alternate OVER, UNDER, OVER, UNDER!",
+        "steps": [
+          "Point out that the upper-left curve just kisses the inner loop without crossing, so each picture has 3 real crossings (left, top, and bottom).",
+          "Trace each rope from its top-left free end and shout OVER or UNDER at the 3 crossings: if a strand goes UNDER twice in a row (or OVER twice in a row), that loop slides free when pulled!",
+          "Eliminate the traps: in (A) and (D), one half of the loop sits completely on top of or underneath the other so it pulls straight; in (B) and (C), a free end slips right out through consecutive same-side crossings.",
+          "Check (E): its crossings strictly alternate OVER and UNDER all the way around, locking the rope into a real overhand knot when both ends are pulled -> (E)."
+        ],
+        "askTheKids": [
+          "If a loop crosses OVER both strands that pass through it, can it ever grab hold when you pull the ends tight?",
+          "Why does a 3-crossing loop need to alternate OVER–UNDER–OVER to stay knotted?"
+        ],
+        "commonTraps": "All 5 ropes look identical from far away! Students who guess without zooming in to label each crossing OVER or UNDER easily confuse (B), (C), or (D) with (E).",
+        "homeTip": "Use a thick shoelace or piece of yarn to build the 3-crossing loop on the table, flip one crossing at a time to match (A)–(E), and let your child pull the two ends to test which one knots."
+      }
+    },
+    {
+      "number": 4,
+      "points": 3,
+      "title": "Emma's Spinning Pinwheel",
+      "promptSummary": "Emma spins her six-triangle pinwheel (white, gray, and black wedges). Which of the pinwheels (A)–(E) is hers?",
+      "correctOption": "E",
+      "questionClass": "shapes-2d",
+      "secondaryClass": "patterns-simulation",
+      "imageUrl": "packs/2025-g34-part1/images/q04.png",
+      "imageWidth": 1235,
+      "imageHeight": 879,
+      "teachingGuide": {
+        "headline": "Spinning a pinwheel keeps its colors in the exact same clockwise loop—only mirror flips reverse the loop!",
+        "steps": [
+          "Walk clockwise around Emma's pinwheel starting at the black wedge touching the gray wedge: Black → Gray → White → Black → White → White.",
+          "Notice the handy '1 vs. 2 whites' rule: going clockwise from Black to Gray and continuing clockwise, you hit 1 White before the next Black (and 2 Whites on the other side).",
+          "Test (A), (B), (C), and (D) by starting at their Black wedge touching Gray and moving clockwise toward the Gray wedge: in (A), (B), (C), and (D), going Black → Gray leads to TWO Whites next instead of 1 White—those are mirror flips!",
+          "Test (E) clockwise starting at the bottom Black wedge touching Gray: Black → Gray → 1 White → Black → 2 Whites! Spinning Emma's pinwheel 120° counterclockwise gives (E)."
+        ],
+        "askTheKids": [
+          "If you turn a pinwheel around its center stick, can a Gray wedge ever jump to the other side of its Black neighbor?",
+          "How can we tell a rotated pinwheel apart from a flipped-over pinwheel in just two seconds?"
+        ],
+        "commonTraps": "Choice (A) and (C) look very close because they share the same wedge colors in the same neighborhood, catching students who only count how many black/gray/white wedges exist instead of checking clockwise direction.",
+        "homeTip": "Cut a paper hexagon into 6 wedges colored like the top pinwheel and spin it on the table with a pencil tip in the center to prove why (A)–(D) require flipping the paper upside down."
+      }
+    },
+    {
+      "number": 9,
+      "points": 4,
+      "title": "Shells and Marbles Playshop",
+      "promptSummary": "In James and his sister's playshop, each shell is worth 6 and each marble is worth 1. Which picture (A)–(E) has a total value of 16?",
+      "correctOption": "E",
+      "questionClass": "number-sense",
+      "secondaryClass": "measurement-time",
+      "imageUrl": "packs/2025-g34-part1/images/q09.png",
+      "imageWidth": 1142,
+      "imageHeight": 594,
+      "teachingGuide": {
+        "headline": "Count the 6-point shells first, then count the 1-point marbles carefully—don't rush the 3×3 grid!",
+        "steps": [
+          "Write the key at the top of the board: 1 shell = 6, 1 marble = 1, target total = 16.",
+          "Find the value of each option: (A) has 2 shells + 1 marble = 12 + 1 = 13; (C) has 3 shells = 18; (D) has 1 shell + 5 marbles = 6 + 5 = 11.",
+          "Look closely at (B): 1 shell (6) plus a 3×3 square of marbles (3 × 3 = 9, NOT 10!), which totals 6 + 9 = 15.",
+          "Check (E): 2 shells (2 × 6 = 12) + 4 marbles = 12 + 4 = 16 -> (E)!"
+        ],
+        "askTheKids": [
+          "Before counting marbles, how many shells COULD possibly be in a set worth 16?",
+          "Why did the problem put a 3×3 square of marbles in (B)?"
+        ],
+        "commonTraps": "Choice (B) catches students who eyeball the square of green marbles as 10 instead of counting 3 rows of 3 = 9 (giving 15 instead of 16). Choice (A) reverses or misreads shell value.",
+        "homeTip": "Use two types of household tokens (such as nickels/pennies or big pasta shells and small beans) worth 6 and 1, and ask your child to build 16 in every possible way."
+      }
+    },
+    {
+      "number": 10,
+      "points": 4,
+      "title": "Sharing Kangaroo Cookies",
+      "promptSummary": "Anna, Bonnie, and Charlie already have some kangaroo cookies on their plates and share 15 more cookies from a tray so everyone ends up with the same number. How many cookies from the tray does Anna get?",
+      "correctOption": "C",
+      "questionClass": "number-sense",
+      "secondaryClass": "counting-sets",
+      "imageUrl": "packs/2025-g34-part1/images/q10.png",
+      "imageWidth": 1125,
+      "imageHeight": 1199,
+      "teachingGuide": {
+        "headline": "Put ALL the cookies together in one grand total first, divide by 3 to find each plate's fair share, and subtract what Anna already had!",
+        "steps": [
+          "Count the starting cookies on each plate carefully: Anna has 3, Bonnie has 4, and Charlie has 5.",
+          "Add every cookie in the picture—on the plates AND on the tray: 3 + 4 + 5 + 15 = 27 cookies total.",
+          "Split the 27 cookies equally among the 3 friends: 27 ÷ 3 = 9 cookies on each plate at the end.",
+          "Since Anna already started with 3 cookies, she needs 9 − 3 = 6 cookies from the tray (Bonnie gets 5, Charlie gets 4; check: 6 + 5 + 4 = 15) -> (C)!"
+        ],
+        "askTheKids": [
+          "If they just gave 5 tray cookies to each person, would their plates end up equal?",
+          "How can you check your answer using Bonnie and Charlie's shares from the tray?"
+        ],
+        "commonTraps": "Choice (B) 5 is the #1 trap: students divide only the 15 tray cookies by 3 (15 ÷ 3 = 5), forgetting that the three kids started with different amounts! Other students solve 27 ÷ 3 = 9 and look for 9 instead of subtracting Anna's 3 starting cookies.",
+        "homeTip": "Set out three small plates with 3, 4, and 5 crackers plus a pile of 15 extras, and let your child deal the 15 extras out one by one to the smallest plates until all three plates match at 9."
+      }
+    },
+    {
+      "number": 11,
+      "points": 4,
+      "title": "Five Friends' Phone Batteries",
+      "promptSummary": "Five friends started with full identical phones. Bob spoke as much as Ann and Cristina combined and ran out of power, while David didn't use his phone. Which phone belongs to Edward?",
+      "correctOption": "B",
+      "questionClass": "logic-deduction",
+      "secondaryClass": "measurement-time",
+      "imageUrl": "packs/2025-g34-part1/images/q11.png",
+      "imageWidth": 1125,
+      "imageHeight": 682,
+      "teachingGuide": {
+        "headline": "If Bob drained a whole battery, then Ann and Cristina together ALSO drained a whole battery—meaning their leftover green bars must glue together into 1 full bar!",
+        "steps": [
+          "Match the easy two first: David didn't use his phone at all, so David has the 100% full green battery (#1). Bob ran out of power, so Bob has the completely empty battery (#3).",
+          "Look at the remaining three batteries (#2, #4, #5): #2 is half full (50%), #4 is nearly full (~80%), and #5 is nearly empty (~20%).",
+          "Use the phone-time clue: Ann + Cristina used as much battery as Bob (1 full battery). If you drain 1 full battery out of 2 full batteries, there must be 1 full battery of green left over combined!",
+          "Pair up two bars among {#2, #4, #5} that add to 1 full battery: #4 (~80%) + #5 (~20%) = 100%! So Ann and Cristina are #4 and #5, leaving #2 (half full) for Edward -> (B)."
+        ],
+        "askTheKids": [
+          "If Ann and Cristina together used up 1 whole battery out of their 2 batteries, how much total battery do they have LEFT together?",
+          "Do we need to know which of #4 and #5 is Ann and which is Cristina in order to find Edward's phone?"
+        ],
+        "commonTraps": "Students sometimes think 'spoke as much as Ann and Cristina together' means their USED parts match, or assume Edward must have the almost-empty phone #5 without pairing the two remaining green bars to sum to 1 full battery.",
+        "homeTip": "Draw 5 identical battery rectangles on paper, color them to match #1–#5, and cut out the remaining green bars from #4 and #5 to see them stack cleanly to the exact height of full battery #1."
+      }
+    },
+    {
+      "number": 12,
+      "points": 4,
+      "title": "Completing the Chessboard",
+      "promptSummary": "Two holes are missing from an 8×8 chessboard. Using pieces 1–5 (which can be rotated but not flipped), which two pieces complete the board?",
+      "correctOption": "B",
+      "questionClass": "shapes-2d",
+      "secondaryClass": "logic-deduction",
+      "imageUrl": "packs/2025-g34-part1/images/q12.png",
+      "imageWidth": 1125,
+      "imageHeight": 967,
+      "teachingGuide": {
+        "headline": "Fill in the checkerboard black-and-white pattern inside both holes first—colors AND no-flipping rules eliminate wrong pieces right away!",
+        "steps": [
+          "Color the missing squares inside both holes on the whiteboard using the surrounding checkerboard pattern: the top-left 5-square hole needs 3 dark and 2 light squares; the bottom-right Z-shaped hole needs 2 dark and 3 light squares (with a light center square).",
+          "Match the top-left hole: Piece 3 has the wrong colors (2 dark, 3 light). Piece 4 has 3 dark and 2 light, so test spinning it—its sticking-out square turns the wrong way unless you flip it (not allowed!). Piece 1 rotated 90° clockwise fits both shape and colors!",
+          "Match the bottom-right Z-hole: Piece 2 has a dark center (3 dark, 2 light), so it cannot match the hole's light center (2 dark, 3 light).",
+          "Rotate Piece 5 by 90° clockwise (or 90° counterclockwise): its dark/light squares line up perfectly with the Z-hole -> pieces 1 and 5 -> (B)!"
+        ],
+        "askTheKids": [
+          "Why does counting 'dark vs. light squares' knock out Pieces 2 and 3 before we even rotate anything?",
+          "Why does Piece 4 fail for the top hole even though it has 3 dark and 2 light squares?"
+        ],
+        "commonTraps": "Choice (E) pieces 4 and 5 is the biggest trap: Piece 4 looks just like Piece 1 if you allow mirror-flipping instead of only turning flat on the table! Choice (A) misses the color flip on Piece 2.",
+        "homeTip": "Trace Pieces 1 and 4 onto grid paper, color their dark squares, and let your child turn them flat on the table (no turning the paper upside down!) to see why only Piece 1 fits the top hole."
+      }
+    },
+    {
+      "number": 17,
+      "points": 5,
+      "title": "Marta's Ladybug Photos",
+      "promptSummary": "Six ladybugs have 1, 2, 3, 4, 5, or 6 spots each. Marta takes 4 photos of 3 ladybugs so every ladybug appears equally often. How many total spots are in the fourth photo?",
+      "correctOption": "D",
+      "questionClass": "counting-sets",
+      "secondaryClass": "logic-deduction",
+      "imageUrl": "packs/2025-g34-part1/images/q17.png",
+      "imageWidth": 1125,
+      "imageHeight": 1300,
+      "teachingGuide": {
+        "headline": "Find out how many times EACH ladybug appears across all 4 photos, then cross off the ones that already took their turn twice!",
+        "steps": [
+          "Count all ladybug spots in the 4 photos: 4 photos × 3 ladybugs = 12 appearances total. Divided equally among 6 ladybugs, each ladybug appears 12 ÷ 6 = 2 times!",
+          "Read the spots on each ladybug in Photos 1–3 carefully: Photo 1 = {1, 2, 5}; Photo 2 = {1, 3, 6}; Photo 3 = {3, 4, 5}.",
+          "Tally how many times each ladybug (1 through 6) has appeared so far: #1 (twice ✓), #2 (once), #3 (twice ✓), #4 (once), #5 (twice ✓), #6 (once).",
+          "The three ladybugs still needing their 2nd photo are #2, #4, and #6! Add their spots: 2 + 4 + 6 = 12 spots -> (D). (Double-check: 2 × (1+2+3+4+5+6) = 42 total spots, minus 8+10+12 = 30, leaves 12!)"
+        ],
+        "askTheKids": [
+          "How did we figure out that every ladybug appears exactly twice without seeing the 4th photo?",
+          "Can we check our answer 12 using the grand total of all spots in all 4 photos?"
+        ],
+        "commonTraps": "Choice (E) 23 comes from misreading spots or adding the wrong trio. Students who miscount the 5-spot or 6-spot ladybug in Photos 1–3 often land on (B) 10 or (C) 11.",
+        "homeTip": "Write the numbers 1 through 6 twice on small paper slips, pull out groups {1,2,5}, {1,3,6}, and {3,4,5}, and let your child add the three slips left on the table."
+      }
+    },
+    {
+      "number": 18,
+      "points": 5,
+      "title": "Nela's Paper Snowflake",
+      "promptSummary": "Nela folds a square paper in half top-to-bottom and then left-to-right, makes cuts, and unfolds a symmetric snowflake. Which folded cutout (A)–(E) produces the snowflake?",
+      "correctOption": "B",
+      "questionClass": "shapes-2d",
+      "secondaryClass": "spatial-3d",
+      "imageUrl": "packs/2025-g34-part1/images/q18.png",
+      "imageWidth": 1125,
+      "imageHeight": 1441,
+      "teachingGuide": {
+        "headline": "Track where the CENTER of the big square lands after both folds—everything else is just reading one corner of the snowflake!",
+        "steps": [
+          "Follow the two fold arrows carefully: Fold 1 brings the TOP half down onto the bottom half (putting the horizontal crease on TOP). Fold 2 brings the LEFT half onto the right half (putting the vertical crease on the LEFT).",
+          "That means the small folded square IS the bottom-right quarter of the big snowflake, and its TOP-LEFT corner is the exact CENTER of the snowflake!",
+          "Look at the center of the unfolded snowflake: the paper is SOLID there (an X-shape crossing at the middle—no hole in the center!), so the top-left corner of our cutout CANNOT be snipped off (cross out (A), (C), and (D)!).",
+          "Check the 4 edges of the bottom-right quarter of the snowflake: there is 1 V-notch on the top crease, 1 V-notch on the left crease (which unfold into the 4 diamond holes!), plus 1 V-notch on the right outer edge and 1 V-notch on the bottom outer edge -> (B)!"
+        ],
+        "askTheKids": [
+          "In the folded small square, which corner sits at the very center of the unfolded snowflake, and which corner sits at an outside corner?",
+          "Why does cutting a V-notch on a folded edge unfold into a diamond-shaped hole?"
+        ],
+        "commonTraps": "Choice (E) puts square corner notches instead of diagonal V-notches (leaving a cross instead of an X with diamond holes). Choices (A) and (D) snip off the corner that belongs at the solid center of the snowflake.",
+        "homeTip": "Fold a square sticky note or napkin top-to-bottom then left-to-right, put a tiny dot on the top-left 'center' corner, cut the 4 V-notches from (B), and unfold it to reveal the exact snowflake."
+      }
+    },
+    {
+      "number": 19,
+      "points": 5,
+      "title": "Zoe's Two-Color Pyramid",
+      "promptSummary": "Zoe builds a 4-layer pyramid of black and gray cubes so no two cubes sharing a face have the same color. With one black cube shown at the front of layer 2, how does the pyramid look from above?",
+      "correctOption": "D",
+      "questionClass": "spatial-3d",
+      "secondaryClass": "logic-deduction",
+      "imageUrl": "packs/2025-g34-part1/images/q19.png",
+      "imageWidth": 1142,
+      "imageHeight": 1118,
+      "teachingGuide": {
+        "headline": "Every step left, right, up, or down switches Black ↔ Gray like a 3D checkerboard—walk one cube at a time from the given Black cube!",
+        "steps": [
+          "Point to the given BLACK cube: it sits at the front corner of layer 2 (one step above layer 1). Directly underneath it on layer 1 is a GRAY cube.",
+          "Step forward from that hidden GRAY cube to the two front-edge cubes touching it (both BLACK), and then to the very bottom-front corner of layer 1 (touching both BLACK cubes): that corner MUST be GRAY! Looking from above, the bottom corner of the diamond is GRAY, ruling out (A), (C), and (E).",
+          "Compare the two remaining choices (B) and (D): from that bottom-front GRAY corner, the cubes along the bottom-left and bottom-right edges of layer 1 must alternate GRAY → BLACK → GRAY → BLACK, which rules out (B) (all gray edges) and leaves only (D)!",
+          "Double-check the middle and peak of (D): the shown layer-2 front corner is BLACK, layer 3's front corner directly diagonally behind it is GRAY, and the top peak cube on layer 4 is BLACK -> (D)!"
+        ],
+        "askTheKids": [
+          "If two cubes touch face-to-face, why can we switch colors every time we move 1 cube in ANY direction?",
+          "Looking straight down from above, which squares in the 4×4 view come from the bottom layer vs. the top peak?"
+        ],
+        "commonTraps": "Choice (B) gets the 4×4 outer ring right (gray corners) and even gets the checkerboard idea right, except it reverses the top layers and makes the center 2×2 and peak black/gray inverted. Always count exact steps in 3D (x, y, and up) from the labeled black cube!",
+        "homeTip": "Build a tiny 2-layer or 3-layer checkerboard pyramid out of dark and light LEGO bricks so your child can look straight down from overhead and see how each layer's colors ring around the peak."
+      }
+    },
+    {
+      "number": 20,
+      "points": 5,
+      "title": "Shaded Calendar Dates",
+      "promptSummary": "On a calendar page for one month (Mon–Sun), two dates are shaded (Row 2 Thursday and Row 4 Wednesday) and their sum is 29. On what day of the week does the 1st of the month fall?",
+      "correctOption": "D",
+      "questionClass": "measurement-time",
+      "secondaryClass": "number-sense",
+      "imageUrl": "packs/2025-g34-part1/images/q20.png",
+      "imageWidth": 1142,
+      "imageHeight": 820,
+      "teachingGuide": {
+        "headline": "Moving down one row on a calendar ALWAYS adds 7 days—use that jump to find the gap between the two shaded boxes!",
+        "steps": [
+          "Call the top shaded box (Row 2, Thursday) 'd'. Jump straight down 2 weeks to Row 4 Thursday: that would be d + 14.",
+          "The lower shaded box is Row 4 Wednesday—just 1 day BEFORE Row 4 Thursday—so it equals d + 13!",
+          "Since the two shaded dates add up to 29: d + (d + 13) = 29, so two d's equal 29 − 13 = 16, meaning d = 8 (and the other shaded date is 21; check: 8 + 21 = 29!).",
+          "Count 7 days back up from Row 2 Thursday (the 8th) to Row 1 Thursday: 8 − 7 = 1! So the 1st of the month is Thursday -> (D)."
+        ],
+        "askTheKids": [
+          "Why is Row 4 Wednesday 13 days after Row 2 Thursday instead of 14 days?",
+          "Once we know Row 2 Thursday is the 8th, can a calendar month start BEFORE Row 1 Thursday?"
+        ],
+        "commonTraps": "Students who assume the gap between Row 2 Thu and Row 4 Wed is 14 (instead of 13) get an odd remainder (29 − 14 = 15) and stall. Others find the 8th on Row 2 Thursday and misread Row 1's Monday as the 1st without subtracting 7.",
+        "homeTip": "Pull up any monthly wall calendar and cover two boxes two rows apart and one column left—let your child discover why the gap is always 13 days and reconstruct the rest of the month."
+      }
+    }
+  ]
+}

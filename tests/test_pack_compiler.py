@@ -88,6 +88,11 @@ class TestPackCompiler(unittest.TestCase):
         self.assertIn("Try at Home", html_text)
         self.assertIn("2D Shapes, Symmetry &amp; Paths", html_text)
 
+        self.assertTrue((REPO_ROOT / "webapp" / "packs" / "2024-g34-part1" / "preview.html").is_file())
+        self.assertTrue((REPO_ROOT / "webapp" / "packs" / "2024-g34-part2" / "preview.html").is_file())
+        self.assertTrue((REPO_ROOT / "webapp" / "packs" / "2025-g34-part1" / "preview.html").is_file())
+        self.assertTrue((REPO_ROOT / "webapp" / "packs" / "2025-g34-part2" / "preview.html").is_file())
+
         self.assertTrue(self.INDEX_PATH.is_file())
         index_data = json.loads(self.INDEX_PATH.read_text(encoding="utf-8"))
         self.assertEqual(index_data.get("defaultWeekId"), "2022-g34-part1")
@@ -95,6 +100,12 @@ class TestPackCompiler(unittest.TestCase):
         self.assertIn("2021-g34-part1", week_ids)
         self.assertIn("2022-g34-part1", week_ids)
         self.assertIn("2022-g34-part2", week_ids)
+        self.assertIn("2023-g34-part1", week_ids)
+        self.assertIn("2023-g34-part2", week_ids)
+        self.assertIn("2024-g34-part1", week_ids)
+        self.assertIn("2024-g34-part2", week_ids)
+        self.assertIn("2025-g34-part1", week_ids)
+        self.assertIn("2025-g34-part2", week_ids)
 
     def test_compiled_2021_part1_pack_manifest_and_images(self) -> None:
         pack_dir = REPO_ROOT / "webapp" / "packs" / "2021-g34-part1"
@@ -141,6 +152,123 @@ class TestPackCompiler(unittest.TestCase):
             if q.get("secondaryClass"):
                 self.assertIn(q["secondaryClass"], compile_pack.QUESTION_CLASSES)
                 self.assertNotEqual(q["secondaryClass"], q["questionClass"])
+
+    def test_compiled_2023_packs_manifest_and_images(self) -> None:
+        expected_parts = [
+            ("2023-g34-part1", [1, 2, 3, 4, 9, 10, 11, 12, 17, 18, 19, 20]),
+            ("2023-g34-part2", [5, 6, 7, 8, 13, 14, 15, 16, 21, 22, 23, 24]),
+        ]
+        for week_id, expected_numbers in expected_parts:
+            pack_dir = REPO_ROOT / "webapp" / "packs" / week_id
+            pack_json_path = pack_dir / "pack.json"
+            self.assertTrue(pack_json_path.is_file(), f"Compiled {week_id} pack.json missing")
+            pack = json.loads(pack_json_path.read_text(encoding="utf-8"))
+
+            self.assertEqual(pack["weekId"], week_id)
+            self.assertEqual(pack["maxScore"], 48)
+            self.assertEqual(pack["questionCount"], 12)
+            self.assertEqual([q["number"] for q in pack["questions"]], expected_numbers)
+            self.assertTrue((pack_dir / "preview.html").is_file())
+            for q in pack["questions"]:
+                img_path = REPO_ROOT / "webapp" / q["imageUrl"]
+                self.assertTrue(img_path.is_file(), f"Missing {week_id} image {img_path}")
+                self.assertIn(q.get("questionClass"), compile_pack.QUESTION_CLASSES)
+                self.assertTrue(q["teachingGuide"].get("homeTip", "").strip())
+                if q.get("secondaryClass"):
+                    self.assertIn(q["secondaryClass"], compile_pack.QUESTION_CLASSES)
+                    self.assertNotEqual(q["secondaryClass"], q["questionClass"])
+
+    def _assert_compiled_2024_pack(self, week_id: str, expected_numbers: list[int]) -> None:
+        pack_dir = REPO_ROOT / "webapp" / "packs" / week_id
+        pack_json_path = pack_dir / "pack.json"
+        self.assertTrue(pack_json_path.is_file(), f"Compiled {week_id} pack.json missing")
+        pack = json.loads(pack_json_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(pack["weekId"], week_id)
+        self.assertEqual(pack["maxScore"], 48)
+        self.assertEqual(pack["questionCount"], 12)
+        self.assertEqual([q["number"] for q in pack["questions"]], expected_numbers)
+        self.assertTrue((pack_dir / "preview.html").is_file())
+        for q in pack["questions"]:
+            img_path = REPO_ROOT / "webapp" / q["imageUrl"]
+            self.assertTrue(img_path.is_file(), f"Missing {week_id} image {img_path}")
+            width, height = compile_pack.get_image_dimensions(img_path)
+            self.assertIn(width, (1125, 1145))
+            self.assertGreater(height, 0)
+            self.assertEqual(q["imageWidth"], width)
+            self.assertEqual(q["imageHeight"], height)
+            self.assertIn(q.get("questionClass"), compile_pack.QUESTION_CLASSES)
+            self.assertTrue(q["teachingGuide"].get("homeTip", "").strip())
+            if q.get("secondaryClass"):
+                self.assertIn(q["secondaryClass"], compile_pack.QUESTION_CLASSES)
+                self.assertNotEqual(q["secondaryClass"], q["questionClass"])
+
+    def test_compiled_2024_part1_pack_manifest_and_images(self) -> None:
+        self._assert_compiled_2024_pack(
+            "2024-g34-part1", [1, 2, 3, 4, 9, 10, 11, 12, 17, 18, 19, 20]
+        )
+
+    def test_compiled_2024_part2_pack_manifest_and_images(self) -> None:
+        self._assert_compiled_2024_pack(
+            "2024-g34-part2", [5, 6, 7, 8, 13, 14, 15, 16, 21, 22, 23, 24]
+        )
+
+    def _assert_compiled_2025_pack(self, week_id: str, expected_numbers: list[int]) -> None:
+        pack_dir = REPO_ROOT / "webapp" / "packs" / week_id
+        pack_json_path = pack_dir / "pack.json"
+        self.assertTrue(pack_json_path.is_file(), f"Compiled {week_id} pack.json missing")
+        pack = json.loads(pack_json_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(pack["weekId"], week_id)
+        self.assertEqual(pack["competitionYear"], 2025)
+        self.assertEqual(pack["maxScore"], 48)
+        self.assertEqual(pack["scoringRule"], "positive-only")
+        self.assertEqual(pack["questionCount"], 12)
+        self.assertEqual([q["number"] for q in pack["questions"]], expected_numbers)
+        self.assertTrue((pack_dir / "preview.html").is_file())
+
+        left_col_nums = {1, 2, 3, 7, 8, 9, 13, 14, 15, 16, 19, 20, 21}
+        for q in pack["questions"]:
+            num = q["number"]
+            self.assertIn(q["points"], (3, 4, 5))
+            self.assertIn(q["correctOption"], ("A", "B", "C", "D", "E"))
+            self.assertTrue(q["title"].strip())
+            self.assertTrue(q["promptSummary"].strip())
+
+            expected_img_url = f"packs/{week_id}/images/q{num:02d}.png"
+            self.assertEqual(q["imageUrl"], expected_img_url)
+            img_path = REPO_ROOT / "webapp" / expected_img_url
+            self.assertTrue(img_path.is_file(), f"Missing {week_id} image {img_path}")
+            width, height = compile_pack.get_image_dimensions(img_path)
+            expected_width = 1235 if num == 4 else (1142 if num in left_col_nums else 1125)
+            self.assertEqual(width, expected_width)
+            self.assertGreater(height, 0)
+            self.assertEqual(q["imageWidth"], width)
+            self.assertEqual(q["imageHeight"], height)
+
+            guide = q["teachingGuide"]
+            self.assertIsInstance(guide, dict)
+            self.assertTrue(guide.get("headline", "").strip())
+            self.assertIsInstance(guide.get("steps"), list)
+            self.assertGreaterEqual(len(guide["steps"]), 3)
+            self.assertIsInstance(guide.get("askTheKids"), list)
+            self.assertGreaterEqual(len(guide["askTheKids"]), 1)
+            self.assertTrue(guide.get("commonTraps", "").strip())
+            self.assertTrue(guide.get("homeTip", "").strip())
+            self.assertIn(q.get("questionClass"), compile_pack.QUESTION_CLASSES)
+            if "secondaryClass" in q and q["secondaryClass"]:
+                self.assertIn(q["secondaryClass"], compile_pack.QUESTION_CLASSES)
+                self.assertNotEqual(q["secondaryClass"], q["questionClass"])
+
+    def test_compiled_2025_part1_pack_manifest_and_images(self) -> None:
+        self._assert_compiled_2025_pack(
+            "2025-g34-part1", [1, 2, 3, 4, 9, 10, 11, 12, 17, 18, 19, 20]
+        )
+
+    def test_compiled_2025_part2_pack_manifest_and_images(self) -> None:
+        self._assert_compiled_2025_pack(
+            "2025-g34-part2", [5, 6, 7, 8, 13, 14, 15, 16, 21, 22, 23, 24]
+        )
 
     def test_metadata_validation_rejects_invalid_fields(self) -> None:
         with self.assertRaises(ValueError):

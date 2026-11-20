@@ -1,0 +1,325 @@
+{
+  "weekId": "2023-g34-part2",
+  "title": "Math Kangaroo 2023 (Grades 3–4) · Part 2",
+  "subtitle": "Second 4 problems in each point section (Questions 5–8, 13–16, 21–24)",
+  "competitionYear": 2023,
+  "gradeBand": "Grades 3 and 4",
+  "part": 2,
+  "questions": [
+    {
+      "number": 5,
+      "points": 3,
+      "title": "Theater Lights Schedule",
+      "promptSummary": "A theater light chart from 0 to 12 minutes shows when the Green, Orange, and Blue lights are on. For how many minutes in total are exactly 2 lights on at the same time?",
+      "correctOption": "C",
+      "questionClass": "measurement-time",
+      "secondaryClass": "counting-sets",
+      "teachingGuide": {
+        "headline": "Scan one 1-minute column at a time from 0 to 12 and write '1', '2', or '3' underneath—then count the 2s!",
+        "steps": [
+          "Slide a ruler or finger vertically across each 1-minute slice from 0–1 up to 11–12 and count how many colored bars are in that column.",
+          "Write the count under each minute slice: 0–1 has 1, 1–2 has 2 ✓, 2–3 has 3 (too many!), 3–4 has 2 ✓, 4–5 has 2 ✓, 5–6 has 2 ✓.",
+          "Keep scanning 6 to 12: 6–7 has 2 ✓, 7–8 has 3 (too many!), 8–9 has 2 ✓, 9–10 has 1, 10–11 has 2 ✓, 11–12 has 2 ✓.",
+          "Count all the checkmarks with 'exactly 2': 1 + 3 + 1 + 1 + 2 = 8 minutes total -> (C)!"
+        ],
+        "askTheKids": [
+          "Why don't minutes 2–3 and 7–8 count—aren't 2 lights on when all 3 lights are on?",
+          "What happens if you add up EVERY minute that has at least 2 lights on—which trap choice does that match?"
+        ],
+        "commonTraps": "Choice (E) 10 minutes is the classic 'at least 2 vs. EXACTLY 2' trap: students include minutes 2–3 and 7–8 where all 3 lights overlap (8 + 2 = 10)!",
+        "homeTip": "Use a bookmark to reveal just one 1-minute column of the chart at a time so your child can count the colored bars in each narrow strip without losing their place."
+      }
+    },
+    {
+      "number": 6,
+      "points": 3,
+      "title": "Aarav's Folded Digital Paper",
+      "promptSummary": "Aarav folds a transparent sheet with digital-clock segments downward along a horizontal dashed line. Which 3-digit display does he see?",
+      "correctOption": "E",
+      "questionClass": "shapes-2d",
+      "cropAdjust": {
+        "diagramPadTop": 20,
+        "diagramSplitX": 1455,
+        "maskRects": [
+          [1335, 0, 2310, 15]
+        ]
+      },
+      "teachingGuide": {
+        "headline": "Folding top-to-bottom flips the top half UPSIDE DOWN (not sideways!)—near the fold stays near the fold, and far from the fold lands at the bottom!",
+        "steps": [
+          "Point to the RIGHT digit first (easiest clincher!): at the very top of the sheet sits a little square box. When folded down over the dashed line, that top square lands at the BOTTOM, joining the top-left hook to make a '6'! That eliminates (A), (B), (C), and (D) in one shot!",
+          "Double-check the LEFT digit: the bottom half already has the middle bar and upper-right bar. Folding the top half down flips its lower-left bar into the upper-left bar and its upper-right bar into the lower-right bar → '4'!",
+          "Check the MIDDLE digit: left side is already on the bottom half, and the top half adds the bottom bar plus the right side → '0'!",
+          "Read all three digits together: 4 : 0 : 6 -> (E)!"
+        ],
+        "askTheKids": [
+          "Why didn't the top-right square turn into a '9' like in choice (A)?",
+          "What mistake gives choice (C) 6 : 0 : 4?"
+        ],
+        "commonTraps": "Choice (A) 7:8:9 traps students who slide the top half straight down without flipping it over the crease; Choice (C) 6:0:4 traps students who rotate the top half 180° instead of reflecting vertically!",
+        "homeTip": "Draw the two halves on a piece of thin tracing paper, parchment paper, or a clear plastic baggie with a marker and fold along the dashed line so your child sees '4 : 0 : 6' appear instantly."
+      }
+    },
+    {
+      "number": 7,
+      "points": 3,
+      "title": "Anna's Three-Disc Towers",
+      "promptSummary": "Anna has 4 discs of different sizes and wants to stack 3 of them so every disc is smaller than the one below it. How many different towers can she build?",
+      "correctOption": "C",
+      "questionClass": "counting-sets",
+      "secondaryClass": "logic-deduction",
+      "teachingGuide": {
+        "headline": "Choosing a 3-disc tower out of 4 discs is the exact same thing as choosing WHICH 1 DISC to leave on the table!",
+        "steps": [
+          "Label the 4 discs from smallest to biggest on the board: 1 (yellow), 2 (blue), 3 (orange), 4 (giant pale-yellow).",
+          "Ask: once you pick ANY 3 discs in your hands, how many ways can you stack them biggest-to-smallest? ONLY ONE way!",
+          "Flip the counting: instead of picking 3 discs to use, pick which 1 disc gets left out!",
+          "List all 4 leave-one-out towers: leave out #1 → (4-3-2); leave out #2 → (4-3-1); leave out #3 → (4-2-1); leave out #4 → (3-2-1). That's 4 towers -> (C)!"
+        ],
+        "askTheKids": [
+          "What if Anna had 10 discs of all different sizes and wanted to build a 9-disc tower—how fast could you answer now?",
+          "Why isn't the answer 6 like when you rearrange 3 objects in every order?"
+        ],
+        "commonTraps": "Choice (E) 6 traps students who confuse choosing 3 items from 4 with the 6 ways to scramble 3 items, forgetting the size rule locks each group of 3 into a single bottom-to-top order!",
+        "homeTip": "Grab 4 bowls, coasters, or coins of different sizes (penny, dime, nickel, quarter) and let your child leave one coin aside at a time to build all 4 valid 3-coin stacks."
+      }
+    },
+    {
+      "number": 8,
+      "points": 3,
+      "title": "Danny's Glued Circle Pieces",
+      "promptSummary": "Danny glues a dark-gray semicircle and a light-gray quarter-circle (without cutting them) onto a black circle. Which design can he NOT make?",
+      "correctOption": "E",
+      "questionClass": "shapes-2d",
+      "secondaryClass": "logic-deduction",
+      "customBox": {
+        "page": 2,
+        "x": 120,
+        "y": 2112,
+        "width": 2310,
+        "height": 422
+      },
+      "cropAdjust": {
+        "maskRects": [
+          [0, 0, 2310, 1]
+        ]
+      },
+      "teachingGuide": {
+        "headline": "A half-circle can cover two NEXT-DOOR quarters, never two DIAGONALLY OPPOSITE quarters!",
+        "steps": [
+          "Show how overlapping works on (A)–(D): in (A) and (D), the light quarter-circle sits on top of the dark semicircle; in (B), the dark semicircle sits on top of half the light quarter-circle; in (C), they sit side-by-side without overlapping.",
+          "Now zoom in on (E), which is split neatly into 4 quarters like a pizza!",
+          "Point to the two dark-gray quarters in (E): one is in the TOP-RIGHT and the other is in the BOTTOM-LEFT—diagonally across from each other!",
+          "Ask: can a single uncut half-circle reach BOTH top-right and bottom-left without being cut in two? Never! Even if covered in the middle, spanning from top-right to bottom-left takes 3 quarters (270°), not a 2-quarter semicircle -> (E)!"
+        ],
+        "askTheKids": [
+          "Why IS choice (A) possible even though the dark-gray semicircle looks split into two wedges?",
+          "In choice (E), how many quarters of the black circle are covered by gray paper in total—and why does that also prove zero overlap?"
+        ],
+        "commonTraps": "Choice (A) is the biggest distractor: students see two separate dark-gray wedges in (A) and assume the semicircle was cut, missing that gluing the 90° light-gray wedge right across the middle of the 180° semicircle leaves two 45° dark edges!",
+        "homeTip": "Cut a black circle, a gray half-circle, and a white quarter-circle from paper and let your child layer them in both orders to recreate (A)–(D) and see first-hand why (E)'s opposite gray quarters are impossible."
+      }
+    },
+    {
+      "number": 13,
+      "points": 4,
+      "title": "Cars Waiting for the Ferry",
+      "promptSummary": "8 cars wait in line for a ferry. Each car holds either 2 or 3 people, and there are 19 people in total. How many cars hold exactly 2 people?",
+      "correctOption": "D",
+      "questionClass": "number-sense",
+      "secondaryClass": "logic-deduction",
+      "teachingGuide": {
+        "headline": "Put 2 people in EVERY car first—then hand out the leftover people one per car!",
+        "steps": [
+          "Draw 8 simple car boxes on the board and put 2 stick-figure dots inside every car: 8 × 2 = 16 people seated so far!",
+          "Ask: how many people are still standing on the dock waiting for a seat? 19 − 16 = 3 people!",
+          "Since each car can hold at most 3 people, add 1 extra person into 3 of the cars—now those 3 cars hold 3 people each.",
+          "Count the remaining cars that STILL have 2 people: 8 − 3 = 5 cars! Double-check: (5 × 2) + (3 × 3) = 10 + 9 = 19 -> (D)!"
+        ],
+        "askTheKids": [
+          "Why is (B) 3 such a sneaky trap after you do 19 − 16 = 3?",
+          "Could you also start by putting 3 people in all 8 cars (24 people) and taking 1 person out at a time?"
+        ],
+        "commonTraps": "Choice (B) 3 is the classic last-step reversal trap: 3 is the number of 3-person cars, whereas the question asks how many cars contain 2 people (5)!",
+        "homeTip": "Line up 8 toy cars or bottle caps with 19 beans—have your child deal 2 beans onto every car first, then drop the remaining 3 beans one by one and count how many 2-bean cars remain."
+      }
+    },
+    {
+      "number": 14,
+      "points": 4,
+      "title": "The 96th Metro Station Stop",
+      "promptSummary": "A Metro train travels back and forth along 6 stations A–B–C–D–E–F, reversing at A and F. Starting at B with its 1st stop at C, which station is its 96th stop?",
+      "correctOption": "D",
+      "questionClass": "patterns-simulation",
+      "secondaryClass": "number-sense",
+      "teachingGuide": {
+        "headline": "Don't count to 96—find the full back-and-forth round trip (10 stops, NOT 6 or 12!) and jump straight to 90!",
+        "steps": [
+          "Trace one complete round trip from B (heading East) until the train is back at B heading East again: 1:C, 2:D, 3:E, 4:F (turn around!), 5:E, 6:D, 7:C, 8:B, 9:A (turn around!), 10:B (heading East again!).",
+          "Highlight the magic number 10: every 10 stops, the train is back at B heading East—so stop 10, stop 20, ..., stop 90 are ALL at station B heading East!",
+          "Now count just 6 more stops from 90 (which matches stop #6!): 91:C, 92:D, 93:E, 94:F, 95:E, 96:D!",
+          "Circle station D -> (D)!"
+        ],
+        "askTheKids": [
+          "Why is the round-trip cycle 10 stops instead of 12 stops when there are 6 stations?",
+          "Why wasn't stop #8 (when the train first returned to B going West) the end of the cycle?"
+        ],
+        "commonTraps": "Dividing 96 by 6 (getting remainder 0) or by 12 (forgetting end stations A and F are only visited ONCE per turnaround, not twice!) are the two biggest cycle-length traps.",
+        "homeTip": "Draw A–B–C–D–E–F on paper and drive a toy train back and forth while counting aloud to 10 so your child sees why turning around at A and F makes a 10-stop loop."
+      }
+    },
+    {
+      "number": 15,
+      "points": 4,
+      "title": "Aanya's Connected Circle Colors",
+      "promptSummary": "Aanya paints 7 connected circles so that any two circles joined by a line have different colors. What is the smallest number of colors she needs?",
+      "correctOption": "B",
+      "questionClass": "logic-deduction",
+      "secondaryClass": "shapes-2d",
+      "cropAdjust": {
+        "diagramPadTop": 16,
+        "diagramPadBottom": 16,
+        "diagramSplitX": 2035,
+        "maskRects": [
+          [1915, 0, 2310, 14],
+          [1915, 278, 2310, 289]
+        ]
+      },
+      "teachingGuide": {
+        "headline": "Spot the bottom TRIANGLE to prove 2 colors aren't enough—then color all 7 circles using just Red, Blue, and Green!",
+        "steps": [
+          "Draw the 7 circles on the board and point right at the triangle at the bottom (center circle + bottom-left + bottom-right): all 3 touch each other!",
+          "Ask: can 2 colors paint a triangle where all 3 circles connect? No! So we need AT LEAST 3 colors (cross out A = 2).",
+          "Now test if 3 colors (R, B, G) can finish the whole picture! Paint the bottom triangle: Center = R, Bottom-Left = B, Bottom-Right = G.",
+          "Finish the outer wings: Middle-Left touches B → paint it G, then Top-Left touches R & G → paint it B! Middle-Right touches G → paint it B, then Top-Right touches R & B → paint it G! Zero clashes -> 3 colors work -> (B)!"
+        ],
+        "askTheKids": [
+          "What would happen to the smallest number of colors if we erased that single bottom horizontal line?",
+          "Why might someone guess 5 colors just by looking at the middle circle?"
+        ],
+        "commonTraps": "Choice (C) 4 or (D) 5 traps students who see the center circle has 4 lines touching it and assume all 4 neighbors need different colors from each other—forgetting non-touching neighbors can share colors!",
+        "homeTip": "Sketch the 7-circle web on paper and hand your child just 3 crayons—challenge them to color the bottom triangle first and see if they can color the rest without ever grabbing a 4th crayon."
+      }
+    },
+    {
+      "number": 16,
+      "points": 4,
+      "title": "Sam's Two-Story Sticker Maze",
+      "promptSummary": "Sam walks from IN to OUT through a two-story 3×3 room maze with doors and staircases, passing frog, rhino, and shark wall stickers. In what order does she see them?",
+      "correctOption": "A",
+      "questionClass": "spatial-3d",
+      "secondaryClass": "patterns-simulation",
+      "teachingGuide": {
+        "headline": "Number both floors like matching 3×3 tic-tac-toe grids so jumping up and down staircases never scrambles your spot!",
+        "steps": [
+          "Label rows 1–3 (back to front) and columns 1–3 (left to right) on BOTH floors. Start at IN = Lower (3,3) → walk back through the door into Lower (2,3) → climb the stairs to Upper (2,3)!",
+          "At Upper (2,3), notice the front door to Upper (3,3) is a dead end! Go back through the other door into Upper (1,3)—there's the FROG first! (That already narrows it to A or E!)",
+          "Go down the stairs in (1,3) to Lower (1,3) → door left to Lower (1,2) → door forward to Lower (2,2) → door left to Lower (2,1)—there's the RHINO second!",
+          "Keep going to verify the finish: Lower (2,1) → Lower (3,1) → Lower (3,2) → stairs up to Upper (3,2) → Upper (3,1) → Upper (2,1) [SHARK third!] → Upper (2,2) → Upper (1,2) → Upper (1,1) → stairs down to OUT! Order: Frog, Rhino, Shark -> (A)."
+        ],
+        "askTheKids": [
+          "Once we saw the Frog FIRST in Upper (1,3), which three answer choices disappeared immediately?",
+          "Why couldn't Sam just walk straight left to OUT when she reached Lower (1,2)?"
+        ],
+        "commonTraps": "Choice (E) Frog, Shark, Rhino traps students who spot the Frog first on the upper floor and assume Sam stays upstairs to visit the Shark before ever going back downstairs to the Rhino!",
+        "homeTip": "Have your child use two fingers at once—left index finger on the lower floor and right index finger on the upper floor—moving them together whenever the path hits a staircase."
+      }
+    },
+    {
+      "number": 21,
+      "points": 5,
+      "title": "Adam and Brenda's Marbles",
+      "promptSummary": "Adam and Brenda have 9 marbles each, and together they have 8 red and 10 blue marbles. Brenda has twice as many blue marbles as red marbles. How many blue marbles does Adam have?",
+      "correctOption": "B",
+      "questionClass": "number-sense",
+      "secondaryClass": "logic-deduction",
+      "teachingGuide": {
+        "headline": "Unlock Brenda's 9 marbles first by grouping '1 red + 2 blues' into 3-marble packs—then subtract from the 10 total blues!",
+        "steps": [
+          "Check the grand total first: 9 + 9 = 18 marbles, and 8 red + 10 blue = 18 marbles—so every marble is either red or blue.",
+          "Focus ONLY on Brenda's 9 marbles: 'twice as many blue as red' means for every 1 Red marble, Brenda has 2 Blue marbles—draw one trio [R, B, B] = 3 marbles!",
+          "How many [R, B, B] trios make Brenda's 9 marbles? 9 ÷ 3 = 3 trios → Brenda has 3 Red and 6 Blue marbles!",
+          "Since together they have 10 Blue marbles, Adam has the rest: 10 − 6 = 4 Blue marbles (plus 5 Red to make his 9!) -> (B) 4."
+        ],
+        "askTheKids": [
+          "How does checking Adam's red marbles (8 − 3 = 5, and 5 + 4 = 9) prove our answer is 100% right?",
+          "Why is Choice (D) 6 a classic 'right math, wrong person' trap?"
+        ],
+        "commonTraps": "Choice (D) 6 traps students who brilliantly solve for Brenda's 6 blue marbles and circle 6 without noticing the question asks for ADAM's blue marbles (10 − 6 = 4)! Choice (C) 5 is Adam's RED marble count.",
+        "homeTip": "Put 8 red items and 10 blue items (like LEGO bricks or poker chips) in a bowl, let your child build 3 packs of '1 red + 2 blue' for one pile of 9, and count the blue bricks left in the remaining pile of 9."
+      }
+    },
+    {
+      "number": 22,
+      "points": 5,
+      "title": "Chloe's Rotate-and-Stamp Machines",
+      "promptSummary": "Machine R rotates a square sheet 90° clockwise, and Machine S stamps an upright club (♣) on it. Which 3-machine sequence turns the starting sheet (corner mark bottom-left) into the final sheet?",
+      "correctOption": "B",
+      "questionClass": "patterns-simulation",
+      "secondaryClass": "shapes-2d",
+      "teachingGuide": {
+        "headline": "Use the tiny corner square to count HOW MANY rotations happened, then use the sideways club (♣) to see WHEN it got stamped!",
+        "steps": [
+          "Track the tiny black corner dot from start (bottom-left) to finish (top-right): 1 clockwise turn moves it to top-left; 2 clockwise turns move it to top-right! So Chloe used TWO 'R's and ONE 'S' (cross out C and E!).",
+          "Now look closely at the club ♣ in the final picture: Machine S always stamps the club UPRIGHT (stem pointing DOWN), yet at the end the club is lying SIDEWAYS (top pointing RIGHT, stem pointing LEFT)!",
+          "How many 90° clockwise turns did the club take AFTER being stamped? Just ONE turn (Up → Right)!",
+          "One R after S means S went in the middle: R → S → R! Trace RSR on the board to confirm both the corner dot and sideways club -> (B)!"
+        ],
+        "askTheKids": [
+          "What would the club look like at the end if Chloe used (D) RRS instead?",
+          "What would the club look like if Chloe used (A) SRR?"
+        ],
+        "commonTraps": "Choice (D) RRS leaves the club upright (0 turns after stamping), while Choice (A) SRR turns the club completely upside-down (2 turns after stamping)—both move the corner dot to top-right, catching anyone who ignores the club's stem!",
+        "homeTip": "Color the bottom-left corner of a square sticky note, let your child turn it 90° clockwise ('R') and draw an upright arrow or clover ('S') at different steps to see how SRR, RSR, and RRS produce three different directions."
+      }
+    },
+    {
+      "number": 23,
+      "points": 5,
+      "title": "Teacher Claire's Circle Sums",
+      "promptSummary": "Teacher Claire writes the numbers 1 through 7 once each in a ring of 7 circles so adjacent circles add up to the blue number on their connecting line. What number goes in the green circle?",
+      "correctOption": "D",
+      "questionClass": "number-sense",
+      "secondaryClass": "logic-deduction",
+      "teachingGuide": {
+        "headline": "Add 1 through 7 (= 28) and pair up the OTHER 6 circles along 3 non-touching lines—no guess-and-check needed!",
+        "steps": [
+          "First, add all 7 secret numbers that must go into the 7 circles: 1 + 2 + 3 + 4 + 5 + 6 + 7 = 28!",
+          "Leave the GREEN circle alone and group the other 6 white circles into 3 separate pairs around the ring!",
+          "Read the blue sums already given on those 3 non-touching lines: bottom-left pair = 8, top-left pair = 7, right-side pair = 9!",
+          "Add those 3 pairs: 8 + 7 + 9 = 24! Since all 7 circles add to 28, the green circle MUST be 28 − 24 = 4 -> (D)! (Bonus check around the ring: 4, 5, 3, 6, 1, 7, 2 uses 1–7 once each!)"
+        ],
+        "askTheKids": [
+          "Isn't it wild that we found the green circle in 10 seconds without even knowing any of the other 6 circles yet?",
+          "Once we put 4 in the green circle, can we fill in every other circle around the ring to double-check?"
+        ],
+        "commonTraps": "Students who guess-and-check starting from the '6' line often try 1 + 5 = 6 or 2 + 4 = 6 in the wrong order, hitting a duplicate number halfway around the ring and losing track under time pressure.",
+        "homeTip": "Draw the 7 circles with the blue sums on paper and have your child circle the three non-touching white pairs in red marker—subtracting their sum (24) from 28 feels like a real math magic trick!"
+      }
+    },
+    {
+      "number": 24,
+      "points": 5,
+      "title": "Maria's Five Shaded Grid Guesses",
+      "promptSummary": "Maria shaded 5 cells in a 4×4 grid. Five friends guessed grids (A)–(E); one friend is completely right and the other four each have 4 shaded cells right. Which grid is Maria's?",
+      "correctOption": "E",
+      "questionClass": "logic-deduction",
+      "secondaryClass": "counting-sets",
+      "teachingGuide": {
+        "headline": "Cross off the 3 cells that EVERY friend shaded—then see which grid shares 1 of its remaining 2 cells with all four others!",
+        "steps": [
+          "Scan all five grids (A)–(E) for shaded cells that EVERY single friend agreed on: top row col 3, row 2 col 4, and bottom row col 3! Put stars on those 3 cells—every pair of grids already shares those 3!",
+          "Focus ONLY on the remaining 2 shaded cells in each grid: (A) has (2,1) & (3,3); (B) has (2,1) & (4,1); (C) has (3,1) & (4,2); (D) has (2,1) & (1,2); (E) has (2,1) & (3,1)!",
+          "Notice Grid (C) doesn't have (2,1)—it has (3,1) and (4,2)! Compare (C) with (A), (B), and (D): none of A, B, or D have (3,1) OR (4,2), so A, B, and D only match (C) in 3 cells—eliminating A, B, C, and D!",
+          "Check Grid (E) [(2,1) & (3,1)]: it shares (2,1) with A, B, and D (+1 cell = 4 matches each!) AND shares (3,1) with C (+1 cell = 4 matches!) -> (E)!"
+        ],
+        "askTheKids": [
+          "Why was Grid (C) the secret detective clue that knocked out A, B, and D right away?",
+          "Why could TWO grids that only agree on 3 shaded cells NEVER both be the winning answer?"
+        ],
+        "commonTraps": "Choice (A), (B), or (D) traps students who see four grids sharing cell (2,1) and pick one at random without checking which of those four ALSO overlaps a 4th cell with outlier Grid (C)!",
+        "homeTip": "Draw a blank 4×4 grid and place 3 pennies on the 3 cells everyone shares—then test placing 2 dimes on each option's remaining spots to see how only (E) touches every other guess once."
+      }
+    }
+  ]
+}

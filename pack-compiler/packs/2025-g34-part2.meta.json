@@ -1,0 +1,315 @@
+{
+  "weekId": "2025-g34-part2",
+  "title": "Math Kangaroo 2025 (Grades 3–4) · Part 2",
+  "subtitle": "Second 4 problems in each point section (Questions 5–8, 13–16, 21–24)",
+  "competitionYear": 2025,
+  "gradeBand": "Grades 3 and 4",
+  "part": 2,
+  "questions": [
+    {
+      "number": 5,
+      "points": 3,
+      "title": "Spotting the Regular Die",
+      "promptSummary": "On a regular die, opposite faces always total 7 dots. Which of the dice (A)–(E) can be a regular die?",
+      "correctOption": "A",
+      "questionClass": "spatial-3d",
+      "secondaryClass": "logic-deduction",
+      "customBox": { "page": 1, "x": 1275, "y": 1824, "width": 1125, "height": 358 },
+      "teachingGuide": {
+        "headline": "The three faces you see at a corner ALL touch each other—so NO two visible faces can ever add up to 7!",
+        "steps": [
+          "Hold up a real die (or sketch a cube) and ask: 'Can two faces that share an edge ever be opposite each other?' No! Opposite faces sit on completely opposite sides.",
+          "Since opposite faces add up to 7 on a regular die, any two touching visible faces CANNOT add up to 7.",
+          "Test each choice for a pair summing to 7: (B) shows 5 and 2 (5 + 2 = 7 ✗); (C) shows 6 and 1 (6 + 1 = 7 ✗); (D) shows 4 and 3 (4 + 3 = 7 ✗); (E) shows 2 and 5 (2 + 5 = 7 ✗).",
+          "Check (A): the visible faces are 5, 1, and 4—no two add to 7 (their opposites 2, 6, 3 are all hidden!) -> (A)."
+        ],
+        "askTheKids": [
+          "If you can see 1, 4, and 5 on the front corner of die (A), what numbers are hiding on the back, bottom, and left?",
+          "Why can you never see both 3 and 4 at the same time on a regular die?"
+        ],
+        "commonTraps": "Students sometimes think the three visible numbers need to add up to 7, or only check top + front without checking top + right and front + right.",
+        "homeTip": "Grab a standard six-sided board-game die and turn it in front of your child to show that whenever 1, 4, and 5 appear together, their 7-partners (6, 3, and 2) are always hidden on the back."
+      }
+    },
+    {
+      "number": 6,
+      "points": 3,
+      "title": "Tracks Under Alex's Shoe",
+      "promptSummary": "Alex stepped on curved tracks on the ground inside a circle. Which footprint pattern (A)–(E) matches the tracks hidden underneath her shoe?",
+      "correctOption": "B",
+      "questionClass": "shapes-2d",
+      "customBox": { "page": 1, "x": 1275, "y": 2191, "width": 1125, "height": 888 },
+      "teachingGuide": {
+        "headline": "Trace every track straight into the edge of the shoe and keep going smoothly across to where it comes out the other side!",
+        "steps": [
+          "Count how many tracks hit the edge of Alex's shoe and trace each one smoothly across without sharp bends.",
+          "Follow the two '/' tracks entering the bottom-left side of the forefoot: they are spaced WIDE apart—the upper one goes right out the very top tip of the toe (~12:30) and the second exits the upper-right forefoot (~2:00).",
+          "Follow the nearly flat track crossing from left (~8:30) to right (~2:30) across the widest part of the forefoot, crossing both '/' tracks.",
+          "Finally trace the single curved track near the bottom of the heel (~5:30 to ~4:00): only (B) has both widely spaced toe tracks AND the low heel track in the exact right spots -> (B)!"
+        ],
+        "askTheKids": [
+          "If we follow the line near the bottom of the heel, does it cross near the middle arch of the shoe or right down near the heel tip?",
+          "What happens to the top track on the left if we trace it smoothly out the top of the toe—does it match (B) or (D)?"
+        ],
+        "commonTraps": "Choice (D) is the closest distractor: it squeezes the two '/' tracks close together in the middle of the forefoot (missing the track at the top tip of the toe) and places the heel track too high near the narrow arch. Choices (C) and (E) curve the toe tracks the wrong way.",
+        "homeTip": "Trace the outer circle and shoe onto tracing paper (or put a clear plastic sheet over the screen) and draw the hidden track arcs straight across the footprint with a dry-erase marker to compare with (B) and (D)."
+      }
+    },
+    {
+      "number": 7,
+      "points": 3,
+      "title": "Kenny's Jumps from the Zoo",
+      "promptSummary": "Kenny jumps along a grid from School to Zoo as shown, then jumps from the Zoo: → 3, ↗ 2, ↑ 2. Which house (A)–(E) does he reach?",
+      "correctOption": "A",
+      "questionClass": "shapes-2d",
+      "secondaryClass": "patterns-simulation",
+      "customBox": { "page": 2, "x": 140, "y": 213, "width": 1142, "height": 1248 },
+      "cropAdjust": { "maskRects": [[1127, 0, 1142, 1248]] },
+      "teachingGuide": {
+        "headline": "Count STEPS (grid lines), not starting dots—one jump lands on the very next dot!",
+        "steps": [
+          "First check the example path from School to Zoo so everyone agrees how diagonal arrows work: each '↗' or '↖' arrow crosses 1 grid square diagonally (1 right/left and 1 up).",
+          "Put your finger right on the red Zoo dot (left edge, 3 steps up from the bottom).",
+          "Follow '→ 3': count 1, 2, 3 grid steps straight right (3 columns over, still on row 3).",
+          "Follow '↗ 2': jump 2 grid squares diagonally up-right (2 columns right to column 5, and 2 rows up to row 5), then '↑ 2' straight up to column 5, row 7—landing on the leftmost top red dot at the yellow two-story house -> (A)!"
+        ],
+        "askTheKids": [
+          "When you make 1 diagonal jump '↗', how many grid squares right and how many grid squares up do you move?",
+          "Why does counting the dot you start on as '1' push you onto the wrong house?"
+        ],
+        "commonTraps": "Students who count the starting Zoo dot as '1' when doing '→ 3' only move 2 steps right, or count 1 too far and reach (B) (the blue-roofed yellow house). Others misread '↗ 2' as moving 2 right and 1 up.",
+        "homeTip": "Draw a small grid on graph paper with a start dot and five destination dots, and hop a penny step by step while counting 'zero, one, two, three!' aloud so jumps never get confused with dots."
+      }
+    },
+    {
+      "number": 8,
+      "points": 3,
+      "title": "Jorge's Three-Rod Pinwheel",
+      "promptSummary": "Jorge builds a pinwheel using 3 straight rods decorated with green triangles and yellow squares. Which pinwheel (A)–(E) can he build?",
+      "correctOption": "E",
+      "questionClass": "shapes-2d",
+      "secondaryClass": "logic-deduction",
+      "customBox": { "page": 2, "x": 140, "y": 1476, "width": 1142, "height": 765 },
+      "cropAdjust": { "maskRects": [[1127, 0, 1142, 765]] },
+      "teachingGuide": {
+        "headline": "Check opposite ends of each straight stick—rotating a rod NEVER flips a shape to the other side of its stick!",
+        "steps": [
+          "Study the 3 rods at the top: Rod 1 has a yellow square + green triangle on the SAME side; Rod 2 has two green triangles on the SAME side; Rod 3 has two yellow squares on OPPOSITE sides.",
+          "Notice that in a pinwheel, each straight diameter (12–6, 2–8, 4–10) IS one whole rod! Look for the two-green-triangle rod (Rod 2) first.",
+          "In Rod 2, both green triangles sit on the SAME side of the stick. Look at every choice for a two-green-triangle rod: (A), (C), and (D) have NO rod with two green triangles on the same side—cross out (A), (C), and (D) right away!",
+          "Only (B) and (E) remain! Check Rod 3 (the two yellow squares on OPPOSITE sides of the stick): in (B) the vertical yellow-yellow rod puts both squares on the SAME right side (✗), whereas in (E) the 4–10 rod puts the two yellow squares on OPPOSITE sides, 12–6 is Rod 2, and 2–8 is Rod 1 -> (E)!"
+        ],
+        "askTheKids": [
+          "If you spin a rod around its middle, can a sticker on the top edge ever switch sides relative to the sticker at the other end?",
+          "Which rod eliminates three wrong choices in one glance?"
+        ],
+        "commonTraps": "Choice (B) and (D) look close because two of their rods match right away, catching students who forget to check whether matching shapes sit on the same side vs. opposite sides of every single stick.",
+        "homeTip": "Tape paper triangles and squares onto 3 popsicle sticks to match the three rods, then lay them across each other in a star and spin them on the table to verify (E) matches without peeling any shapes off."
+      }
+    },
+    {
+      "number": 13,
+      "points": 4,
+      "title": "Feeding the Six Sheep",
+      "promptSummary": "René feeds 6 sheep a total of 210 grams of dry food, giving the smallest sheep twice as much as each of the others. How much does the smallest sheep get?",
+      "correctOption": "B",
+      "questionClass": "number-sense",
+      "customBox": { "page": 3, "x": 140, "y": 213, "width": 1142, "height": 574 },
+      "cropAdjust": { "maskRects": [[1127, 0, 1142, 574]] },
+      "teachingGuide": {
+        "headline": "Count in 'equal scoops' instead of sheep—5 regular sheep plus 1 double-portion sheep makes 7 equal scoops!",
+        "steps": [
+          "Draw 6 sheep bowls on the whiteboard: put 1 scoop under each of the 5 bigger sheep, and 2 scoops under the smallest sheep.",
+          "Count all the scoops: 5 + 2 = 7 equal scoops total (NOT 6!).",
+          "Share 210 grams equally into the 7 scoops: 210 ÷ 7 = 30 grams per scoop (hint: 21 ÷ 7 = 3, then add the zero!).",
+          "Since the smallest sheep gets 2 scoops: 2 × 30 = 60 grams -> (B). (Check: 5 × 30 + 60 = 150 + 60 = 210 grams!)"
+        ],
+        "askTheKids": [
+          "Why would dividing 210 by 6 give the wrong answer here?",
+          "How much food does each of the other 5 sheep receive?"
+        ],
+        "commonTraps": "Choice (C) 70 grams is the classic mistake: students divide 210 ÷ 6 = 35 grams and double it to 70, forgetting that doubling one sheep's share makes 7 total shares, not 6.",
+        "homeTip": "Lay out 7 coins or crackers on the table—1 in front of 5 toy animals and 2 in front of the smallest toy—to make the '7 equal shares' picture concrete before dividing 210."
+      }
+    },
+    {
+      "number": 14,
+      "points": 4,
+      "title": "Fair Tomato Pizza Cuts",
+      "promptSummary": "Tom wants to cut a round pizza in half along one of lines 1–4 so both halves have the same number of tomatoes. Which two lines work?",
+      "correctOption": "D",
+      "questionClass": "counting-sets",
+      "secondaryClass": "shapes-2d",
+      "customBox": { "page": 3, "x": 140, "y": 797, "width": 1142, "height": 904 },
+      "cropAdjust": { "maskRects": [[1127, 0, 1142, 904]] },
+      "teachingGuide": {
+        "headline": "Write the tomato count inside every single one of the 8 pizza slices first—then testing each cut is just adding 4 numbers!",
+        "steps": [
+          "Label the 8 slices clockwise starting just right of vertical Line 2: 0, 3, 2, 4, 1, 2, 1, 5.",
+          "Find the total tomatoes on the whole pizza: 0 + 3 + 2 + 4 + 1 + 2 + 1 + 5 = 18, so a fair half-pizza MUST have 18 ÷ 2 = 9 tomatoes!",
+          "Check the diagonal cuts by adding 4 slices on one side: Line 1 (top-left to bottom-right) has 5 + 0 + 3 + 2 = 10 on its upper-right side (10 vs. 8 ✗), and Line 3 (top-right to bottom-left) has 3 + 2 + 4 + 1 = 10 on its lower-right side (10 vs. 8 ✗).",
+          "Check Line 2 (vertical): right half = 0 + 3 + 2 + 4 = 9 ✓ and left half = 1 + 2 + 1 + 5 = 9 ✓! Check Line 4 (horizontal): top half = 1 + 5 + 0 + 3 = 9 ✓ and bottom half = 2 + 4 + 1 + 2 = 9 ✓ -> lines 2 and 4 -> (D)!"
+        ],
+        "askTheKids": [
+          "Once we know there are 18 tomatoes in total, do we have to count BOTH sides of a cut, or just one side?",
+          "Why is writing one small number in each slice much safer than counting individual tiny tomatoes over and over?"
+        ],
+        "commonTraps": "Students who try to eyeball the tiny tomato dots without writing slice counts easily miscount the 4-tomato or 5-tomato slice and confuse Line 1 or Line 3 (which split 10 vs. 8) with a 9 vs. 9 fair cut.",
+        "homeTip": "Draw a circle sliced like a pie with 8 wedges, write the counts (0, 3, 2, 4, 1, 2, 1, 5) in each wedge, and cover one half at a time with a strip of paper along lines 1–4."
+      }
+    },
+    {
+      "number": 15,
+      "points": 4,
+      "title": "Maria's Number Circles",
+      "promptSummary": "Maria fills the seven circles with 1, 2, 3, 4, 5, 6, and 7 so each lower circle equals the sum of the two connected circles above it. Which number goes in ★?",
+      "correctOption": "C",
+      "questionClass": "logic-deduction",
+      "secondaryClass": "number-sense",
+      "customBox": { "page": 3, "x": 140, "y": 1711, "width": 1142, "height": 550 },
+      "cropAdjust": { "maskRects": [[1127, 0, 1142, 550]] },
+      "teachingGuide": {
+        "headline": "Start at the biggest given number (6)—nothing above 7 exists in our list, so 6 has only ONE possible partner!",
+        "steps": [
+          "Look at the bottom-left circle connected to 6: it equals 6 + (top-second circle). Since the biggest number we are allowed to use is 7, that bottom circle MUST be 7 and the partner next to 6 MUST be 1!",
+          "Cross out 6, 1, and 7 from {1, 2, 3, 4, 5, 6, 7}. Only {2, 3, 4, 5} are left for the remaining 4 circles!",
+          "Now look at the bottom-right circle: it adds TWO numbers from {2, 3, 4, 5}. The smallest possible sum of two numbers from {2, 3, 4, 5} is 2 + 3 = 5, and 5 is the BIGGEST number we have left! So the bottom-right circle MUST be 5, built from 2 and 3!",
+          "Which of 2 or 3 goes in the shared upper circle (3rd on top), and which goes on the far right? The middle bottom circle (★) equals 1 + (3rd top circle), and only 4 is left besides {2, 3, 5}! For 1 + □ = 4, the 3rd top circle MUST be 3 (putting 2 on the far right) and ★ = 4 -> (C)!"
+        ],
+        "askTheKids": [
+          "Why couldn't we put 2 or 3 in the circle right next to 6?",
+          "How did the smallest sum of {2, 3, 4, 5} immediately lock in the bottom-right circle?"
+        ],
+        "commonTraps": "Students who guess and plug numbers into the middle first get stuck switching pairs around. Starting with the extreme number 6—and then looking at the remaining maximum 5—unlocks every single circle in order.",
+        "homeTip": "Write 1 through 7 on bottle caps or paper scraps, place 6 in the top-left circle on a sketched W-chart, and ask your child which single cap can go next to 6 without exceeding 7."
+      }
+    },
+    {
+      "number": 16,
+      "points": 4,
+      "title": "Bob's Four-Piece Square",
+      "promptSummary": "Bob builds a square from 4 rectangular pieces. Three pieces (2×4, 2×5, and 1×6) are shown. Which piece (A)–(E) is his fourth piece?",
+      "correctOption": "E",
+      "questionClass": "shapes-2d",
+      "secondaryClass": "number-sense",
+      "customBox": { "page": 3, "x": 140, "y": 2271, "width": 1142, "height": 808 },
+      "cropAdjust": { "maskRects": [[1127, 0, 1142, 808]] },
+      "teachingGuide": {
+        "headline": "Count the squares first to pick the right size—then check whether the pieces can actually SNAP together into a 6×6 square without overlapping!",
+        "steps": [
+          "Look at the long 1×6 strip: Bob's finished square must be at least 6 squares wide, so try a 6×6 square (6 × 6 = 36 unit squares).",
+          "Count the squares Bob already has: 2×4 (8 squares) + 2×5 (10 squares) + 1×6 (6 squares) = 24 squares. So the 4th piece needs 36 − 24 = 12 squares!",
+          "Check the areas of (A)–(E): (A) 3×5=15, (B) 1×5=5, (C) 2×3=6, (D) 2×6=12, (E) 3×4=12. Only (D) and (E) have 12 squares! (Could the square be 7×7=49? 49 − 24 = 25, way bigger than all choices.)",
+          "Test why (D) 2×6 fails: place 1×6 along the bottom (leaving 5×6 above it). Inside 5×6, a 2×6 piece MUST lie horizontally (leaving 3×6), where 2×5 must also lie horizontally, leaving no 2×4 space! With (E) 3×4: put 1×6 on bottom, 2×5 vertically on the left, and stack 2×4 + 3×4 on the right to complete the 6×6 square -> (E)!"
+        ],
+        "askTheKids": [
+          "Why can't Bob's square be 5×5 or 7×7?",
+          "Why does having TWO length-6 strips (1×6 and 2×6) trap the 2×5 and 2×4 pieces so they can't fit?"
+        ],
+        "commonTraps": "Choice (D) 2×6 is a super clever trap! Students calculate 36 − 24 = 12 and pick the first 12-square rectangle they see without checking if all four pieces actually pack into a 6×6 square.",
+        "homeTip": "Cut out 2×4, 2×5, 1×6, 2×6, and 3×4 rectangles from graph paper and challenge your child to assemble a 6×6 square—seeing the 2×6 block jam makes the geometry unforgettable."
+      }
+    },
+    {
+      "number": 21,
+      "points": 5,
+      "title": "Eleven Identical Bricks",
+      "promptSummary": "A construction built from 11 identical rectangular bricks is 100 cm long and 60 cm wide. What is the size of each brick?",
+      "correctOption": "B",
+      "questionClass": "measurement-time",
+      "secondaryClass": "shapes-2d",
+      "customBox": { "page": 4, "x": 140, "y": 2180, "width": 1142, "height": 899 },
+      "cropAdjust": { "maskRects": [[1127, 0, 1142, 899]] },
+      "teachingGuide": {
+        "headline": "Count brick widths straight down the middle of the 60 cm height—and notice how a standing brick matches the middle stack!",
+        "steps": [
+          "Look straight down the middle stack from top to bottom (total height = 60 cm): there is 1 brick width on top, 4 brick widths stacked in the middle, and 1 brick width on the bottom.",
+          "Add those widths: 1 + 4 + 1 = 6 identical brick widths = 60 cm! So each brick's short side (width) is 60 ÷ 6 = 10 cm.",
+          "Now look at one of the standing vertical bricks right next to the 4 middle horizontal bricks: its tall side (length) matches the exact height of those 4 stacked widths!",
+          "Multiply: 4 × 10 cm = 40 cm! So every brick is 10 cm by 40 cm -> (B). (Bonus check: two 40 cm horizontal bricks plus the 20 cm gap between them fit inside 100 cm, whereas two 50 cm bricks in (E) with a gap would exceed 100 cm!)"
+        ],
+        "askTheKids": [
+          "How many brick widths tall is the vertical brick standing on the right?",
+          "Once we know each brick is 10 cm by 40 cm, how do the bricks add up to 100 cm across the bottom?"
+        ],
+        "commonTraps": "Choice (D) 8 cm × 44 cm tempts students who notice 8 + 44 + 8 = 60, forgetting that 4 middle widths (4 × 8 = 32) wouldn't match a 44 cm standing brick! Choice (E) 10 cm × 50 cm forgets one of the horizontal rows.",
+        "homeTip": "Lay out 11 identical dominoes or wooden Jenga blocks in this exact pattern so your child can literally count 6 block widths top-to-bottom and see 4 widths equal 1 block length."
+      }
+    },
+    {
+      "number": 22,
+      "points": 5,
+      "title": "Balls in Five Test Tubes",
+      "promptSummary": "Identical balls are placed in 5 identical test tubes and water is added so tubes 1–3 reach the same height and tubes 4–5 reach twice that height. After all balls are removed, which tube has the least water?",
+      "correctOption": "C",
+      "questionClass": "measurement-time",
+      "secondaryClass": "logic-deduction",
+      "customBox": { "page": 4, "x": 1275, "y": 213, "width": 1125, "height": 1012 },
+      "teachingGuide": {
+        "headline": "Water = Total Height minus Balls! Double Tube 3 in your head to compare it fairly against Tube 5!",
+        "steps": [
+          "Compare Tubes 1, 2, and 3 first: they all reach the SAME water height, so the tube packed with the MOST balls leaves the LEAST room for water—Tube 3 (3 balls) has less water than Tube 1 (1 ball) or Tube 2 (2 balls).",
+          "Compare Tubes 4 and 5: both reach the same double height, so Tube 5 (6 balls) has less water than Tube 4 (4 balls).",
+          "Now we just have a championship face-off: Tube 3 (height 1, 3 balls) vs. Tube 5 (height 2, 6 balls)!",
+          "Imagine pouring TWO copies of Tube 3 into one big tube: you would get height 2 with 3 + 3 = 6 balls—the EXACT same height AND exact same 6 balls as Tube 5! That means Tube 5 holds TWICE as much water as Tube 3, so Tube 3 has the least water -> (C)!"
+        ],
+        "askTheKids": [
+          "Why can't we just say 'Tube 5 has 6 balls (the most balls), so Tube 5 has the least water'?",
+          "If Tube 5 holds twice as much water + balls as Tube 3, what happens to just the water when you take all the balls out?"
+        ],
+        "commonTraps": "Choice (E) 5 is the #1 trap: students see Tube 5 has the most balls (6 balls) and forget that Tube 5's water level is TWICE as high! Tube 5 is literally a doubled version of Tube 3.",
+        "homeTip": "Use two identical clear glasses with marbles (3 marbles filled to 1 inch, 6 marbles filled to 2 inches), scoop out the marbles, and let your child see why the taller glass still has twice as much water left."
+      }
+    },
+    {
+      "number": 23,
+      "points": 5,
+      "title": "Aanya's Paint-Stained Fruit List",
+      "promptSummary": "Paint covers the tens digits of Aanya's fruit counts (_2 mangoes, _0 apples, _1 pears, _3 bananas, 30 oranges), totaling 106. Two fruit counts are equal, one is twice another, and every count exceeds 10. How many bananas does she have?",
+      "correctOption": "A",
+      "questionClass": "number-sense",
+      "secondaryClass": "logic-deduction",
+      "customBox": { "page": 4, "x": 1275, "y": 1241, "width": 1125, "height": 938 },
+      "teachingGuide": {
+        "headline": "Look at the ones digits first: equal numbers MUST end in the same digit, and 2 + 0 + 1 + 3 + 0 = 6 has zero carrying!",
+        "steps": [
+          "Check the ones digits: mangoes (_2), apples (_0), pears (_1), bananas (_3), oranges (30). Since two fruit counts are EQUAL, they must share the same ones digit—only apples (_0) and oranges (30) both end in 0! So apples = 30.",
+          "Add the ones digits: 2 + 0 + 1 + 3 + 0 = 6, matching the 6 in 106 with NO carry into the tens place! So the 5 tens digits must add to 10.",
+          "Subtract apples (3) and oranges (3) from 10: the remaining 3 tens digits (for mangoes, pears, bananas) sum to 10 − 3 − 3 = 4! Since every fruit has MORE than 10 pieces, none of those tens digits can be 0—so they must be {2, 1, 1} in some order!",
+          "Use the final clue ('twice as many of one fruit as another'): out of {30, 30} and {_2, _1, _3} with tens digits {2, 1, 1}, the only possible 'double' pair is 22 mangoes = 2 × 11 pears! That forces bananas to use the remaining tens digit 1 → 13 bananas -> (A)."
+        ],
+        "askTheKids": [
+          "How did we know right away that apples had to be 30 without guessing any other numbers?",
+          "Why couldn't the tens digits of mangoes, pears, and bananas be 0, 2, 2?"
+        ],
+        "commonTraps": "Students sometimes forget the clue 'more than 10 pieces of each type' and try 2 or 3 as single-digit counts, or find 22 mangoes and pick (B) 23 bananas by attaching the '2' tens digit to bananas instead of noticing 22 = 2 × 11.",
+        "homeTip": "Write the column addition on scratch paper with small blank sticky notes over the unknown tens digits so your child can test {2, 1, 1} and immediately see why 22 = 2 × 11 leaves 13 for bananas."
+      }
+    },
+    {
+      "number": 24,
+      "points": 5,
+      "title": "Weighing Shapes on Two Scales",
+      "promptSummary": "On two balance scales, 1 red square is heavier than 2 yellow stars, and 2 green circles are heavier than 3 red squares. Each object's mass is 1, 2, 3, 4, or 5 kg. What is the mass of one red square?",
+      "correctOption": "C",
+      "questionClass": "logic-deduction",
+      "secondaryClass": "number-sense",
+      "customBox": { "page": 4, "x": 1275, "y": 2193, "width": 1125, "height": 804 },
+      "teachingGuide": {
+        "headline": "Squeeze the red square from BOTH sides—what's the lightest two stars can be, and what's the heaviest two circles can be?",
+        "steps": [
+          "Check which pan is heavier: the LOWER pan sinks down! So the left scale says 1 square > 2 stars, and the right scale says 2 circles > 3 squares.",
+          "Squeeze from below (left scale): the lightest any star can be is 1 kg, so 2 stars weigh at least 2 × 1 = 2 kg. Since 1 square is strictly HEAVIER than 2 stars, 1 square must be at least 3 kg!",
+          "Squeeze from above (right scale): the heaviest any circle can be is 5 kg, so 2 circles weigh at most 2 × 5 = 10 kg. Since 3 squares are strictly LIGHTER than 2 circles (< 10 kg), 1 square cannot be 4 kg (3×4=12) or 5 kg (3×5=15)—so 1 square is at most 3 kg!",
+          "Squeezed between 'at least 3 kg' and 'at most 3 kg', one red square MUST weigh 3 kg -> (C)! (Check: star = 1 kg, square = 3 kg, circle = 5 kg satisfies 3 > 2 and 10 > 9!)"
+        ],
+        "askTheKids": [
+          "On a balance scale, does the heavier side go up or down?",
+          "Why couldn't the red square weigh 4 kg even if the green circle weighed the biggest possible number, 5 kg?"
+        ],
+        "commonTraps": "Choice (B) 2 and (D) 4 come from reversing which pan is heavier on the seesaw, or testing star = 1, square = 4 without checking 3 × 4 = 12 against the maximum 2 × 5 = 10 on the right scale.",
+        "homeTip": "Use a ruler balanced over a pencil as a seesaw and test numbers 1–5 on sticky notes to watch how 'bigger than 2' and '3 of them less than 10' traps the red square right on 3."
+      }
+    }
+  ]
+}

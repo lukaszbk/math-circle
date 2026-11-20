@@ -1,0 +1,308 @@
+{
+  "weekId": "2024-g34-part1",
+  "title": "Math Kangaroo 2024 (Grades 3–4) · Part 1",
+  "subtitle": "First 4 problems in each point section (Questions 1–4, 9–12, 17–20)",
+  "competitionYear": 2024,
+  "gradeBand": "Grades 3 and 4",
+  "part": 1,
+  "questions": [
+    {
+      "number": 1,
+      "points": 3,
+      "title": "Square Cut Into Two Shapes",
+      "promptSummary": "Five 4×4 grid squares (A)–(E) are each cut by a bold line into two pieces. Which square is cut into 2 different shapes?",
+      "correctOption": "E",
+      "questionClass": "shapes-2d",
+      "secondaryClass": "counting-sets",
+      "customBox": { "page": 1, "x": 139, "y": 1033, "width": 1125, "height": 601 },
+      "teachingGuide": {
+        "headline": "Two pieces can only be the same shape if they have the same size—count the little grid squares first!",
+        "steps": [
+          "Point out the 4×4 dotted grid on every square: the whole square has 4 × 4 = 16 unit squares, so two matching halves MUST have 8 unit squares each.",
+          "Check (A), (B), (C), and (D) by spinning the picture half a turn (180° around the center dot): in all four, the cut lands right back on itself, making two matching 8-square pieces.",
+          "Now count the unit squares in (E): the bottom-right piece has 3 + 1 + 3 = 7 squares, leaving 16 − 7 = 9 squares in the top-left piece!",
+          "Since 7 ≠ 9, the two pieces in (E) cannot possibly be the same shape -> (E)."
+        ],
+        "askTheKids": [
+          "How many small squares must each piece have if a 4×4 square is cut into two identical shapes?",
+          "In (C) and (D), can you slide one piece onto the other directly, or do you have to spin it halfway around?"
+        ],
+        "commonTraps": "Students often pick (C) or (D) because the two halves aren't mirror reflections across a straight fold—they need a 180° half-turn spin to match up. Counting 7 vs. 9 squares in (E) settles it instantly.",
+        "homeTip": "Draw a 4×4 grid on scrap paper, trace cut (C) and cut (E), and let your child cut them out and spin the two pieces to see why (C) matches up while (E) has 9 squares vs. 7."
+      }
+    },
+    {
+      "number": 2,
+      "points": 3,
+      "title": "Firefighter's Shortest Ladder Route",
+      "promptSummary": "A firefighter on the bottom-left platform must climb complete ladders along yellow platforms without jumping gaps to reach the fire at the top right. What is the smallest number of ladders needed?",
+      "correctOption": "C",
+      "questionClass": "shapes-2d",
+      "secondaryClass": "logic-deduction",
+      "customBox": { "page": 1, "x": 139, "y": 2047, "width": 1125, "height": 1027 },
+      "teachingGuide": {
+        "headline": "Work backward from the fire and cross out broken half-ladders that stop in mid-air!",
+        "steps": [
+          "First, have the kids spot the three 'trap' ladders that don't connect two platforms (one below the ground, one stopping halfway up in the middle, and one hanging in mid-air on the right) and cross them out.",
+          "Trace backward from the fire at the top right: 1 ladder down to floor 4 (right), 2nd ladder down to floor 3 (right), 3rd ladder down to the rightmost ladder onto floor 2 (long right platform).",
+          "Ask: 'How can the firefighter get onto this long floor-2 platform?' The two ladders below it go to dead-end ground islands! The ONLY way on is climbing UP to floor 3 (middle) and coming DOWN onto floor 2.",
+          "Count the whole forward trip from the firefighter: UP (1) -> UP (2) -> DOWN (3) -> UP (4) -> UP (5) -> UP (6) to the fire = 6 ladders -> (C)."
+        ],
+        "askTheKids": [
+          "There are only 4 floors to climb up from level 1 to level 5—why couldn't the firefighter do it in 4 ladders?",
+          "What happens if you climb the leftmost ladders all the way to the top?"
+        ],
+        "commonTraps": "Choice (A) 4 comes from counting 4 floor gaps upward without noticing the gap in the middle. Choice (B) 5 happens when students count the climb-down step or skip one ladder while tracing by eye instead of numbering each ladder 1 to 6.",
+        "homeTip": "Print or trace a simple floor-and-ladder maze and trace backward from the goal with a finger—working from the finish line skips dead-end branches right away."
+      }
+    },
+    {
+      "number": 3,
+      "points": 3,
+      "title": "Samvel's Painted Garage Doors",
+      "promptSummary": "Samvel painted a tilted dark rectangle across his two closed garage doors. One door is now swung open; given the piece visible on the closed left door, what shape is painted on the other side of the open right door?",
+      "correctOption": "C",
+      "questionClass": "shapes-2d",
+      "secondaryClass": "spatial-3d",
+      "customBox": { "page": 1, "x": 1276, "y": 923, "width": 1145, "height": 999 },
+      "teachingGuide": {
+        "headline": "Imagine closing the right door again—the vertical crack slices the tilted rectangle across two opposite parallel sides!",
+        "steps": [
+          "Draw the closed garage doors on the board with the vertical crack down the middle, and copy the dark shape on the left door.",
+          "Extend the two parallel slanted edges (top and bottom of the dark shape) straight across the crack onto the right door, then close off the rectangle with its slanted right end.",
+          "Count the 4 sides of the piece on the right door: two opposite slanted sides are parallel (from the original rectangle), while the vertical door-crack side and the slanted right end are NOT parallel!",
+          "A 4-sided shape with exactly one pair of parallel sides is a trapezoid -> (C)."
+        ],
+        "askTheKids": [
+          "How many corners of Samvel's original rectangle are already on the left door, and how many corners must be left for the right door?",
+          "How would Samvel have had to tilt and place the rectangle to get a pentagon (5 sides) on one door?"
+        ],
+        "commonTraps": "Kids who pick (B) rectangle forget the vertical door seam cuts across the rectangle at a slant rather than at 90°. Kids who pick (D) pentagon imagine slicing off just ONE corner (which leaves 1 corner on one door and 3 on the other), whereas here 2 corners are already on the left door.",
+        "homeTip": "Lay a rectangular index card at a slant across the crack between two sheets of paper, trace along the crack with a pencil, and look at the two pieces—both halves are trapezoids!"
+      }
+    },
+    {
+      "number": 4,
+      "points": 3,
+      "title": "Soccer Circle Kicking Pattern",
+      "promptSummary": "Soccer players 1 to 11 stand in a circle, and each kicks the ball 3 places clockwise (1 → 4 → 7 → …) until a player has the ball for the second time. Which player kicked the ball last?",
+      "correctOption": "C",
+      "questionClass": "patterns-simulation",
+      "secondaryClass": "number-sense",
+      "customBox": { "page": 1, "x": 1276, "y": 2081, "width": 1145, "height": 993 },
+      "teachingGuide": {
+        "headline": "Trace the arrows around the circle—and read the bold words carefully: we want who KICKED last, not who CAUGHT it!",
+        "steps": [
+          "Draw the circle 1 to 11 on the board and write the chain of players receiving the ball by adding 3 (wrapping past 11): 1 → 4 → 7 → 10 → 2 → 5 → 8 → 11 → 3 → 6 → 9 → 1.",
+          "Stop the moment '1' appears again: Player 1 started with the ball, so when 9 kicks to 1, Player 1 HAS the ball for the second time!",
+          "Point to the arrow 9 → 1 and re-read the bold question: 'What is the number of the player who KICKED the ball last?'",
+          "Player 9 made that final pass to Player 1 -> (C) 9."
+        ],
+        "askTheKids": [
+          "Did every single player from 1 to 11 touch the ball before Player 1 got it back?",
+          "Once you know Player 1 is the first player to get the ball a second time, how could you find Player 9 in one backward step without tracing the whole circle?"
+        ],
+        "commonTraps": "Students who lose count wrapping past 11 (e.g., 10 → 1 → 2 vs. 10 → 2) land on 8 or 10. Others stop one pass early at 6 → 9 thinking 9 is the answer because 9 is last before 1, or confuse who *has* the ball last (1) with who *kicked* it last (9).",
+        "homeTip": "Draw numbers 1 to 11 around a paper plate and connect every 3rd number with straight lines—it draws an 11-pointed star that visits every number before returning to 1 from 9!"
+      }
+    },
+    {
+      "number": 9,
+      "points": 4,
+      "title": "Purple-and-Green Coin Board Game",
+      "promptSummary": "Starting at 'start' (0), purple moves +3 and green moves −1 (or stays at start). In 4 tosses each, Carolyn reaches 4 and Tom reaches 8. How many green tosses did they get in total?",
+      "correctOption": "C",
+      "questionClass": "patterns-simulation",
+      "secondaryClass": "logic-deduction",
+      "customBox": { "page": 2, "x": 1276, "y": 327, "width": 1145, "height": 1297 },
+      "teachingGuide": {
+        "headline": "Compare against 'all purples' (4 × 3 = 12), and double-check the sneaky 'stay at start' rule!",
+        "steps": [
+          "Ask: 'If Tom got 4 purples and 0 greens, where would he land?' 4 × 3 = 12!",
+          "Test 3 purples and 1 green for Tom: if a purple comes first (like P, G, P, P → 0 → 3 → 2 → 5 → 8), Tom lands on 8! (Whereas G first gives 0 → 0 → 3 → 6 → 9.) So Tom got 1 green.",
+          "Test 2 purples and 2 greens for Carolyn: starting with P (like P, P, G, G → 0 → 3 → 6 → 5 → 4), Carolyn lands right on 4! (If she started with G, she'd land on 5 or 6; with 3 greens she can reach at most 3.) So Carolyn got 2 greens.",
+          "Add their green tosses together: 2 (Carolyn) + 1 (Tom) = 3 greens in total -> (C)."
+        ],
+        "askTheKids": [
+          "Why does tossing Green FIRST (G, P, P, P = 9) land on a different number than tossing Green LAST (P, P, P, G = 8)?",
+          "Could anyone ever reach 4 with 3 greens, even if all 3 greens happened at 'start'?"
+        ],
+        "commonTraps": "Choice (B) 2 happens when students find Carolyn's 2 greens and forget to add Tom's 1 green! Choice (D) 4 happens if students misread '+3 / −1' as '+2 / −1' or guess half of the 8 total tosses.",
+        "homeTip": "Make a quick strip numbered 'start' through 12 and flip a coin 4 times using heads = +3 and tails = −1 (staying on start at 0) so your child sees how order at the starting square changes the score."
+      }
+    },
+    {
+      "number": 10,
+      "points": 4,
+      "title": "Five Friends and Five Fruits",
+      "promptSummary": "Ann, Ben, Cam, Dan, and Eli each get one different fruit they like from {apple, cherries, grapes, strawberry, banana}. Based on each child's liked fruits, which fruit does Ben get?",
+      "correctOption": "A",
+      "questionClass": "logic-deduction",
+      "secondaryClass": "counting-sets",
+      "customBox": { "page": 2, "x": 1276, "y": 1709, "width": 1145, "height": 1367 },
+      "teachingGuide": {
+        "headline": "Start with the pickiest eater—each locked-in fruit triggers a domino chain for the next friend!",
+        "steps": [
+          "Draw the 5 fruits on the board. Look at Ann first: she ONLY likes grapes, so give grapes to Ann and cross grapes off everyone else's list!",
+          "Now look at Dan (grapes, banana): with grapes gone, Dan only has banana left! Give banana to Dan and cross off banana.",
+          "Look at Cam (grapes, strawberry, banana): with grapes and banana gone, Cam must get strawberry! Cross off strawberry.",
+          "Look at Eli (cherries, strawberry): with strawberry gone, Eli must get cherries! That leaves only the apple for Ben -> (A)."
+        ],
+        "askTheKids": [
+          "Ben likes all 5 fruits—why would starting with Ben be the hardest way to begin?",
+          "Which friend had to go right after Ann to keep the domino chain moving?"
+        ],
+        "commonTraps": "Kids who look at Ben's row first see all 5 fruits and try guessing, or cross out fruits in the wrong order and accidentally leave cherries (B) or banana (E) for Ben.",
+        "homeTip": "Play this domino-elimination game with 5 small household objects or snacks: write who likes what on sticky notes, always starting with the person who has only 1 choice."
+      }
+    },
+    {
+      "number": 11,
+      "points": 4,
+      "title": "Ada's Shrinking Disc Tower",
+      "promptSummary": "Ada starts with an 8-disc colored tower and successively removes the 2nd, then 3rd, then 4th, then 5th disc from the bottom of each new tower. Which 4-disc tower remains?",
+      "correctOption": "B",
+      "questionClass": "patterns-simulation",
+      "customBox": { "page": 3, "x": 139, "y": 217, "width": 1125, "height": 731 },
+      "teachingGuide": {
+        "headline": "Every time a disc is pulled out, the tower drops down—re-count from the bottom on the NEW tower each step!",
+        "steps": [
+          "List the 8 discs on the board from BOTTOM (1) to TOP (8): 1-Blue, 2-White, 3-Orange, 4-Blue, 5-White, 6-Orange, 7-Blue, 8-Orange.",
+          "Step 1: Remove 2nd from bottom (2-White). Remaining 7 discs: [1-Blue, 3-Orange, 4-Blue, 5-White, 6-Orange, 7-Blue, 8-Orange].",
+          "Step 2: Count 3rd from bottom of the NEW tower -> that's 4-Blue! Step 3: Count 4th from bottom of the next tower -> that's 6-Orange! Step 4: Count 5th from bottom of the 5-disc tower -> that's 8-Orange (the top disc)!",
+          "Read what's left from bottom to top: 1-Blue, 3-Orange, 5-White, 7-Blue — which matches tower (B)!"
+        ],
+        "askTheKids": [
+          "Look at the original numbers of the discs we kept (1, 3, 5, 7) and the ones we removed (2, 4, 6, 8)—why did all the even-numbered discs get removed?",
+          "Which wrong answer do you get if you forget the word 'new' and remove original discs 2, 3, 4, and 5?"
+        ],
+        "commonTraps": "Choice (A) is the #1 trap: removing discs 2, 3, 4, and 5 of the ORIGINAL tower leaves [1-Blue, 6-Orange, 7-Blue, 8-Orange], which is (A)! Choice (C) or (E) comes from counting from the top instead of the bottom.",
+        "homeTip": "Stack 8 LEGO bricks or coins in three colors and let your child physically slide out the 2nd, then 3rd, then 4th, then 5th brick from the bottom as the stack drops down."
+      }
+    },
+    {
+      "number": 12,
+      "points": 4,
+      "title": "Peter the Penguin's Daily Fish",
+      "promptSummary": "Each day Peter brings 9 fish and gives 5 to one chick and 4 to the other. Over several days, one chick ate 26 fish. How many fish did the other chick eat?",
+      "correctOption": "D",
+      "questionClass": "number-sense",
+      "secondaryClass": "logic-deduction",
+      "customBox": { "page": 3, "x": 139, "y": 1079, "width": 1125, "height": 545 },
+      "teachingGuide": {
+        "headline": "Find how many days passed by building 26 out of 5s and 4s—then use the 9-fish-per-day total!",
+        "steps": [
+          "Each day, our chick gets either 5 fish or 4 fish. Let's test how many 5-fish days it could have had to reach 26!",
+          "Subtract 5s from 26 and check if the leftover divides evenly by 4: 26 (no), 21 (no), 16 = 4 × 4 (YES!), 11 (no), 6 (no), 1 (no).",
+          "So that chick had two 5-fish days and four 4-fish days (2 × 5 + 4 × 4 = 10 + 16 = 26) — which means 2 + 4 = 6 days passed!",
+          "Over 6 days, Peter brought 6 × 9 = 54 fish in total, so the other chick ate 54 − 26 = 28 fish -> (D)."
+        ],
+        "askTheKids": [
+          "Could we also find the second chick's fish by flipping every 5-day into a 4-day and every 4-day into a 5-day?",
+          "Why couldn't Peter have been fishing for 5 days or 7 days?"
+        ],
+        "commonTraps": "Kids who assume 5 days (5 × 9 = 45, 45 − 26 = 19) pick (A) 19 without checking that 26 cannot be made from five 4s and 5s (max is 5 × 5 = 25!). Kids who assume 26 + 5 = 31 or 26 − 4 = 22 pick (E) or (B).",
+        "homeTip": "Use piles of 5 and 4 dried beans (9 beans per day) to build 26 for one cup while putting each day's partner pile into a second cup—then count the 28 beans in the second cup."
+      }
+    },
+    {
+      "number": 17,
+      "points": 5,
+      "title": "Worm-Eaten Number Cards",
+      "promptSummary": "Three 3-digit cards [2 _ 3], [1 _ 4], and [4 1 _] add up to 782. What is the sum of the 3 missing digits?",
+      "correctOption": "D",
+      "questionClass": "number-sense",
+      "customBox": { "page": 3, "x": 1276, "y": 2625, "width": 1145, "height": 451 },
+      "teachingGuide": {
+        "headline": "Stack the three numbers vertically by hundreds, tens, and ones—you don't even need each tens digit separately!",
+        "steps": [
+          "Write 2_3 + 1_4 + 41_ = 782 vertically on the whiteboard so the ones, tens, and hundreds columns line up.",
+          "Start with the ONES column: 3 + 4 + [ones blank] ends in 2, so 7 + [ones blank] = 12! That means the third missing digit is 5, and we carry 1 ten to the tens column.",
+          "Now look at the TENS column (including the carried 1): 1 (carry) + [first blank] + [second blank] + 1 = 8 (or 18? Check hundreds: 2 + 1 + 4 = 7 already, so NO carry into hundreds!).",
+          "From 2 + [first blank] + [second blank] = 8, the two tens blanks must add up to 6! Add all three missing digits: 6 + 5 = 11 -> (D)."
+        ],
+        "askTheKids": [
+          "Do we know the exact number on the first card (like 223 vs. 253), and why doesn't it change the answer?",
+          "Why is forgetting the carried '1' from 3 + 4 + 5 = 12 such a common mistake here?"
+        ],
+        "commonTraps": "Choice (E) 12 is the classic carry trap: students find the ones digit is 5, then look at the tens column without carrying the 1 from 12 (getting blank + blank + 1 = 8 -> 7, and 7 + 5 = 12).",
+        "homeTip": "Write 2_3, 1_4, and 41_ stacked on lined paper turned sideways so each column has its own lane—let your child test different pairs like (2, 4) and (0, 6) that both sum to 6!"
+      }
+    },
+    {
+      "number": 18,
+      "points": 5,
+      "title": "Lucy's Three Block Scales",
+      "promptSummary": "Three scales show: cylinder + ball = 200 g, cone + ball = 100 g, and cylinder + cone = 240 g. How much do cylinder + cone + ball weigh together?",
+      "correctOption": "A",
+      "questionClass": "measurement-time",
+      "secondaryClass": "number-sense",
+      "customBox": { "page": 4, "x": 139, "y": 217, "width": 1125, "height": 465 },
+      "teachingGuide": {
+        "headline": "Put all three scales onto one giant super-scale—every block shows up TWICE!",
+        "steps": [
+          "Draw the 3 weighings on the board: [Rect + Ball] = 200 g, [Cone + Ball] = 100 g, [Rect + Cone] = 240 g.",
+          "Ask: 'What if Lucy dumped all 6 blocks from the first three scales onto one big scale at once?' Add the weights: 200 + 100 + 240 = 540 g!",
+          "Count what's sitting on that big 540 g scale: 2 Rectangles, 2 Cones, and 2 Balls — that's TWO complete sets of the 3 blocks!",
+          "Cut 540 g in half to get ONE set of the 3 blocks: 540 ÷ 2 = 270 g -> (A)."
+        ],
+        "askTheKids": [
+          "Now that we know all three blocks together weigh 270 g, how fast can you tell me the Cone's weight by looking at the 200 g scale?",
+          "Why was adding all three scales together way faster than guessing each block's weight first?"
+        ],
+        "commonTraps": "Students who guess individual weights without checking all three scales often settle on rounded numbers totaling 280 g (B) or 300 g (D), or add 200 + 100 = 300 g thinking two scales already cover the three shapes.",
+        "homeTip": "Weigh three kitchen items in pairs (cup + spoon, spoon + apple, cup + apple), add the three pair totals together, and divide by 2 before weighing all three at once to see the 'magic' match!"
+      }
+    },
+    {
+      "number": 19,
+      "points": 5,
+      "title": "60 Students' Vests and Backpacks",
+      "promptSummary": "60 students line up with vests repeating (yellow, green) and backpacks repeating (red, brown, orange). How many students wear both a yellow vest and an orange backpack?",
+      "correctOption": "E",
+      "questionClass": "patterns-simulation",
+      "secondaryClass": "counting-sets",
+      "customBox": { "page": 4, "x": 139, "y": 749, "width": 1125, "height": 545 },
+      "teachingGuide": {
+        "headline": "Write out both patterns together until BOTH reset at the same time—a 2-pattern and a 3-pattern repeat every 6 kids!",
+        "steps": [
+          "Write students 1 to 6 on the board with two rows underneath: Vests (Y, G, Y, G, Y, G) and Backpacks (R, B, O, R, B, O).",
+          "Point to student 7: Vests start over at Y and Backpacks start over at R—so students 1 to 6 form one complete repeating super-group!",
+          "Circle every student in that 6-person group who has BOTH Y (yellow vest) and O (orange backpack): only Student #3 has (Y, O)! (Student #6 has G, O.)",
+          "Divide 60 students into groups of 6: 60 ÷ 6 = 10 groups, with 1 match per group -> 10 students -> (E)."
+        ],
+        "askTheKids": [
+          "What do the student numbers who match (3, 9, 15, 21, …) all have in common—are they even or odd multiples of 3?",
+          "How many students have a GREEN vest and an orange backpack?"
+        ],
+        "commonTraps": "Choice (C) 6 confuses the cycle length (6) with the answer! Other students divide 60 ÷ 2 = 30 and then subtract or guess 8 (D) instead of checking how often the 2-cycle and 3-cycle line up.",
+        "homeTip": "Clap-pat a 2-beat rhythm with your hands while saying 'red, brown, orange' in a 3-beat loop—count together how it takes 6 beats for both patterns to restart together."
+      }
+    },
+    {
+      "number": 20,
+      "points": 5,
+      "title": "Hidden Digits Shape Equations",
+      "promptSummary": "Distinct digits hide behind Triangle, Square, and Circle: Triangle + Triangle = [Square][Circle] and Circle + Triangle = [Square][Square]. Find Triangle × Circle × Square.",
+      "correctOption": "D",
+      "questionClass": "number-sense",
+      "secondaryClass": "logic-deduction",
+      "customBox": { "page": 4, "x": 139, "y": 1343, "width": 1125, "height": 683 },
+      "teachingGuide": {
+        "headline": "Even the biggest single digit doubled is 9 + 9 = 18—so the two-digit answer MUST start with 1!",
+        "steps": [
+          "Point to Equation 1: Triangle + Triangle = [Square][Circle], a 2-digit number! Ask: 'What is the biggest possible sum of two single digits?' 9 + 9 = 18! So the tens digit (Blue Square) MUST be 1!",
+          "Fill in Blue Square = 1 everywhere! Now Equation 2 says: Circle + Triangle = 11!",
+          "Test digits for Triangle from 5 to 9 in Equation 1 (Triangle + Triangle = 1[Circle]) and check which pair also adds to 11: 6 + 6 = 12 (2 + 6 = 8, no); 7 + 7 = 14 -> Circle = 4, and 4 + 7 = 11 (BINGO!).",
+          "Multiply the three shapes carefully: 7 × 4 × 1 = 28 -> (D)."
+        ],
+        "askTheKids": [
+          "Why couldn't Blue Square be 0 or 2?",
+          "Why wouldn't Triangle = 5 (5 + 5 = 10) work in the second equation?"
+        ],
+        "commonTraps": "Students who try Triangle = 6 (getting Circle = 2, 6 × 2 × 1 = 12) or Triangle = 5 (5 + 5 = 10 -> product 0, Choice A!) didn't check the second equation (Circle + Triangle = 11). Choice (C) 18 confuses 6 × 3 × 1 or 9 + 9.",
+        "homeTip": "Play 'mystery tens digit' with your child: pick any single-digit number from 5 to 9, double it, and notice the answer is always in the teens (tens digit = 1)!"
+      }
+    }
+  ]
+}

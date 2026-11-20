@@ -1,0 +1,338 @@
+{
+  "weekId": "2023-g34-part1",
+  "title": "Math Kangaroo 2023 (Grades 3–4) · Part 1",
+  "subtitle": "First 4 problems in each point section (Questions 1–4, 9–12, 17–20)",
+  "competitionYear": 2023,
+  "gradeBand": "Grades 3 and 4",
+  "part": 1,
+  "maxScore": 48,
+  "scoringRule": "positive-only",
+  "questionCount": 12,
+  "compiledAt": "2026-11-19T23:49:29.049901+00:00",
+  "questions": [
+    {
+      "number": 1,
+      "points": 3,
+      "title": "Zoe's Five Burning Candles",
+      "promptSummary": "Zoe lit 5 identical candles at the same time, and they stopped burning at different times. Looking at their remaining heights, which candle stopped burning first?",
+      "correctOption": "D",
+      "questionClass": "logic-deduction",
+      "secondaryClass": "measurement-time",
+      "imageUrl": "packs/2023-g34-part1/images/q01.png",
+      "imageWidth": 2310,
+      "imageHeight": 462,
+      "teachingGuide": {
+        "headline": "Burning longer makes a candle shorter—so the candle that went out FIRST is the TALLEST one left!",
+        "steps": [
+          "Draw 5 tall equal rectangles on the board to show how all 5 candles looked at the exact moment Zoe lit them.",
+          "Erase a little from the top of one candle and a lot from another: ask the kids which one stayed lit longer!",
+          "Flip the question: stopping FIRST means burning for the SHORTEST time, so it lost the least wax.",
+          "Compare the 5 candles in the picture—candle D stands tallest above all the others -> (D)."
+        ],
+        "askTheKids": [
+          "Why is it super tempting to pick (E) at first glance—what question would (E) actually answer?",
+          "Can you put all 5 candles in order from the first one that went out to the very last one?"
+        ],
+        "commonTraps": "Choice (E) is the classic fast-reader trap: students equate 'first' with 'smallest' and pick the shortest candle, which actually burned the longest and went out last!",
+        "homeTip": "Give your child two identical new crayons (or ice pops) and ask: if everyone starts coloring at the same time and one person stops after a minute, whose crayon stays tallest?"
+      }
+    },
+    {
+      "number": 2,
+      "points": 3,
+      "title": "Mystery Kangaroo Coins",
+      "promptSummary": "Six coins satisfy 20 + 10 + 10 + ? + ? + 1 = 51, where both '?' coins have the same value. What is the value of one '?' coin?",
+      "correctOption": "C",
+      "questionClass": "number-sense",
+      "secondaryClass": "measurement-time",
+      "imageUrl": "packs/2023-g34-part1/images/q02.png",
+      "imageWidth": 2310,
+      "imageHeight": 388,
+      "teachingGuide": {
+        "headline": "Add up all the coins you already know first, then split the leftover total evenly between the two twin '?' coins!",
+        "steps": [
+          "Circle the four known coins on the board and add them together: 20 + 10 + 10 + 1 = 41.",
+          "Find how much value is still missing to reach 51: 51 − 41 = 10.",
+          "Point to the TWO '?' coins: together they equal 10, and both coins match!",
+          "Split 10 into two equal halves: 10 ÷ 2 = 5 -> check 41 + 5 + 5 = 51 -> (C)."
+        ],
+        "askTheKids": [
+          "Why is 10 a sneaky wrong answer even though 41 + 10 = 51?",
+          "How can the ones digit '1' in 51 help you spot right away that the known '1' coin cancels it out?"
+        ],
+        "commonTraps": "Choice (D) 10 traps students who correctly compute 51 − 41 = 10 and circle 10 immediately, forgetting that TWO equal '?' coins share that 10!",
+        "homeTip": "Lay out real coins or paper tokens labeled 20, 10, 10, and 1, cover two matching mystery tokens with small cups, and have your child figure out what must hide under each cup to reach 51."
+      }
+    },
+    {
+      "number": 3,
+      "points": 3,
+      "title": "Spinning Clock Peek-Holes",
+      "promptSummary": "A gray circle with 2 holes sits over a clock face, revealing 1 and 5. When the gray circle rotates around its center, which pair of numbers can be seen at the same time?",
+      "correctOption": "B",
+      "questionClass": "measurement-time",
+      "secondaryClass": "shapes-2d",
+      "imageUrl": "packs/2023-g34-part1/images/q03.png",
+      "imageWidth": 2310,
+      "imageHeight": 670,
+      "teachingGuide": {
+        "headline": "Spinning the cover never stretches or shrinks the gap between the two holes—they always stay 4 hours apart!",
+        "steps": [
+          "Point to 1 and 5 on the clock face and count the hour steps clockwise from 1 to 5: 1 → 2 → 3 → 4 → 5 is a gap of 4 steps!",
+          "Ask: when we spin the gray cardboard circle around the center dot, do the two holes move closer together or stay 4 steps apart? They stay locked 4 steps apart!",
+          "Test each answer choice by counting the hour steps between its two numbers: (A) 4 to 9 is 5; (B) 5 to 9 is 4!",
+          "Quickly verify the rest fail: (C) 5 to 10 is 5, (D) 6 to 9 is 3, (E) 7 to 12 is 5 -> (B) 5 and 9."
+        ],
+        "askTheKids": [
+          "What if one hole landed on 10—which TWO different numbers could the other hole show depending on which way the card was turned?",
+          "Why did the '5' look upside-down in the picture?"
+        ],
+        "commonTraps": "Choice (A) 4 and 9 and (C) 5 and 10 trap students who count the numbers IN BETWEEN (1, 2, 3, 4, 5 looks like '5 numbers' if you count both endpoints) instead of counting 4 hour jumps!",
+        "homeTip": "Cut a paper circle to cover a wall clock or drawn clock face, poke two viewing holes over 1 and 5, and let your child spin it around a pencil tip at the center to see every pair that appears."
+      }
+    },
+    {
+      "number": 4,
+      "points": 3,
+      "title": "Alice's Square Puzzle Pair",
+      "promptSummary": "Alice has 4 polyomino puzzle pieces drawn on dot grids. Which 2 pieces fit together to form the 4×4 square?",
+      "correctOption": "C",
+      "questionClass": "shapes-2d",
+      "secondaryClass": "number-sense",
+      "imageUrl": "packs/2023-g34-part1/images/q04.png",
+      "imageWidth": 2310,
+      "imageHeight": 654,
+      "teachingGuide": {
+        "headline": "Count unit squares first! A 4×4 square needs 16 little squares, and ONLY pieces 1 and 4 add up to 16!",
+        "steps": [
+          "Use the tiny dots around the target square on the right to measure it: 4 units wide × 4 units tall = 16 unit squares total!",
+          "Count the unit squares inside each puzzle piece using the dot grid: Piece 1 = 9, Piece 2 = 8, Piece 3 = 10, Piece 4 = 7.",
+          "Check which pair adds up to 16: 9 + 7 = 16 (Pieces 1 and 4)! Every other choice gives 17, 19, 18, or 15!",
+          "Now do the visual magic check: slide Piece 4 straight left into Piece 1 without even turning it—its two top prongs plug right into Piece 1's two gaps -> (C)!"
+        ],
+        "askTheKids": [
+          "Why is counting squares such a superpower before trying to rotate shapes in your head?",
+          "Why can't Piece 2 and Piece 3 make the 4×4 square even though their notches look similar?"
+        ],
+        "commonTraps": "Choices (A) 1 and 2 (17 squares) and (E) 2 and 4 (15 squares) fool students who eyeball the U-shaped prongs without noticing Piece 2 has an extra top-left square and Piece 3 has a 3-wide bottom bar.",
+        "homeTip": "Build Pieces 1, 2, 3, and 4 out of square LEGO bricks or graph-paper cutouts so your child can count the squares in each piece and slide Piece 4 directly into Piece 1."
+      }
+    },
+    {
+      "number": 9,
+      "points": 4,
+      "title": "Covering the Dotted L-Shape",
+      "promptSummary": "An 8-square L-shaped grid is tiled by five purple polygonal pieces (A)–(E). Which piece covers the marked black dot?",
+      "correctOption": "A",
+      "questionClass": "shapes-2d",
+      "secondaryClass": "logic-deduction",
+      "imageUrl": "packs/2023-g34-part1/images/q09.png",
+      "imageWidth": 2310,
+      "imageHeight": 552,
+      "teachingGuide": {
+        "headline": "Match weird slanted cuts and lock in the L-corner first—none of the 5 pieces even need to rotate!",
+        "steps": [
+          "Look at Piece (C): it has a full square with triangles sticking out on BOTH its left AND top sides—so it MUST sit right on the bottom-right corner square of the L-shape! Notice it covers the bottom-right half of the dotted square, leaving the dot in the upper-left half uncovered!",
+          "Look at the steep 2-tall slanted edges on Pieces (B) and (D): they are the ONLY two pieces with that long slant, so (B) and (D) snap together to fill the entire top 2.5 squares of the vertical arm!",
+          "Now only (A) and (E) remain for the 3.5 squares on the left arm! The far-left end of the L-shape has a flat vertical wall, so Piece (E) (which has a flat left square) must sit on the far left.",
+          "Slide parallelogram (A) into the remaining middle slot—its right triangle tip lands directly over the upper-left half of the 4th square, covering the black dot -> (A)!"
+        ],
+        "askTheKids": [
+          "Why couldn't Piece (C) fit anywhere in the horizontal or vertical arms except right at the corner?",
+          "Why did the puzzle designer put the little black dot near the top-left of that square instead of right in the center?"
+        ],
+        "commonTraps": "Choice (C) and Choice (E) are major traps: (C) covers the OTHER half of the very same square as the dot, and (E) would cover the dot if a student forgot that (A) has no flat vertical edge for the far-left end!",
+        "homeTip": "Draw the 8-square L-shape on centimeter grid paper, cut out copies of the 5 pieces, and let your child discover why the corner piece (C) and steep-slant pair (B & D) lock every piece into one exact spot."
+      }
+    },
+    {
+      "number": 10,
+      "points": 4,
+      "title": "Amy's Balanced Six Weights",
+      "promptSummary": "Amy has weights of 1, 2, 3, 4, 5, and 6 kg. She places five of them on a balance scale (three on the left including 5 kg; two on the right including 6 kg) and sets one aside so the scale balances. Which weight did she set aside?",
+      "correctOption": "A",
+      "questionClass": "logic-deduction",
+      "secondaryClass": "number-sense",
+      "imageUrl": "packs/2023-g34-part1/images/q10.png",
+      "imageWidth": 2310,
+      "imageHeight": 514,
+      "teachingGuide": {
+        "headline": "Add all 6 weights (21 kg) to see each pan must match, then use the TWO-bottle right pan (6 + □) to crush the tie!",
+        "steps": [
+          "Add all six weights together on the board: 1 + 2 + 3 + 4 + 5 + 6 = 21 kg.",
+          "Since the two pans tie, the 5 weights on the scale must add to an EVEN number! So the leftover '?' weight must be ODD (1 kg or 3 kg, since 5 kg is already on the scale).",
+          "Test setting aside 3 kg: 21 − 3 = 18 kg → 9 kg per pan. Look at the right pan: it has 6 kg and ONLY ONE other bottle, so it needs 9 − 6 = 3 kg—impossible, we just set 3 kg aside!",
+          "Test setting aside 1 kg: 21 − 1 = 20 kg → 10 kg per pan! Right pan: 6 + 4 = 10 kg. Left pan: 5 + 2 + 3 = 10 kg! Everything works uniquely -> (A) 1 kg."
+        ],
+        "askTheKids": [
+          "Why did the test writers include '(E) We can't be sure'—what detail in the drawing rules out 3 kg?",
+          "Why is it impossible for an even weight like 2 kg or 4 kg to be the one set aside?"
+        ],
+        "commonTraps": "Choice (E) 'We can't be sure' traps clever students who spot that both 1 kg and 3 kg leave an even sum, or who don't notice the right pan only holds TWO weights (so 6 + 1 + 2 = 9 isn't allowed!).",
+        "homeTip": "Make 6 paper cards labeled 1 through 6, put '5' on the left with two blank spots and '6' on the right with one blank spot, and challenge your child to make both sides add to the same total."
+      }
+    },
+    {
+      "number": 11,
+      "points": 4,
+      "title": "Andrew's Faded 60 cm Ruler",
+      "promptSummary": "Andrew's 60 cm ruler has only two interior markings left, yet he can still measure 10, 20, 30, 40, 50, and 60 cm in a single placement. Which ruler is his?",
+      "correctOption": "E",
+      "questionClass": "measurement-time",
+      "secondaryClass": "number-sense",
+      "imageUrl": "packs/2023-g34-part1/images/q11.png",
+      "imageWidth": 2310,
+      "imageHeight": 302,
+      "teachingGuide": {
+        "headline": "Don't forget the two invisible numbers at the ends of every 60 cm ruler: 0 cm and 60 cm!",
+        "steps": [
+          "Write '0' at the left tip and '60' at the right tip of the ruler on the board—now every ruler actually has FOUR marks!",
+          "With 4 marks, how many pairs of marks can we measure between? 6 pairs—just enough to make all 6 lengths (10, 20, 30, 40, 50, 60) with zero repeats!",
+          "Quickly eliminate rulers that waste a pair by repeating a gap: in (A) 0–10–30–60, both 0→30 and 30→60 measure 30 cm (so 40 cm is missing!). Same symmetry kills (C), (B) has no 10 cm gap, and (D) 0–10–20–60 repeats 10 cm (missing 30 cm!).",
+          "Check (E) 0–10–40–60: 0→10 = 10, 40→60 = 20, 10→40 = 30, 0→40 = 40, 10→60 = 50, 0→60 = 60 -> all six lengths -> (E)!"
+        ],
+        "askTheKids": [
+          "Why does repeating even ONE distance (like having two different ways to make 30 cm) guarantee another length is missing?",
+          "Is there one other faded 60 cm ruler (not listed in the choices) that would also measure all six lengths?"
+        ],
+        "commonTraps": "Choice (A) [10, 30] and Choice (D) [10, 20] tempt students who verify 10, 20, and 30 cm first and stop checking before testing 40 cm!",
+        "homeTip": "Cut a 6-inch strip of cardstock, mark ONLY 1 inch and 4 inches (leaving 0 and 6 as the ends), and challenge your child to measure 1-, 2-, 3-, 4-, 5-, and 6-inch household objects in one go."
+      }
+    },
+    {
+      "number": 12,
+      "points": 4,
+      "title": "Houses Across Two Roads",
+      "promptSummary": "In a town crossed by West–East Road A and North–South Road B, there are 7 houses north of Road A, 8 houses east of Road B, and 5 houses south of Road A. How many houses are west of Road B?",
+      "correctOption": "A",
+      "questionClass": "counting-sets",
+      "secondaryClass": "logic-deduction",
+      "imageUrl": "packs/2023-g34-part1/images/q12.png",
+      "imageWidth": 2310,
+      "imageHeight": 270,
+      "teachingGuide": {
+        "headline": "Both roads split the EXACT SAME town of houses—find the whole town using Road A, then subtract using Road B!",
+        "steps": [
+          "Draw the cross-shaped map (Road A going West–East, Road B going North–South) on the board.",
+          "Cover up Road B for a moment! Every house in town is either NORTH of Road A (7) or SOUTH of Road A (5)—so there are 7 + 5 = 12 houses in the whole town!",
+          "Now bring back Road B and cover up Road A: those exact same 12 houses are split into EAST of Road B (8) and WEST of Road B.",
+          "Subtract to find the west side: 12 − 8 = 4 houses -> (A)!"
+        ],
+        "askTheKids": [
+          "Wait—do we need to know how many houses are in each of the 4 individual corners (like Northeast or Northwest), or does it work no matter how we split them?",
+          "Can you invent numbers for the 4 corners that match all the clues and check what West gets?"
+        ],
+        "commonTraps": "Students often get stuck trying to solve for all 4 quadrants separately (which has multiple solutions like NW=2, NE=5, SW=2, SE=3 OR NW=4, NE=3, SW=0, SE=5) instead of noticing NW + SW always equals 4!",
+        "homeTip": "Put 12 pennies on a sheet of paper divided into 4 quarters by two crossed lines (7 in the top half, 5 in the bottom half, 8 in the right half) and let your child move pennies between top-right and bottom-right to see why the left half always has 4."
+      }
+    },
+    {
+      "number": 17,
+      "points": 5,
+      "title": "Beavers and Kangaroos in Line",
+      "promptSummary": "6 beavers and 2 kangaroos stand in positions 1 to 8. Among any 3 consecutively numbered animals, there is exactly 1 kangaroo. Which numbered position has a kangaroo?",
+      "correctOption": "C",
+      "questionClass": "patterns-simulation",
+      "secondaryClass": "logic-deduction",
+      "imageUrl": "packs/2023-g34-part1/images/q17.png",
+      "imageWidth": 2310,
+      "imageHeight": 398,
+      "teachingGuide": {
+        "headline": "Slide a 3-circle window down the line—kangaroos MUST repeat every 3rd spot, and only spots 3 & 6 give TWO kangaroos!",
+        "steps": [
+          "Draw circles ① ② ③ ④ ⑤ ⑥ ⑦ ⑧ on the board.",
+          "Compare window (1, 2, 3) and window (2, 3, 4): both hold 1 kangaroo and share spots 2 & 3—so whenever a kangaroo is at spot 1, another MUST be 3 steps later at spot 4, and at spot 7!",
+          "Test the 3 possible 'every-3rd-spot' patterns: K at (1, 4, 7) uses 3 kangaroos—too many! K at (2, 5, 8) also uses 3 kangaroos—too many!",
+          "Now test K at (3, 6): B B K B B K B B has 2 kangaroos and 6 beavers, and every group of 3 has 1 K! Between 3 and 6, spot 3 is in the answer choices -> (C) 3."
+        ],
+        "askTheKids": [
+          "Why did putting a kangaroo at spot 1 force us to have 3 kangaroos instead of 2?",
+          "Where is the OTHER kangaroo standing in the line besides spot 3?"
+        ],
+        "commonTraps": "Choices (A) 1 and (B) 2 trap students who check the first 3 or 6 circles (e.g., K B B K B B...) and forget to check circles 7 and 8, accidentally placing 3 kangaroos instead of 2!",
+        "homeTip": "Line up 8 cups numbered 1 to 8 with 2 small toys ('kangaroos') and slide a 3-cup-wide paper frame step by step from left to right to see why only positions 3 and 6 work."
+      }
+    },
+    {
+      "number": 18,
+      "points": 5,
+      "title": "Rebecca's Folded Corner Cut",
+      "promptSummary": "Rebecca folds a square sheet of paper bottom-to-top, then left-to-right, and cuts diagonally across the bottom-left corner of the folded square. What does the unfolded paper look like?",
+      "correctOption": "B",
+      "questionClass": "shapes-2d",
+      "secondaryClass": "spatial-3d",
+      "imageUrl": "packs/2023-g34-part1/images/q18.png",
+      "imageWidth": 2310,
+      "imageHeight": 638,
+      "teachingGuide": {
+        "headline": "Track which corner of the folded square is the CENTER of the whole paper—cutting that corner punches a diamond hole in the middle!",
+        "steps": [
+          "Take a real square of scrap paper in front of the class (or draw the square with a big red dot right in its center!).",
+          "Fold bottom-to-top: the red center dot is now in the middle of the BOTTOM crease.",
+          "Fold left-to-right: that red center dot lands right at the BOTTOM-LEFT corner of the little folded square!",
+          "Rebecca cuts diagonally across that exact bottom-left corner! When you unfold all 4 layers around the center dot, the 4 diagonal cuts form a tilted DIAMOND hole in the middle -> (B)!"
+        ],
+        "askTheKids": [
+          "Which corner of the little folded square would Rebecca have had to snip to get the octagon in choice (C)?",
+          "How could you cut the folded paper if you actually wanted the upright square hole in choice (A)?"
+        ],
+        "commonTraps": "Choice (A) traps students who recognize the hole is in the center but draw an upright square instead of reflecting the 45° diagonal cut into a diamond; Choice (C) happens if students lose track of which corner is the center crease.",
+        "homeTip": "Give your child two square sticky notes or napkins to fold bottom-to-top, then left-to-right—let them snip the bottom-left folded corner on one and the top-right open corner on the other to compare (B) and (C) live!"
+      }
+    },
+    {
+      "number": 19,
+      "points": 5,
+      "title": "Entering the Common Room",
+      "promptSummary": "Hermione, Harry, and Ron walk into the common room one at a time. Hermione is never 1st, Harry is never 2nd, and Ron is never 3rd. How many different entry orders are possible?",
+      "correctOption": "B",
+      "questionClass": "counting-sets",
+      "secondaryClass": "logic-deduction",
+      "imageUrl": "packs/2023-g34-part1/images/q19.png",
+      "imageWidth": 2310,
+      "imageHeight": 214,
+      "teachingGuide": {
+        "headline": "Pick who walks in FIRST (only 2 choices!) and watch the rest of the line lock itself into place!",
+        "steps": [
+          "Draw three slots on the board: [1st] [2nd] [3rd], and write the 'NO' rule under each: 1st ≠ Hermione, 2nd ≠ Harry, 3rd ≠ Ron.",
+          "Ask: who is allowed to walk in 1st? Not Hermione—so ONLY Harry OR Ron!",
+          "Case 1 — Harry goes 1st: Hermione and Ron are left for 2nd and 3rd. Since Ron can NEVER be 3rd, Ron MUST go 2nd and Hermione goes 3rd → (Harry, Ron, Hermione) ✓!",
+          "Case 2 — Ron goes 1st: Hermione and Harry are left for 2nd and 3rd. Since Harry can NEVER be 2nd, Hermione MUST go 2nd and Harry goes 3rd → (Ron, Hermione, Harry) ✓! Total = 2 orders -> (B)."
+        ],
+        "askTheKids": [
+          "How many total orders would there be for the 3 friends if there were NO rules at all?",
+          "In both winning orders, did ANY friend end up in their forbidden spot?"
+        ],
+        "commonTraps": "Choice (C) 3 traps students who subtract 6 total orders − 3 rules = 3, forgetting that the order (Hermione, Harry, Ron) breaks ALL THREE rules at the exact same time!",
+        "homeTip": "Use 3 differently colored LEGO minifigures (or spoons/forks/knives) and have your child list all 6 possible lineups, then push aside every lineup that breaks one of the three rules."
+      }
+    },
+    {
+      "number": 20,
+      "points": 5,
+      "title": "Five Wall Clocks Mystery",
+      "promptSummary": "Five wall clocks show 6:00, 2:00, 4:00, 3:00, and 7:00. One is 1 hour fast, one is 1 hour slow, one shows the correct time, and two have stopped. Which clock shows the correct time?",
+      "correctOption": "D",
+      "questionClass": "measurement-time",
+      "secondaryClass": "logic-deduction",
+      "imageUrl": "packs/2023-g34-part1/images/q20.png",
+      "imageWidth": 2310,
+      "imageHeight": 478,
+      "teachingGuide": {
+        "headline": "Read all 5 times and hunt for a '3-in-a-row' hour trio (1 hour slow, right on time, 1 hour fast)—the middle one is the true time!",
+        "steps": [
+          "Read each clock aloud with the class and write its hour under A–E: A = 6:00, B = 2:00, C = 4:00, D = 3:00, E = 7:00.",
+          "Sort those hours in order on the board: 2:00, 3:00, 4:00, 6:00, 7:00.",
+          "Explain: whatever the true time is, there must be a clock 1 hour BEFORE it and a clock 1 hour AFTER it—that means THREE consecutive hours in a row!",
+          "Spot the only 3-in-a-row trio: 2:00, 3:00, 4:00! (6:00 and 7:00 have no 5:00 or 8:00, so A and E are the two stopped clocks.) The middle time is 3:00, which is Clock D -> (D)!"
+        ],
+        "askTheKids": [
+          "Why couldn't 6:00 or 7:00 be the correct time—what missing clock time would you need on the wall?",
+          "Which clock is 1 hour slow, and which clock is 1 hour fast?"
+        ],
+        "commonTraps": "Choice (C) plays a visual-order trick: Clock C sits in the physical middle of the 5 clocks on the page (4:00), catching students who confuse middle position on the wall with the middle time (3:00, Clock D)!",
+        "homeTip": "Write 2:00, 3:00, 4:00, 6:00, and 7:00 on five index cards scrambled out of order—once your child sorts them in time order, the '1 slow / exact / 1 fast' trio jumps right off the table!"
+      }
+    }
+  ]
+}
